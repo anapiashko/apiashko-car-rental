@@ -20,7 +20,7 @@
 #### Просмотр списка доступных автомобилей
 После ввода даты, отображается список доступных авто на эту дату.
 
-![make_order_list](https://user-images.githubusercontent.com/42007915/75467989-8be50100-599d-11ea-8141-09ac16db6092.png)
+![make_order_list](https://user-images.githubusercontent.com/42007915/75469732-90f77f80-59a0-11ea-95d5-7f13db80ddc7.png)
 
 В списке отображаются следующие колонки:
   - Марка автомобиля
@@ -39,7 +39,7 @@
 ##### Сценарий отмены изменений
 - Пользователь заполняет поля ввода  и нажимает кнопку "Cancel"
 - Данные  не  сохраняются в  базу и  происходит возврат  к списку автомобилей.
-![new_car](https://user-images.githubusercontent.com/42007915/75468009-93a4a580-599d-11ea-8dbc-3a1147f22268.png)
+![new_car](https://user-images.githubusercontent.com/42007915/75469806-abc9f400-59a0-11ea-87e5-9a3dc73d6551.png)
 
 
 
