@@ -3,6 +3,8 @@ package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.dao.mapper.OrderRowMapper;
 import com.epam.brest.courses.model.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.support.DataAccessUtils;
@@ -14,7 +16,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.util.List;
 import java.util.Optional;
 
+
 public class OrderDaoJdbc implements OrderDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderDaoJdbc.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -42,11 +47,15 @@ public class OrderDaoJdbc implements OrderDao {
 
     @Override
     public List<Order> findAll() {
+        LOGGER.trace("find all orders()");
+
         return namedParameterJdbcTemplate.query(SELECT_ALL, orderRowMapper);
     }
 
     @Override
     public Optional<Order> findById(Integer orderId) {
+        LOGGER.trace("find by order id:{}", orderId);
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderRecordId", orderId);
 
@@ -56,6 +65,8 @@ public class OrderDaoJdbc implements OrderDao {
 
     @Override
     public Integer create(Order order) {
+        LOGGER.trace("create(order:{})", order);
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderDate", order.getDate())
                 .addValue("carId", order.getCarId());
@@ -67,6 +78,8 @@ public class OrderDaoJdbc implements OrderDao {
 
     @Override
     public int update(Order order) {
+        LOGGER.trace("update(order:{})", order);
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderRecordId", order.getId())
                 .addValue("orderDate", order.getDate())
@@ -77,6 +90,8 @@ public class OrderDaoJdbc implements OrderDao {
 
     @Override
     public int delete(Integer orderId) {
+        LOGGER.trace("delete order by id:{})", orderId);
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderRecordId", orderId);
         return namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource);

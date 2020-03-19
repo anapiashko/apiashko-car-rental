@@ -2,6 +2,8 @@ package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.dao.mapper.CarRowMapper;
 import com.epam.brest.courses.model.Car;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class CarDaoJdbc implements CarDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderDaoJdbc.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -39,11 +43,15 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public List<Car> findAll() {
+        LOGGER.trace("find all cars()");
+
         return namedParameterJdbcTemplate.query(SELECT_ALL, carRowMapper);
     }
 
     @Override
     public Optional<Car> findById(Integer carId) {
+        LOGGER.trace("find by car id:{}", carId);
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carId", carId);
 
@@ -53,6 +61,7 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public Integer create(Car car) {
+        LOGGER.trace("create(car:{})", car);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carBrand", car.getBrand())
@@ -66,6 +75,7 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public int update(Car car) {
+        LOGGER.trace("update(car:{})", car);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carId", car.getId())
@@ -78,6 +88,7 @@ public class CarDaoJdbc implements CarDao {
 
     @Override
     public int delete(Integer carId) {
+        LOGGER.trace("delete car by id:{})", carId);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carId", carId);
