@@ -13,6 +13,14 @@
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
+    <bean id="carService" class="com.epam.brest.courses.service.CarServiceImpl">
+        <constructor-arg ref="carDao"/>
+    </bean>
+
+    <bean id="carDao" class="com.epam.brest.courses.dao.CarDaoJdbc">
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
+
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg ref="dataSource"/>
     </bean>
