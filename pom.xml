@@ -14,6 +14,8 @@
         <module>car-rental-model</module>
         <module>car-rental-dao</module>
         <module>car-rental-test-db</module>
+        <module>car-rental-service</module>
+        <module>car-rental-service-api</module>
     </modules>
 
     <properties>
@@ -24,6 +26,16 @@
 
     <dependencyManagement>
     <dependencies>
+        <dependency>
+            <groupId>com.epam.brest.courses</groupId>
+            <artifactId>car-rental-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest.courses</groupId>
+            <artifactId>car-rental-service-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.epam.brest.courses</groupId>
             <artifactId>car-rental-model</artifactId>
