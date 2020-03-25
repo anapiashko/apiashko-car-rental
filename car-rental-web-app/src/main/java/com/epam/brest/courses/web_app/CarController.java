@@ -1,79 +1,85 @@
 package com.epam.brest.courses.web_app;
 
-import com.epam.brest.courses.dao.CarDao;
 import com.epam.brest.courses.model.Car;
+import com.epam.brest.courses.service_api.CarService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class CarController {
 
-    private final CarDao carDao;
+    private final CarService carService;
 
-    public CarController(CarDao carDao) {
-        this.carDao = carDao;
+    @Autowired
+    public CarController(CarService carService) {
+        this.carService = carService;
     }
 
     /**
-     *Goto free cars list.
+     * Goto free cars list.
      *
-     * @param model
+     * @param model model
      * @return view name
      */
     @GetMapping(value = "/cars")
     public final String freeCars(Model model) {
-        model.addAttribute("cars", carDao.findAll());
+
+        List<Car> list = carService.findAll();
+        model.addAttribute("cars",list);
         return "cars";
     }
 
     /**
      * Goto edit car page.
      *
-     * @param id car
-     * @param model
+     * @param id    car
+     * @param model model
      * @return view name
      */
     @GetMapping(value = "/car/{id}")
     public final String gotoEditCarPage(@PathVariable Integer id, Model model) {
 
-        Optional<Car> car = carDao.findById(id);
+        Optional<Car> car = carService.findById(id);
 
-        if(car.isPresent()){
+        if (car.isPresent()) {
             model.addAttribute("isNew", false);
             model.addAttribute("car", car.get());
+            return "car";
+        } else {
+            return "redirect:/cars";
         }
-        return "car";
     }
 
     /**
      * Update car.
      *
-     * @param car to be updated
-     * @param result  binding result
+     * @param car    to be updated
+     * @param result binding result
      * @return redirect to view name
      */
     @PostMapping(value = "/car/{id}")
-    public final String updateCar(@Valid Car car, BindingResult result){
-        carDao.update(car);
-        return "redirect:/cars";
+    public final String updateCar(@Valid Car car, BindingResult result) {
+            carService.update(car);
+            return "redirect:/cars";
     }
 
     /**
      * Goto create car page.
      *
-     * @param model
+     * @param model model
      * @return view name
      */
     @GetMapping(value = "/car")
-    public final String gotoCreateCarPage(Model model){
+    public final String gotoCreateCarPage(Model model) {
         model.addAttribute("isNew", true);
         model.addAttribute("car", new Car());
         return "car";
@@ -82,14 +88,14 @@ public class CarController {
     /**
      * Create new car.
      *
-     * @param car new car with filled data
-     * @param result  binding result
+     * @param car    new car with filled data
+     * @param result binding result
      * @return redirect to view name
      */
     @PostMapping(value = "car")
-    public final String createCar(@Valid Car car, BindingResult result){
-        carDao.create(car);
-        return "redirect:/cars";
+    public final String createCar(@Valid Car car, BindingResult result) {
+            carService.create(car);
+            return "redirect:/cars";
     }
 
     /**
@@ -98,10 +104,11 @@ public class CarController {
      * @param id car
      * @return view name
      */
-    @DeleteMapping(value = "car/{id}")
-    public final String deleteCar(@PathVariable Integer id){
-        carDao.delete(id);
+    @GetMapping(value = "car/{id}/delete")
+    public final String deleteCar(@PathVariable Integer id) {
+        carService.delete(id);
         return "redirect:/cars";
     }
+
 }
 
