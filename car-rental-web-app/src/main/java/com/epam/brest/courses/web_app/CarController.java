@@ -2,6 +2,7 @@ package com.epam.brest.courses.web_app;
 
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
+import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ import java.util.Optional;
 
 @Controller
 public class CarController {
+
+    private CarValidator carValidator = new CarValidator();
 
     private final CarService carService;
 
@@ -68,8 +71,13 @@ public class CarController {
      */
     @PostMapping(value = "/car/{id}")
     public final String updateCar(@Valid Car car, BindingResult result) {
+        carValidator.validate(car, result);
+        if (result.hasErrors()) {
+            return "car";
+        } else {
             carService.update(car);
             return "redirect:/cars";
+        }
     }
 
     /**
@@ -94,8 +102,13 @@ public class CarController {
      */
     @PostMapping(value = "car")
     public final String createCar(@Valid Car car, BindingResult result) {
+        carValidator.validate(car, result);
+        if (result.hasErrors()) {
+            return "car";
+        } else {
             carService.create(car);
             return "redirect:/cars";
+        }
     }
 
     /**
