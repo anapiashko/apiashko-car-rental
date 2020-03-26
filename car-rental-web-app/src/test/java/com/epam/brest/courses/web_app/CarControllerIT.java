@@ -1,6 +1,7 @@
 package com.epam.brest.courses.web_app;
 
 import com.epam.brest.courses.model.Car;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,6 @@ import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 
 @ExtendWith(SpringExtension.class)
@@ -84,7 +84,7 @@ public class CarControllerIT {
                 .andExpect(model().attribute("car", hasProperty("id", is(1))))
                 .andExpect(model().attribute("car", hasProperty("brand", is("BMW"))))
                 .andExpect(model().attribute("car", hasProperty("registerNumber", is("3456 AB-1"))))
-                .andExpect(model().attribute("car",  hasProperty("price", is(new BigDecimal("240.00")))))
+                .andExpect(model().attribute("car", hasProperty("price", is(new BigDecimal("240.00")))))
         ;
     }
 
@@ -115,6 +115,41 @@ public class CarControllerIT {
                         .param("registerNumber", "3456 AB-1")
                         .param("price", "240")
                         .sessionAttr("car", car)
+        ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/cars"))
+                .andExpect(redirectedUrl("/cars"));
+    }
+
+    @Test
+    public void shouldOpenNewCarPage() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/car")
+        ).andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("car"))
+                .andExpect(model().attribute("isNew", is(true)))
+                .andExpect(model().attribute("car", isA(Car.class)));
+    }
+
+    @Test
+    public void shouldAddNewCar() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/car")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("brand", "test")
+                        .param("registerNumber", "1111 AB-1")
+                        .param("price", "111")
+        ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/cars"))
+                .andExpect(redirectedUrl("/cars"));
+    }
+
+    @Test
+    public void shouldDeleteDepartment() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/car/1/delete")
         ).andExpect(status().isFound())
                 .andExpect(view().name("redirect:/cars"))
                 .andExpect(redirectedUrl("/cars"));
