@@ -25,6 +25,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public List<Car> findAllByDate(String date){
+        return carDao.findAllByDate(date);
+    }
+
+    @Override
     public Optional<Car> findById(Integer carId) {
         return carDao.findById(carId);
     }

@@ -15,6 +15,15 @@ public interface CarService {
      */
     List<Car> findAll();
 
+
+    /**
+     * Find all cars by date in database.
+     *
+     * @param date date
+     * @return cars list
+     */
+    List<Car> findAllByDate(String date);
+
     /**
      * Find car by Id.
      *

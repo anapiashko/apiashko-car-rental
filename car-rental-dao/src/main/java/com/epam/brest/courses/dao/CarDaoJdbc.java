@@ -37,6 +37,9 @@ public class CarDaoJdbc implements CarDao {
     @Value("${car.delete}")
     private String DELETE;
 
+    @Value("${car.selectAllByDate}")
+    private String SELECT_ALL_BY_DATE;
+
     public CarDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
@@ -46,6 +49,13 @@ public class CarDaoJdbc implements CarDao {
         LOGGER.trace("find all cars()");
 
         return namedParameterJdbcTemplate.query(SELECT_ALL, carRowMapper);
+    }
+
+    @Override
+    public List<Car> findAllByDate(String date) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("orderDate", date);
+        return namedParameterJdbcTemplate.query(SELECT_ALL_BY_DATE, mapSqlParameterSource, carRowMapper);
     }
 
     @Override

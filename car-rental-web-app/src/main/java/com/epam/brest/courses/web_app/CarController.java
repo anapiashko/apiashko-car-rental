@@ -36,7 +36,8 @@ public class CarController {
     @GetMapping(value = "/cars")
     public final String freeCars( @RequestParam(name = "filter", required = false) String filter, Model model) {
 
-        List<Car> list = carService.findAll();
+        List<Car> list = carService.findAllByDate(filter);
+        model.addAttribute("filter", filter);
         model.addAttribute("cars",list);
         return "cars";
     }
