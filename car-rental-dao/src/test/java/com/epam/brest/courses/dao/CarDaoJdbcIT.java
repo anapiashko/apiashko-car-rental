@@ -33,6 +33,14 @@ class CarDaoJdbcIT {
     }
 
     @Test
+    void findAllByDate() {
+        String date = "2020-04-03";
+        List<Car> cars = carDao.findAllByDate(date);
+
+        assertNotNull(cars);
+    }
+
+    @Test
     void findById() {
         //given
         Car car = new Car();
