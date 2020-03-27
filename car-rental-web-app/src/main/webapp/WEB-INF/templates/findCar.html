@@ -21,14 +21,15 @@
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a href="../"  class="navbar-brand"><img src="../../resources/static/img/logo.svg"
-                                                 th:src="@{/resources/static/img/logo.svg}"
-                                                 height="32" width="32" alt="HR"></a>
+        <a href="../" class="navbar-brand"><img src="../../resources/static/img/logo.svg"
+                                                th:src="@{/resources/static/img/logo.svg}"
+                                                height="32" width="32" alt="HR"></a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <a class="nav-item nav-link active" href="findCar.html"
-                   th:href="@{/findCar}">Make order</a>
-                <a class="nav-item nav-link" href="#">Statistics</a>
+                <a class="nav-item nav-link " href="#"
+                   th:href="@{/}">Make order</a>
+                <a class="nav-item nav-link" href="period.html"
+                   th:href="@{/period}">Statistics</a>
             </ul>
         </div>
     </nav>
@@ -39,20 +40,26 @@
         <h3>Chose the data</h3>
     </div>
     <div class="card-body">
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <p class="card-text">You can choose car rental date.</p>
         <div class="input-group mb-3">
-            <input type="text"
-                   class="form-control"
-                   placeholder="2001-01-01"
-                   aria-describedby="basic-addon2">
+            <label>
+                <input id="filter-input"
+                       type="text"
+                       th:value="${filter}"
+                       class="form-control"
+                       onchange="changeShowAction()"
+                       aria-describedby="basic-addon2">
+            </label>
         </div>
-        <div> <a href="#"
-                 th:href="@{/cars}"
-                 class="btn btn-primary"
-                 title="Show free cars"
-                 data-toggle="tooltip"
-                 data-placement="bottom">
-            <span class="d-none d-sm-inline">Show</span></a>
+        <div>
+            <a id="filter-button"
+               href="#" th:href="@{/cars}"
+               class="btn btn-primary"
+               title="Show free cars"
+               data-toggle="tooltip"
+               data-placement="bottom">
+                <span class="d-none d-sm-inline">Show</span>
+            </a>
         </div>
     </div>
 </div>
@@ -64,9 +71,22 @@
 <script src="../../resources/static/js/bootstrap.min.js"
         th:src="@{/resources/static/js/bootstrap.min.js}"></script>
 <script>
+    $('#deleteDialog').on('click', function (event) {
+        var target = $(event.relatedTarget)
+        $(this).find('.modal-body').text('Please confirm delete department: "' + target.data('name') + '"')
+        document.getElementById('deleteUrl').href = '/department/' + target.data('id') + '/delete';
+    });
+    function changeShowAction() {
+        var currActionValue = document.getElementById('filter-button').href;
+        var currentUrl = new URL(currActionValue);
+        var filterValue = document.getElementById('filter-input').value;
+        currentUrl.searchParams.set("filter", filterValue);
+        document.getElementById('filter-button').href = currentUrl.href;
+    }
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+
 </body>
 </html>

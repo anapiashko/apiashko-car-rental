@@ -34,7 +34,7 @@ public class CarController {
      * @return view name
      */
     @GetMapping(value = "/cars")
-    public final String freeCars(Model model) {
+    public final String freeCars( @RequestParam(name = "filter", required = false) String filter, Model model) {
 
         List<Car> list = carService.findAll();
         model.addAttribute("cars",list);

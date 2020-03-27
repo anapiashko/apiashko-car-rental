@@ -39,20 +39,26 @@
         <h3>Chose the data</h3>
     </div>
     <div class="card-body">
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <p class="card-text">You can choose car rental date.</p>
         <div class="input-group mb-3">
-            <input type="text"
-                   class="form-control"
-                   placeholder="2001-01-01"
-                   aria-describedby="basic-addon2">
+            <label>
+                <input id="filter-input"
+                       type="text"
+                       th:value="${filter}"
+                       class="form-control"
+                       onchange="changeShowAction()"
+                       aria-describedby="basic-addon2">
+            </label>
         </div>
-        <div> <a href="cars.html"
-                 th:href="@{/cars}"
-                 class="btn btn-primary"
-                 title="Show free cars"
-                 data-toggle="tooltip"
-                 data-placement="bottom">
-            <span class="d-none d-sm-inline">Show</span></a>
+        <div>
+            <a id="filter-button"
+               href="#" th:href="@{/cars}"
+               class="btn btn-primary"
+               title="Show free cars"
+               data-toggle="tooltip"
+               data-placement="bottom">
+                <span class="d-none d-sm-inline">Show</span>
+            </a>
         </div>
     </div>
 </div>
@@ -169,6 +175,13 @@
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
         document.getElementById('deleteUrl').href = '/car/' + target.data('id');
     });
+    function changeShowAction() {
+        var currActionValue = document.getElementById('filter-button').href;
+        var currentUrl = new URL(currActionValue);
+        var filterValue = document.getElementById('filter-input').value;
+        currentUrl.searchParams.set("filter", filterValue);
+        document.getElementById('filter-button').href = currentUrl.href;
+    }
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
