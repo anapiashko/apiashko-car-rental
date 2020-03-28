@@ -17,4 +17,14 @@ public class HomeController {
     public final String selectData() {
         return "findCar";
     }
+
+    /**
+     * Goto statistics car list page.
+     *
+     * @return view name
+     */
+    @GetMapping(value = "/period")
+    public String putPeriod(){
+        return "period";
+    }
 }
