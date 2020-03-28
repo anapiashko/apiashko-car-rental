@@ -1,4 +1,4 @@
-package com.epam.brest.courses.model.constants;
+package com.epam.brest.courses.constants;
 
 public class CarConstants {
 

@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import static com.epam.brest.courses.model.constants.CarConstants.CAR_BRAND_SIZE;
+import static com.epam.brest.courses.constants.CarConstants.CAR_BRAND_SIZE;
 
 @Component
 public class CarValidator implements Validator {
