@@ -26,8 +26,8 @@
                                                  height="32" width="32" alt="HR"></a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <a class="nav-item nav-link active" href="findCar.html"
-                   th:href="@{/findCar}">Make order</a>
+                <a class="nav-item nav-link active" href="#"
+                   th:href="@{/}">Make order</a>
                 <a class="nav-item nav-link" href="#">Statistics</a>
             </ul>
         </div>
@@ -157,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
+                <a id="deleteUrl" href="cars.html" th:href="@{/cars}" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
@@ -173,7 +173,7 @@
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href = '/car/' + target.data('id');
+        document.getElementById('deleteUrl').href = '/car/' + target.data('id') + '/delete';
     });
     function changeShowAction() {
         var currActionValue = document.getElementById('filter-button').href;
