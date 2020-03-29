@@ -1,7 +1,6 @@
 package com.epam.brest.courses.web_app;
 
 import com.epam.brest.courses.model.Car;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -153,5 +152,27 @@ public class CarControllerIT {
         ).andExpect(status().isFound())
                 .andExpect(view().name("redirect:/cars"))
                 .andExpect(redirectedUrl("/cars"));
+    }
+
+    @Test
+    public void shouldReturnListCarsWithNumberOfOrders() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/car-statistics")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("dateFrom", "2020-01-01")
+                        .param("dateTo", "2020-01-15"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("statistics"))
+                .andExpect(model().attribute("cars", hasItem(
+                        allOf(
+                                hasProperty("id", is(2)),
+                                hasProperty("brand", is("AUDI")),
+                                hasProperty("registerNumber", is("0056 AB-1")),
+                                hasProperty("numberOrders", is(1))
+                        )
+                )))
+        ;
     }
 }

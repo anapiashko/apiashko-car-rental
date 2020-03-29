@@ -1,6 +1,7 @@
 package com.epam.brest.courses.web_app;
 
 import com.epam.brest.courses.model.Car;
+import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,12 @@ public class CarController {
 
     private final CarService carService;
 
+    private final CarDtoService carDtoService;
+
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, CarDtoService carDtoService) {
         this.carService = carService;
+        this.carDtoService = carDtoService;
     }
 
     /**
@@ -134,7 +138,23 @@ public class CarController {
         return "redirect:/cars";
     }
 
+    /**
+     * Show cars with number of orders.
+     *
+     * @param dateFrom date from
+     * @param dateTo date to
+     * @param model model
+     * @return view name
+     */
+    @GetMapping(value = "/car-statistics")
+    public String carStatistics(@RequestParam(value="dateFrom",required = false) String dateFrom
+            ,@RequestParam(value = "dateTo",required = false) String dateTo, Model model){
 
+        model.addAttribute("dateFrom", dateFrom);
+        model.addAttribute("dateTo", dateTo);
+        model.addAttribute("cars", carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo));
+        return "statistics";
+    }
 
 }
 

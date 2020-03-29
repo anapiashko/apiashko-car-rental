@@ -40,11 +40,19 @@
         <constructor-arg ref="carDao"/>
     </bean>
 
+    <bean id="carDtoService" class="com.epam.brest.courses.service.CarDtoServiceImpl">
+        <constructor-arg ref="carDtoDao"/>
+    </bean>
+
     <bean id="orderDao" class="com.epam.brest.courses.dao.OrderDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
     <bean id="carDao" class="com.epam.brest.courses.dao.CarDaoJdbc">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="carDtoDao" class="com.epam.brest.courses.dao.CarDtoDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
