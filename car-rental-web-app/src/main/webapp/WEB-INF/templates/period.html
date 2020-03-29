@@ -50,9 +50,9 @@
                    th:value="${dateFrom}"
                    type="text"
                    class="form-control"
+                   onchange="changeShowAction()"
                    aria-describedby="basic-addon2"
             >
-
 
             <div class="input-group-prepend">
                 <span class="input-group-text">to  </span>
@@ -61,12 +61,13 @@
                    type="text"
                    th:value="${dateTo}"
                    class="form-control"
+                   onchange="changeShowAction()"
                    aria-describedby="basic-addon2"
             >
 
-
             <a id="filter-button"
                href="#"
+               th:href="@{/car-statistics}"
                class="btn btn-primary"
                title="Show free cars"
                data-toggle="tooltip"
@@ -91,6 +92,16 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
+
+    function changeShowAction() {
+        var currActionValue = document.getElementById('filter-button').href;
+        var currentUrl = new URL(currActionValue);
+        var filterValueFrom = document.getElementById('field_dateFrom').value;
+        var filterValueTo = document.getElementById('field_dateTo').value;
+        currentUrl.searchParams.set("dateFrom", filterValueFrom);
+        currentUrl.searchParams.set("dateTo", filterValueTo);
+        document.getElementById('filter-button').href = currentUrl.href;
+    }
 </script>
 </body>
 </html>
