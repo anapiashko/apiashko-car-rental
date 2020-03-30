@@ -83,7 +83,7 @@
     </ul>
 </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" th:if="${not #lists.isEmpty(cars)}">
     <div class="row">
         <div class="col">
             <div class="card">
@@ -101,17 +101,29 @@
                     <tr th:each="car : ${cars}">
                         <td th:text="${car.brand}">BMW</td>
                         <td th:text="${car.registerNumber}">3909 AB-1</td>
-                        <td th:text="${car.price}">140 $</td>
+                        <td th:text="${car.price} + '   $'">140 $</td>
                         <td class="text-right">
-                            <a href="cars.html"
-                               th:href="@{/cars}"
+                             <span data-toggle="modal"
+                                   data-target="#hiddenForm"
+                                   th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber} +' on date ' +  ${filter}">
+                            <form name="orderForm" action="#" th:action="@{/cars}" th:object="${order}" method="post"
+                                  class="d-none d-md-inline">
+                                <label>
+                                    <input size="2" type="hidden" name="carId" th:value="${car.id}"/>
+                                </label>
+                                <label>
+                                    <input size="2" type="hidden" name="date" th:value="${filter}"/>
+                                </label>
+                            <a href="#"
                                class="btn  btn-secondary"
                                title="Order this car"
                                data-toggle="tooltip"
                                data-placement="top">
-                                <i class="fa fa-book" ></i><span
+                                <i class="fa fa-book"></i><span
                                     class="d-none d-md-inline">  Order</span></a>
-                            <a href="#"
+                            </form>
+                             </span>
+                            <a href="car.html"
                                th:href="@{|/car/${car.id}|}"
                                class="btn-sm btn-outline-secondary"
                                title="Edit car"
@@ -122,10 +134,11 @@
                             <span data-toggle="modal"
                                   data-target="#deleteDialog"
                                   th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber}">
-                                <a href="#" class="btn-sm btn-outline-secondary"
-                                   title="delete car"
-                                   data-toggle="tooltip"
-                                   data-placement="top">
+                               <a href="#"
+                                  class="btn-sm btn-outline-secondary"
+                                  title="delete car"
+                                  data-toggle="tooltip"
+                                  data-placement="top">
                                     <i class="fa fa-remove"></i> <span class="d-none d-md-inline">Delete</span></a>
                                 </span>
                         </td>
@@ -136,6 +149,7 @@
         </div>
     </div>
 </div>
+
 
 <footer>
     <hr/>
@@ -164,6 +178,31 @@
     </div>
 </div>
 
+<!-- Confirm adding order -->
+<div class="modal fade" id="hiddenForm" tabindex="-1" role="dialog"
+     aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-success">
+                <h5 class="modal-title" id="modalLabel">Send order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please confirm adding
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                <a href="#" th:href="@{/cars}"
+                   th:onclick="@{document.forms['orderForm'].submit(); return false;}"
+                   class="btn btn-success">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="../../resources/static/js/jquery-3.4.1.slim.min.js"
         th:src="@{/resources/static/js/jquery-3.4.1.slim.min.js}"></script>
 <script src="../../resources/static/js/popper.min.js"
@@ -175,6 +214,10 @@
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
         document.getElementById('deleteUrl').href = '/car/' + target.data('id') + '/delete';
+    });
+    $('#hiddenForm').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget);
+        $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
     });
     function changeShowAction() {
         var currActionValue = document.getElementById('filter-button').href;
