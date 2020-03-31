@@ -4,6 +4,8 @@ import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.web_app.validators.CarValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ import java.util.Optional;
 
 @Controller
 public class CarController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
 
     private CarValidator carValidator = new CarValidator();
 
@@ -42,6 +46,7 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars( @RequestParam(name = "filter", required = false) String filter, Model model) {
+        LOGGER.debug("free cars on date: {}", filter);
 
         if (filter == null || filter.length() == 0) {
             Date dateNow = new Date();
@@ -65,6 +70,7 @@ public class CarController {
      */
     @GetMapping(value = "/car/{id}")
     public final String gotoEditCarPage(@PathVariable Integer id, Model model) {
+        LOGGER.debug("gotoEditCarPage({},{})", id, model);
 
         Optional<Car> car = carService.findById(id);
 
@@ -86,6 +92,8 @@ public class CarController {
      */
     @PostMapping(value = "/car/{id}")
     public final String updateCar(@Valid Car car, BindingResult result) {
+        LOGGER.debug("updateCar({}, {})", car, result);
+
         carValidator.validate(car, result);
         if (result.hasErrors()) {
             return "car";
@@ -103,6 +111,8 @@ public class CarController {
      */
     @GetMapping(value = "/car")
     public final String gotoCreateCarPage(Model model) {
+        LOGGER.debug("gotoCreateCarPage({})", model);
+
         model.addAttribute("isNew", true);
         model.addAttribute("car", new Car());
         return "car";
@@ -117,6 +127,8 @@ public class CarController {
      */
     @PostMapping(value = "car")
     public final String createCar(@Valid Car car, BindingResult result) {
+        LOGGER.debug("createCar({}, {})", car, result);
+
         carValidator.validate(car, result);
         if (result.hasErrors()) {
             return "car";
@@ -134,6 +146,8 @@ public class CarController {
      */
     @GetMapping(value = "car/{id}/delete")
     public final String deleteCar(@PathVariable Integer id) {
+        LOGGER.debug("deleteCar({})", id);
+
         carService.delete(id);
         return "redirect:/cars";
     }
@@ -149,6 +163,7 @@ public class CarController {
     @GetMapping(value = "/car-statistics")
     public String carStatistics(@RequestParam(value="dateFrom",required = false) String dateFrom
             ,@RequestParam(value = "dateTo",required = false) String dateTo, Model model){
+        LOGGER.debug("carStatistics between (dateFrom = {}, dateTo = {}), model = {}", dateFrom, dateTo, model);
 
         model.addAttribute("dateFrom", dateFrom);
         model.addAttribute("dateTo", dateTo);
