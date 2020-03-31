@@ -3,6 +3,8 @@ package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.dao.mapper.CarDtoRowMapper;
 import com.epam.brest.courses.model.dto.CarDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,6 +12,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.util.List;
 
 public class CarDtoDaoJdbc implements CarDtoDao{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoDaoJdbc.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -24,6 +28,8 @@ public class CarDtoDaoJdbc implements CarDtoDao{
 
     @Override
     public List<CarDto> findAllWithNumberOfOrders(String dateFrom, String dateTo) {
+        LOGGER.debug("find all with number of orders (dateFrom = {}, dateTo = {})", dateFrom, dateTo);
+
         MapSqlParameterSource mapSqlParameterSource =  new MapSqlParameterSource();
         mapSqlParameterSource.addValue("order_date_from", dateFrom)
                 .addValue("order_date_to", dateTo);

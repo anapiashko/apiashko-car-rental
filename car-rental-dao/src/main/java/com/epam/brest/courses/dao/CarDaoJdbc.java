@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class CarDaoJdbc implements CarDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderDaoJdbc.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarDaoJdbc.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

@@ -54,7 +54,7 @@ public class OrderDaoJdbc implements OrderDao {
 
     @Override
     public Optional<Order> findById(Integer orderId) {
-        LOGGER.trace("find by order id:{}", orderId);
+        LOGGER.trace("find by orderId:{}", orderId);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderRecordId", orderId);
