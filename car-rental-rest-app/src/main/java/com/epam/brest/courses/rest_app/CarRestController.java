@@ -27,7 +27,7 @@ public class CarRestController {
         return carService.findAllByDate(filter);
     }
 
-    @GetMapping(value = "/car/{id}")
+    @GetMapping(value = "/cars/{id}")
     public Car findById(@PathVariable(name = "id") Integer id){
         return carService.findById(id).orElseThrow(()->new CarNotFoundException(id));
     }
@@ -37,13 +37,14 @@ public class CarRestController {
         return carService.update(car);
     }
 
-    @PostMapping(value = "/car")
-    public final Integer create(Car car) {
+    @PostMapping(value = "/cars", consumes = "application/json", produces = "application/json")
+    public final Integer create(@RequestBody Car car) {
         return carService.create(car);
     }
 
-    @DeleteMapping(value = "/car/{id}/delete")
+    @DeleteMapping(value = "/cars/{id}", produces = {"application/json"})
     public final Integer delete(@PathVariable(name = "id") Integer id){
-        return carService.delete(id);
+        int result =  carService.delete(id);;
+        return result;
     }
 }
