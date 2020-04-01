@@ -35,10 +35,6 @@
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
-    <bean id="orderService" class="com.epam.brest.courses.service.OrderServiceImpl">
-        <constructor-arg ref="orderDao"/>
-    </bean>
-
     <bean id="orderDao" class="com.epam.brest.courses.dao.OrderDaoJdbc">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
