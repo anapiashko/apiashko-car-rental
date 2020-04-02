@@ -5,6 +5,8 @@ import com.epam.brest.courses.service_api.CarDtoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,10 +35,10 @@ public class CarDtoRestController {
      * @return carDto list
      */
     @GetMapping(value = "/car_dtos")
-    public List<CarDto> carStatistics(@RequestParam(value="dateFrom",required = false) String dateFrom
+    public ResponseEntity<List<CarDto>> findAllWithNumberOrders(@RequestParam(value="dateFrom",required = false) String dateFrom
             , @RequestParam(value = "dateTo",required = false) String dateTo){
         LOGGER.debug("find all carDtos between (dateFrom = {}, dateTo = {})", dateFrom, dateTo);
 
-        return carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo);
+        return new ResponseEntity<>(carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo), HttpStatus.OK);
     }
 }

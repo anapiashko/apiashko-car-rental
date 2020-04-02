@@ -241,7 +241,7 @@ class CarRestControllerIT {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json)
                             .accept(MediaType.APPLICATION_JSON)
-                    ).andExpect(status().isOk())
+                    ).andExpect(status().isCreated())
                             .andReturn().getResponse();
             return objectMapper.readValue(response.getContentAsString(), Integer.class);
         }
