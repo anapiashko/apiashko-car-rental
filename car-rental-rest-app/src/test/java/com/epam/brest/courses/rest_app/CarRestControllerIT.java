@@ -3,6 +3,7 @@ package com.epam.brest.courses.rest_app;
 
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.rest_app.exception.CustomExceptionHandler;
+import com.epam.brest.courses.rest_app.exception.ErrorResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.brest.courses.rest_app.exception.CustomExceptionHandler.CAR_NOT_FOUND;
+import static com.epam.brest.courses.rest_app.exception.CustomExceptionHandler.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +42,6 @@ class CarRestControllerIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(CarRestControllerIT.class);
 
     public static final String CARS_ENDPOINT = "/cars";
-
 
     private final CarRestController carRestController;
 
@@ -67,7 +69,7 @@ class CarRestControllerIT {
     }
 
     @Test
-    public void shouldFindAllFreeCars() throws Exception {
+    public void findAll() throws Exception {
 
         List<Car> cars = carService.findAll();
         assertNotNull(cars);
@@ -79,7 +81,7 @@ class CarRestControllerIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("5380 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         Integer id = carService.create(car);
@@ -91,7 +93,7 @@ class CarRestControllerIT {
         assertTrue(optionalCar.isPresent());
         assertEquals(id,optionalCar.get().getId());
         assertEquals("Honda", optionalCar.get().getBrand());
-        assertEquals("5302 AB-1", optionalCar.get().getRegisterNumber());
+        assertEquals("5380 AB-1", optionalCar.get().getRegisterNumber());
         assertEquals(0 ,BigDecimal.valueOf(150).compareTo(optionalCar.get().getPrice()));
     }
 
@@ -100,7 +102,7 @@ class CarRestControllerIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("5312 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         Integer id = carService.create(car);
@@ -151,7 +153,7 @@ class CarRestControllerIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("9302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         Integer id = carService.create(car);
@@ -161,6 +163,50 @@ class CarRestControllerIT {
 
         //then
         assertTrue(1 == result);
+    }
+
+    @Test
+    public void shouldReturnDepartmentNotFoundError() throws Exception {
+
+        LOGGER.debug("shouldReturnDepartmentNotFoundError()");
+        MockHttpServletResponse response =
+                mockMvc.perform(MockMvcRequestBuilders.get(CARS_ENDPOINT + "/999999")
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isNotFound())
+                        .andReturn().getResponse();
+        assertNotNull(response);
+        ErrorResponse errorResponse = objectMapper.readValue(response.getContentAsString(), ErrorResponse.class);
+        assertNotNull(errorResponse);
+        assertEquals(errorResponse.getMessage(), CAR_NOT_FOUND);
+    }
+
+    @Test
+    public void shouldFailOnCreateCarWithDuplicateRegisterNumber() throws Exception {
+        Car car1 = new Car();
+        car1.setBrand("BMW");
+        car1.setRegisterNumber("4343 AB-0");
+        car1.setPrice(new BigDecimal("150"));
+        Integer id = carService.create(car1);
+        assertNotNull(id);
+
+        Car car2 = new Car();
+        car2.setBrand("HONDA");
+        car2.setRegisterNumber(car1.getRegisterNumber());
+        car2.setPrice(new BigDecimal("200"));
+
+        String json = objectMapper.writeValueAsString(car2);
+        MockHttpServletResponse response =
+                mockMvc.perform(post(CARS_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isUnprocessableEntity())
+                        .andReturn().getResponse();
+
+        assertNotNull(response);
+        ErrorResponse errorResponse = objectMapper.readValue(response.getContentAsString(), ErrorResponse.class);
+        assertNotNull(errorResponse);
+        assertEquals(errorResponse.getMessage(), VALIDATION_ERROR);
     }
 
     class MockMvcCarService {
