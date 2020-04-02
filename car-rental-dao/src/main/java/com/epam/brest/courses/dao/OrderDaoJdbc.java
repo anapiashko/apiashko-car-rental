@@ -72,7 +72,6 @@ public class OrderDaoJdbc implements OrderDao {
                 .addValue("carId", order.getCarId());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT, mapSqlParameterSource, keyHolder);
-        Integer id = keyHolder.getKey().intValue();
         return keyHolder.getKey().intValue();
     }
 
