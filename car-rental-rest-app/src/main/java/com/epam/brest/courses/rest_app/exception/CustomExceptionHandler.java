@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.sql.SQLNonTransientException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {SQLNonTransientException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception ex, WebRequest request) {
 
         return new ResponseEntity<>(

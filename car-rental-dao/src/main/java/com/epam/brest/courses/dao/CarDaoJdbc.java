@@ -40,6 +40,9 @@ public class CarDaoJdbc implements CarDao {
     @Value("${car.selectAllByDate}")
     private String SELECT_ALL_BY_DATE;
 
+    @Value("${car.checkForUniqueRegistNum}")
+    private String CHECK_FOR_UNIQUE_REGIST_NUM;
+
     public CarDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
@@ -73,6 +76,10 @@ public class CarDaoJdbc implements CarDao {
     public Integer create(Car car) {
         LOGGER.trace("create(car:{})", car);
 
+        if (!isRegisterNumberUnique(car)) {
+            throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
+        }
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carBrand", car.getBrand())
                 .addValue("carRegisterNumber", car.getRegisterNumber())
@@ -83,9 +90,22 @@ public class CarDaoJdbc implements CarDao {
         return key.getKey().intValue();
     }
 
+    @SuppressWarnings("ConstantConditions")
+    private boolean isRegisterNumberUnique(Car car) {
+
+        int result = namedParameterJdbcTemplate.queryForObject(CHECK_FOR_UNIQUE_REGIST_NUM,
+                new MapSqlParameterSource("carRegisterNumber", car.getRegisterNumber()),
+                Integer.class);
+        return result == 0;
+    }
+
     @Override
     public int update(Car car) {
         LOGGER.trace("update(car:{})", car);
+
+        if (!isRegisterNumberUnique(car)) {
+            throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
+        }
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carId", car.getId())
