@@ -9,6 +9,9 @@ import org.springframework.validation.Validator;
 
 import static com.epam.brest.courses.constants.CarConstants.CAR_BRAND_SIZE;
 
+/**
+ * Car validator.
+ */
 @Component
 public class CarValidator implements Validator {
 
@@ -18,7 +21,7 @@ public class CarValidator implements Validator {
     }
 
     @Override
-    public void validate(Object target, Errors errors) {
+    public void validate(final Object target, final Errors errors) {
 
         ValidationUtils.rejectIfEmpty(errors, "brand", "brand.empty");
         ValidationUtils.rejectIfEmpty(errors,"registerNumber", "registerNumber.empty");

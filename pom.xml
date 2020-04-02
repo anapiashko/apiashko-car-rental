@@ -256,6 +256,11 @@
                         </includes>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
 
             </plugins>
         </pluginManagement>
@@ -270,6 +275,58 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.26.v20200117</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <enableRulesSummary>true</enableRulesSummary>
+                    <consoleOutput>true</consoleOutput>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <!--                            <configLocation>checkstyle.xml</configLocation>-->
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>false</failsOnError>
+                            <failOnViolation>false</failOnViolation>
+                            <logViolationsToConsole>true</logViolationsToConsole>
+                            <!-- change to 'error' to be more strict about following checkstyle conventions -->
+                            <violationSeverity>warn</violationSeverity>
+                            <checkstyleRules>
+                                <module name="Checker">
+                                    <module name="JavadocPackage"/>
+                                    <module name="TreeWalker">
+                                        <module name="ConstantName"/>
+                                        <module name="EmptyBlock"/>
+                                    </module>
+                                </module>
+                            </checkstyleRules>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of order service interface.
+ */
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
@@ -22,40 +25,40 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao) {
+    public OrderServiceImpl(final OrderDao orderDao) {
         this.orderDao = orderDao;
     }
 
     @Override
-    public List<Order> findAll() {
+    public final List<Order> findAll() {
         LOGGER.debug("find all orders()");
 
         return orderDao.findAll();
     }
 
     @Override
-    public Optional<Order> findById(Integer orderId) {
+    public final Optional<Order> findById(final Integer orderId) {
         LOGGER.debug("find order by id : {}", orderId);
 
         return orderDao.findById(orderId);
     }
 
     @Override
-    public Integer create(Order order) {
+    public final Integer create(final Order order) {
         LOGGER.debug("create (order:{})", order);
 
         return orderDao.create(order);
     }
 
     @Override
-    public int update(Order order) {
+    public final int update(final Order order) {
         LOGGER.debug("update (order:{})", order);
 
         return orderDao.update(order);
     }
 
     @Override
-    public int delete(Integer orderId) {
+    public final int delete(final Integer orderId) {
         LOGGER.debug("delete order by id(orderIdId:{})", orderId);
 
         return orderDao.delete(orderId);

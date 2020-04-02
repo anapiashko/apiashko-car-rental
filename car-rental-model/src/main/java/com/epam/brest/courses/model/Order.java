@@ -1,42 +1,52 @@
 package com.epam.brest.courses.model;
 
 public class Order {
+
+    /**
+     * Order id.
+     */
     private Integer id;
 
+    /**
+     * Car id.
+     */
     private Integer carId;
 
+    /**
+     * Date of order.
+     */
     private String date;
 
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public final void setId(final Integer id) {
         this.id = id;
     }
 
-    public Integer getCarId() {
+    public final Integer getCarId() {
         return carId;
     }
 
-    public void setCarId(Integer carId) {
+    public final void setCarId(final Integer carId) {
         this.carId = carId;
     }
 
-    public String getDate() {
+    public final String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public final void setDate(final String date) {
         this.date = date;
     }
 
     @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", car_id=" + carId +
-                ", date='" + date + '\'' +
-                '}';
+    public final String toString() {
+        return "Order{"
+                + "id=" + id
+                + ", car_id=" + carId
+                + ", date='" + date + '\''
+                + '}';
     }
 }

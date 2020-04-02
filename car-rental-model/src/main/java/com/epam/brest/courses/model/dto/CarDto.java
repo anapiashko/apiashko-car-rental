@@ -1,57 +1,69 @@
 package com.epam.brest.courses.model.dto;
 
+/**
+ * Car Dto.
+ */
 public class CarDto {
 
     /**
-     * Car id.
+     * CarDto id.
      */
     private Integer id;
 
+    /**
+     * Car brand.
+     */
     private String brand;
 
+    /**
+     * Car registration number.
+     */
     private String registerNumber;
 
+    /**
+     * Number of orders.
+     */
     private Integer numberOrders;
 
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public final void setId(final Integer id) {
         this.id = id;
     }
 
-    public String getBrand() {
+    public final String getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public final void setBrand(final String brand) {
         this.brand = brand;
     }
 
-    public String getRegisterNumber() {
+    public final String getRegisterNumber() {
         return registerNumber;
     }
 
-    public void setRegisterNumber(String registerNumber) {
+    public final void setRegisterNumber(final String registerNumber) {
         this.registerNumber = registerNumber;
     }
 
-    public Integer getNumberOrders() {
+    public final Integer getNumberOrders() {
         return numberOrders;
     }
 
-    public void setNumberOrders(Integer numberOrders) {
+    public final void setNumberOrders(final Integer numberOrders) {
         this.numberOrders = numberOrders;
     }
 
     @Override
-    public String toString() {
-        return "CarDto{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                ", registerNumber='" + registerNumber + '\'' +
-                ", numberOrders=" + numberOrders +
-                '}';
+    public final String toString() {
+        return "CarDto{"
+                + "id=" + id
+                + ", brand='" + brand + '\''
+                + ", registerNumber='" + registerNumber + '\''
+                + ", numberOrders=" + numberOrders
+                + '}';
     }
 }

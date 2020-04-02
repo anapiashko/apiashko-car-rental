@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * Order controller
+ */
 @Controller
 public class OrderController {
 
@@ -15,19 +18,19 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(final OrderService orderService) {
         this.orderService = orderService;
     }
 
     /**
      * Create new order.
      *
-     * @param order  new order with filled data
+     * @param order new order with filled data
 
      * @return redirect to view name
      */
     @PostMapping(value = "/cars")
-    public final String createOrder (@ModelAttribute Order order) {
+    public final String createOrder(@ModelAttribute final Order order) {
         LOGGER.debug("create order: {}", order);
 
         orderService.create(order);

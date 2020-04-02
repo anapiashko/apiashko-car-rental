@@ -10,15 +10,24 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handler for custom exceptions.
+ */
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Message car nor found.
+     */
     public static final String CAR_NOT_FOUND = "car.not_found";
 
+    /**
+     * Error message.
+     */
     public static final String VALIDATION_ERROR = "validation_error";
 
     @ExceptionHandler(CarNotFoundException.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFoundException (CarNotFoundException ex, WebRequest request) {
+    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(final CarNotFoundException ex, final WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(CAR_NOT_FOUND, details);
@@ -26,7 +35,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception ex, WebRequest request) {
+    public final ResponseEntity<ErrorResponse> handleIllegalArgumentException(final Exception ex, final WebRequest request) {
 
         return new ResponseEntity<>(
                 new ErrorResponse(VALIDATION_ERROR, ex),

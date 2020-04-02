@@ -41,19 +41,19 @@ public class OrderDaoJdbc implements OrderDao {
     private String DELETE;
 
     @Autowired
-    public OrderDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public OrderDaoJdbc(final NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
-    public List<Order> findAll() {
+    public final List<Order> findAll() {
         LOGGER.trace("find all orders()");
 
         return namedParameterJdbcTemplate.query(SELECT_ALL, orderRowMapper);
     }
 
     @Override
-    public Optional<Order> findById(Integer orderId) {
+    public final Optional<Order> findById(final Integer orderId) {
         LOGGER.trace("find by orderId:{}", orderId);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -64,7 +64,7 @@ public class OrderDaoJdbc implements OrderDao {
     }
 
     @Override
-    public Integer create(Order order) {
+    public final Integer create(final Order order) {
         LOGGER.trace("create(order:{})", order);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -77,7 +77,7 @@ public class OrderDaoJdbc implements OrderDao {
     }
 
     @Override
-    public int update(Order order) {
+    public final int update(final Order order) {
         LOGGER.trace("update(order:{})", order);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -89,7 +89,7 @@ public class OrderDaoJdbc implements OrderDao {
     }
 
     @Override
-    public int delete(Integer orderId) {
+    public final int delete(final Integer orderId) {
         LOGGER.trace("delete order by id:{})", orderId);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
