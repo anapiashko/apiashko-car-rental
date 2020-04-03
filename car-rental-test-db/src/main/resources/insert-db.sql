@@ -8,6 +8,5 @@ INSERT INTO order_record(order_record_id, order_date, car_id) VALUES (1, '2020-0
 INSERT INTO order_record(order_record_id, order_date, car_id) VALUES (2, '2020-01-29', 3);
 INSERT INTO order_record(order_record_id, order_date, car_id) VALUES (3, '2020-01-07', 2);
 
-INSERT INTO order_record(order_record_id, order_date, car_id) VALUES (4, '2020-04-03', 1);
 INSERT INTO order_record(order_record_id, order_date, car_id) VALUES (5, '2020-04-03', 3);
 INSERT INTO order_record(order_record_id, order_date, car_id) VALUES (6, '2020-04-03', 2);

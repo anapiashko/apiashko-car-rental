@@ -16,6 +16,7 @@ CREATE TABLE order_record (
                      order_record_id    INTEGER NOT NULL AUTO_INCREMENT,
                      order_date TIMESTAMP(6),
                      car_id INTEGER NOT NULL,
+                     UNIQUE (order_date,car_id),
                      PRIMARY KEY (order_record_id),
                      CONSTRAINT record_to_car_fk
                          FOREIGN KEY (car_id)

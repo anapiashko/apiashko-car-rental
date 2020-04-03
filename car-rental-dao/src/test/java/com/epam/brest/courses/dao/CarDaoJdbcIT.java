@@ -45,7 +45,7 @@ class CarDaoJdbcIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("5002 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         Integer id = carDao.create(car);
@@ -57,7 +57,7 @@ class CarDaoJdbcIT {
         assertTrue(optionalCar.isPresent());
         assertEquals(id,optionalCar.get().getId());
         assertEquals("Honda", optionalCar.get().getBrand());
-        assertEquals("5302 AB-1", optionalCar.get().getRegisterNumber());
+        assertEquals("5002 AB-1", optionalCar.get().getRegisterNumber());
         assertEquals(0 ,BigDecimal.valueOf(150).compareTo(optionalCar.get().getPrice()));
     }
 
@@ -88,7 +88,7 @@ class CarDaoJdbcIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("7302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         Integer id = carDao.create(car);
@@ -117,7 +117,7 @@ class CarDaoJdbcIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("5402 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         Integer id = carDao.create(car);

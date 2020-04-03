@@ -35,7 +35,7 @@ class OrderControllerIT {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/cars")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("carId", "1")
+                        .param("carId", "3")
                         .param("date", "2020-01-01")
         ).andExpect(status().isFound())
                 .andExpect(view().name("redirect:/cars"))

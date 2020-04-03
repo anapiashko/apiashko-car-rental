@@ -39,51 +39,29 @@ public class CarControllerIT {
 
     @Test
     public void shouldReturnListOfFreeCars() throws Exception {
+        String filter = "2020-01-02";
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/cars"))
+                MockMvcRequestBuilders.get("/cars?filter="+filter))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("cars"))
-                .andExpect(model().attribute("cars", hasItem(
-                        allOf(
-                                hasProperty("id", is(1)),
-                                hasProperty("brand", is("BMW")),
-                                hasProperty("registerNumber", is("3456 AB-1")),
-                                hasProperty("price", is(new BigDecimal("240.00")))
-                        )
-                )))
-                .andExpect(model().attribute("cars", hasItem(
-                        allOf(
-                                hasProperty("id", is(2)),
-                                hasProperty("brand", is("AUDI")),
-                                hasProperty("registerNumber", is("0056 AB-1")),
-                                hasProperty("price", is(new BigDecimal("140.00")))
-                        )
-                )))
-                .andExpect(model().attribute("cars", hasItem(
-                        allOf(
-                                hasProperty("id", is(3)),
-                                hasProperty("brand", is("TYOYTA")),
-                                hasProperty("registerNumber", is("3836 AB-1")),
-                                hasProperty("price", is(new BigDecimal("200.00")))
-                        )
-                )));
+                .andExpect(model().attribute("filter", filter));
     }
 
     @Test
     public void shouldOpenEditCarPage() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/car/1"))
+                MockMvcRequestBuilders.get("/car/2"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
                 .andExpect(view().name("car"))
                 .andExpect(model().attribute("isNew", false))
-                .andExpect(model().attribute("car", hasProperty("id", is(1))))
-                .andExpect(model().attribute("car", hasProperty("brand", is("BMW"))))
-                .andExpect(model().attribute("car", hasProperty("registerNumber", is("3456 AB-1"))))
-                .andExpect(model().attribute("car", hasProperty("price", is(new BigDecimal("240.00")))))
+                .andExpect(model().attribute("car", hasProperty("id", is(2))))
+                .andExpect(model().attribute("car", hasProperty("brand", is("AUDI"))))
+                .andExpect(model().attribute("car", hasProperty("registerNumber", is("0056 AB-1"))))
+                .andExpect(model().attribute("car", hasProperty("price", is(new BigDecimal("140.00")))))
         ;
     }
 
@@ -103,7 +81,7 @@ public class CarControllerIT {
         Car car = new Car();
         car.setId(1);
         car.setBrand("BMW");
-        car.setRegisterNumber("3456 AB-1");
+        car.setRegisterNumber("0056 AB-1");
         car.setPrice(BigDecimal.valueOf(240));
 
         mockMvc.perform(
@@ -111,7 +89,7 @@ public class CarControllerIT {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id", "1")
                         .param("brand", "BMW")
-                        .param("registerNumber", "3456 AB-1")
+                        .param("registerNumber", "0076 AB-1")
                         .param("price", "240")
                         .sessionAttr("car", car)
         ).andExpect(status().isFound())
@@ -170,7 +148,7 @@ public class CarControllerIT {
                                 hasProperty("id", is(2)),
                                 hasProperty("brand", is("AUDI")),
                                 hasProperty("registerNumber", is("0056 AB-1")),
-                                hasProperty("numberOrders", is(1))
+                                hasProperty("numberOrders", is(2))
                         )
                 )))
         ;
