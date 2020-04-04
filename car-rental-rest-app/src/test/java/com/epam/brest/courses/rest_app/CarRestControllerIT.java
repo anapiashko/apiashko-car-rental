@@ -30,8 +30,7 @@ import java.util.Optional;
 import static com.epam.brest.courses.rest_app.exception.CustomExceptionHandler.CAR_NOT_FOUND;
 import static com.epam.brest.courses.rest_app.exception.CustomExceptionHandler.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -250,7 +249,7 @@ class CarRestControllerIT {
 
             LOGGER.debug("update({})", car);
             MockHttpServletResponse response =
-                    mockMvc.perform(post(CARS_ENDPOINT+"/"+car.getId()+"/update")
+                    mockMvc.perform(put(CARS_ENDPOINT+"/"+car.getId())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(car))
                             .accept(MediaType.APPLICATION_JSON)

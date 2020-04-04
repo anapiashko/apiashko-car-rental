@@ -53,7 +53,7 @@ public class CarRestController {
                 HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/cars/{id}/update", consumes = "application/json", produces = "application/json")
+    @PutMapping(value = "/cars/{id}", consumes = "application/json", produces = "application/json")
     public final ResponseEntity<Integer> update(@RequestBody Car car) {
         LOGGER.debug("update car({})", car);
 
