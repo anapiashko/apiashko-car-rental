@@ -32,9 +32,9 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath:app-context-test.xml"})
-class CarServiceRestIT {
+class CarServiceRestTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CarServiceRestIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarServiceRestTest.class);
 
     public static final String CARS_URL = "http://localhost:8088/cars";
 
