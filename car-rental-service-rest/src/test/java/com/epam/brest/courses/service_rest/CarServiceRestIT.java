@@ -23,9 +23,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -76,19 +76,99 @@ class CarServiceRestIT {
     }
 
     @Test
-    void findById() {
+    void create() throws URISyntaxException, JsonProcessingException {
+        LOGGER.debug("shouldCreateDepartment()");
+        // given
+        Car car = create(2);
+
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL)))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.CREATED)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString("1"))
+                );
+        // when
+        Integer id = carServiceRest.create(car);
+
+        // then
+        mockServer.verify();
+        assertNotNull(id);
     }
 
     @Test
-    void create() {
+    void findById() throws URISyntaxException, JsonProcessingException {
+
+        // given
+        Integer id = 1;
+        Car car = create(id);
+
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL + "/" + id)))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(car))
+                );
+
+        // when
+        Optional<Car> optionalCar = carServiceRest.findById(id);
+
+        // then
+        mockServer.verify();
+        assertTrue(optionalCar.isPresent());
+        assertEquals(optionalCar.get().getId(), id);
+        assertEquals(optionalCar.get().getRegisterNumber(), car.getRegisterNumber());
     }
 
     @Test
-    void update() {
+    void update() throws URISyntaxException, JsonProcessingException {
+        // given
+        Integer id = 1;
+        Car car = create(id);
+
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL+"/"+id)))
+                .andExpect(method(HttpMethod.PUT))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString("1"))
+                );
+
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL + "/" + id)))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(car))
+                );
+
+        // when
+        int result = carServiceRest.update(car);
+        Optional<Car> updatedCarOptional =  carServiceRest.findById(id);
+
+        // then
+        mockServer.verify();
+        assertTrue(1 == result);
+
+        assertTrue(updatedCarOptional.isPresent());
+        assertEquals(updatedCarOptional.get().getId(), id);
+        assertEquals(updatedCarOptional.get().getRegisterNumber(), car.getRegisterNumber());
     }
 
     @Test
-    void delete() {
+    void delete() throws URISyntaxException, JsonProcessingException {
+
+        // given
+        Integer id = 1;
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL + "/" + id)))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString("1"))
+                );
+        // when
+        int result = carServiceRest.delete(id);
+
+        // then
+        mockServer.verify();
+        assertTrue(1 == result);
     }
 
     private Car create(int index) {
