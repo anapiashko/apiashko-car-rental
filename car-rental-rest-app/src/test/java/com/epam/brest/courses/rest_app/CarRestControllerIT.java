@@ -36,7 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:app-context-test.xml"})
-class CarRestControllerIT {
+class
+CarRestControllerIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarRestControllerIT.class);
 

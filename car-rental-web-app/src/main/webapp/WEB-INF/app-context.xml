@@ -21,43 +21,47 @@
     <!-- Component scan for @Controller, @Service... annotations -->
     <context:component-scan base-package="com.epam.brest.courses.*"/>
 
-    <import resource="classpath*:test-db.xml"/>
+<!--    <import resource="classpath*:test-db.xml"/>-->
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath:application.properties</value>
-                <value>classpath:dao.properties</value>
+<!--                <value>classpath:dao.properties</value>-->
             </list>
         </property>
     </bean>
 
-    <bean id="orderService" class="com.epam.brest.courses.service.OrderServiceImpl">
-        <constructor-arg ref="orderDao"/>
+    <bean id="carController" class="com.epam.brest.courses.web_app.CarController">
+        <constructor-arg index="0" ref="carServiceRest"/>
+        <constructor-arg index="1" ref="carDtoServiceRest"/>
     </bean>
 
-    <bean id="carService" class="com.epam.brest.courses.service.CarServiceImpl">
-        <constructor-arg ref="carDao"/>
+    <bean id="orderController" class="com.epam.brest.courses.web_app.OrderController">
+        <constructor-arg index="0" ref="orderServiceRest"/>
     </bean>
 
-    <bean id="carDtoService" class="com.epam.brest.courses.service.CarDtoServiceImpl">
-        <constructor-arg ref="carDtoDao"/>
+    <bean id="carServiceRest" class="com.epam.brest.courses.service_rest.CarServiceRest">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.cars}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
-    <bean id="orderDao" class="com.epam.brest.courses.dao.OrderDaoJdbc">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    <bean id="carDtoServiceRest" class="com.epam.brest.courses.service_rest.CarDtoServiceRest">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.car_dtos}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
-    <bean id="carDao" class="com.epam.brest.courses.dao.CarDaoJdbc">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    <bean id="orderServiceRest" class="com.epam.brest.courses.service_rest.OrderServiceRest">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.orders}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
-    <bean id="carDtoDao" class="com.epam.brest.courses.dao.CarDtoDaoJdbc">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
-    </bean>
-
-    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg name="dataSource" ref="dataSource"/>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            </list>
+        </property>
     </bean>
 
     <!-- Thymeleaf Template Resolver -->
@@ -91,5 +95,33 @@
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
           p:basename="/WEB-INF/messages">
     </bean>
+
+    <!--    <bean id="orderService" class="com.epam.brest.courses.service.OrderServiceImpl">-->
+    <!--        <constructor-arg ref="orderDao"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="carService" class="com.epam.brest.courses.service.CarServiceImpl">-->
+    <!--        <constructor-arg ref="carDao"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="carDtoService" class="com.epam.brest.courses.service.CarDtoServiceImpl">-->
+    <!--        <constructor-arg ref="carDtoDao"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="orderDao" class="com.epam.brest.courses.dao.OrderDaoJdbc">-->
+    <!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="carDao" class="com.epam.brest.courses.dao.CarDaoJdbc">-->
+    <!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="carDtoDao" class="com.epam.brest.courses.dao.CarDtoDaoJdbc">-->
+    <!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">-->
+    <!--        <constructor-arg name="dataSource" ref="dataSource"/>-->
+    <!--    </bean>-->
 
 </beans>
