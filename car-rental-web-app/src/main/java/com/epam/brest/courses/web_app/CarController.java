@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,14 +46,15 @@ public class CarController {
      * @return view name
      */
     @GetMapping(value = "/cars")
-    public final String freeCars( @RequestParam(name = "filter", required = false) String filter, Model model) {
+    public final String freeCars( @RequestParam(name = "filter", required = false) String filter, Model model) throws ParseException {
         LOGGER.debug("free cars on date: {}", filter);
+        Date dateNow = new Date();
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        Date filterDate = formatDate.parse(filter);
 
-        if (filter == null || filter.length() == 0) {
-            Date dateNow = new Date();
-            SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
+        if (filter == null || filter.length() == 0 || filterDate.before(dateNow)) {
 
-            filter = formatForDateNow.format(dateNow);
+            filter = formatDate.format(dateNow);
         }
 
         List<Car> cars = carService.findAllByDate(filter);
