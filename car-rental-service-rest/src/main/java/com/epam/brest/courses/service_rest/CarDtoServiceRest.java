@@ -9,6 +9,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/**
+ * CarDto REST service.
+ */
 public class CarDtoServiceRest implements CarDtoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoServiceRest.class);
@@ -22,6 +25,13 @@ public class CarDtoServiceRest implements CarDtoService {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Find all cars with number of orders.
+     *
+     * @param dateFrom first date
+     * @param dateTo last date
+     * @return carDto list
+     */
     @Override
     public List<CarDto> findAllWithNumberOfOrders(String dateFrom, String dateTo){
         LOGGER.debug("find all cars with numbers of orders()");

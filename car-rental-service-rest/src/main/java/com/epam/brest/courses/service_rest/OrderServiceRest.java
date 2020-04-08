@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Order REST service.
+ */
 public class OrderServiceRest implements OrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceRest.class);
@@ -20,6 +23,12 @@ public class OrderServiceRest implements OrderService {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Create order.
+     *
+     * @param order order record.
+     * @return id created record.
+     */
     public Integer create(Order order){
         LOGGER.debug("create({})", order);
 

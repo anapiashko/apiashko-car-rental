@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Car REST service.
+ */
 public class CarServiceRest implements CarService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarServiceRest.class);
@@ -24,6 +27,11 @@ public class CarServiceRest implements CarService {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Find all cars.
+     *
+     * @return list of cars
+     */
     public List<Car> findAll() {
         LOGGER.debug("findAll()");
 
@@ -31,6 +39,12 @@ public class CarServiceRest implements CarService {
         return (List<Car>) responseEntity.getBody();
     }
 
+    /**
+     * Find all free cars on date.
+     *
+     * @param date date
+     * @return list of cars
+     */
     public List<Car> findAllByDate(String date) {
         LOGGER.debug("findAllByDate(date = {})", date);
 
@@ -38,6 +52,12 @@ public class CarServiceRest implements CarService {
         return (List<Car>) responseEntity.getBody();
     }
 
+    /**
+     * Find car by id.
+     *
+     * @param carId order Id.
+     * @return optional car
+     */
     public Optional<Car> findById(Integer carId) {
         LOGGER.debug("findById({})", carId);
 
@@ -45,6 +65,12 @@ public class CarServiceRest implements CarService {
         return Optional.ofNullable(responseEntity.getBody());
     }
 
+    /**
+     * Create car.
+     *
+     * @param car order record.
+     * @return id created car
+     */
     public Integer create(Car car) {
         LOGGER.debug("create({})", car);
 
@@ -52,6 +78,12 @@ public class CarServiceRest implements CarService {
         return (Integer) responseEntity.getBody();
     }
 
+    /**
+     * Update car.
+     *
+     * @param car car.
+     * @return number changed records
+     */
     public int update(Car car) {
         LOGGER.debug("update({})", car);
 
@@ -62,6 +94,12 @@ public class CarServiceRest implements CarService {
         return result.getBody();
     }
 
+    /**
+     * Delete car from db.
+     *
+     * @param carId car id.
+     * @return number deleted cars.
+     */
     public int delete(Integer carId) {
         LOGGER.debug("delete({})", carId);
 
