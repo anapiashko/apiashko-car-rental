@@ -22,6 +22,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Car web controller.
+ */
 @Controller
 public class CarController {
 
@@ -50,10 +53,13 @@ public class CarController {
         LOGGER.debug("free cars on date: {}", filter);
         Date dateNow = new Date();
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (filter == null || filter.length() == 0) {
+            filter = formatDate.format(dateNow);
+        }
+
         Date filterDate = formatDate.parse(filter);
-
-        if (filter == null || filter.length() == 0 || filterDate.before(dateNow)) {
-
+        if(filterDate.before(dateNow)){
             filter = formatDate.format(dateNow);
         }
 

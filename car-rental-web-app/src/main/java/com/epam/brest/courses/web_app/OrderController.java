@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * Order controller
+ * Order web controller
  */
 @Controller
 public class OrderController {

@@ -19,6 +19,12 @@ public class OrderRestController {
     @Autowired
     private OrderService orderService;
 
+    /**
+     * Create order.
+     *
+     * @param order order
+     * @return id created record
+     */
     @PostMapping(value = "/orders")
     public ResponseEntity<Integer> create(@RequestBody Order order){
         LOGGER.debug("create order({})",order);
