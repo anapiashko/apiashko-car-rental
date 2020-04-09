@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -76,7 +73,7 @@ public class CarController {
      * @param model model
      * @return view name
      */
-    @GetMapping(value = "/car/{id}")
+    @GetMapping(value = "/cars/{id}")
     public final String gotoEditCarPage(@PathVariable Integer id, Model model) {
         LOGGER.debug("gotoEditCarPage({},{})", id, model);
 
@@ -98,7 +95,7 @@ public class CarController {
      * @param result binding result
      * @return redirect to view name
      */
-    @PostMapping(value = "/car/{id}")
+    @PutMapping(value = "/cars/{id}")
     public final String updateCar(@Valid Car car, BindingResult result) {
         LOGGER.debug("updateCar({}, {})", car, result);
 
@@ -133,7 +130,7 @@ public class CarController {
      * @param result binding result
      * @return redirect to view name
      */
-    @PostMapping(value = "car")
+    @PostMapping(value = "/cars")
     public final String createCar(@Valid Car car, BindingResult result) {
         LOGGER.debug("createCar({}, {})", car, result);
 
@@ -152,7 +149,7 @@ public class CarController {
      * @param id car
      * @return view name
      */
-    @GetMapping(value = "car/{id}/delete")
+    @GetMapping(value = "cars/{id}/delete")
     public final String deleteCar(@PathVariable Integer id) {
         LOGGER.debug("deleteCar({})", id);
 

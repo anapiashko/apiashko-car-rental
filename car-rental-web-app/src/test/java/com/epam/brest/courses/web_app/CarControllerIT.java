@@ -45,14 +45,13 @@ public class CarControllerIT {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("cars"))
-                .andExpect(model().attribute("filter", filter));
+                .andExpect(view().name("cars"));
     }
 
     @Test
     public void shouldOpenEditCarPage() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/car/2"))
+                MockMvcRequestBuilders.get("/cars/2"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
@@ -69,7 +68,7 @@ public class CarControllerIT {
     public void shouldReturnToCarsPageIfCarNotFoundById() throws Exception {
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/car/99999")
+                MockMvcRequestBuilders.get("/cars/99999")
         ).andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/cars"));
@@ -85,7 +84,7 @@ public class CarControllerIT {
         car.setPrice(BigDecimal.valueOf(240));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/car/1")
+                MockMvcRequestBuilders.put("/cars/1")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id", "1")
                         .param("brand", "BMW")
@@ -112,7 +111,7 @@ public class CarControllerIT {
     @Test
     public void shouldAddNewCar() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/car")
+                MockMvcRequestBuilders.post("/cars")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("brand", "test")
                         .param("registerNumber", "1111 AB-1")
@@ -126,7 +125,7 @@ public class CarControllerIT {
     public void shouldDeleteDepartment() throws Exception {
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/car/1/delete")
+                MockMvcRequestBuilders.get("/cars/1/delete")
         ).andExpect(status().isFound())
                 .andExpect(view().name("redirect:/cars"))
                 .andExpect(redirectedUrl("/cars"));

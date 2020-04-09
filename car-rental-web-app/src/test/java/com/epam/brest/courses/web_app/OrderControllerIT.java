@@ -33,7 +33,7 @@ class OrderControllerIT {
     @Test
     void shouldCreateOrder() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/cars")
+                MockMvcRequestBuilders.post("/orders")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("carId", "3")
                         .param("date", "2020-01-01")

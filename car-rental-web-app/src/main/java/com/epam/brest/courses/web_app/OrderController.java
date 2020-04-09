@@ -29,7 +29,7 @@ public class OrderController {
 
      * @return redirect to view name
      */
-    @PostMapping(value = "/cars")
+    @PostMapping(value = "/orders")
     public final String createOrder(@ModelAttribute final Order order) {
         LOGGER.debug("create order: {}", order);
 
