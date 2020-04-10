@@ -84,7 +84,7 @@ public class CarControllerIT {
         car.setPrice(BigDecimal.valueOf(240));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/cars/1")
+                MockMvcRequestBuilders.post("/cars/1")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id", "1")
                         .param("brand", "BMW")
@@ -111,7 +111,7 @@ public class CarControllerIT {
     @Test
     public void shouldAddNewCar() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/cars")
+                MockMvcRequestBuilders.post("/car")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("brand", "test")
                         .param("registerNumber", "1111 AB-1")
