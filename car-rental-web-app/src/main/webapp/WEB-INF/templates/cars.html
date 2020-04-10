@@ -22,9 +22,9 @@
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a href="../"  class="navbar-brand"><img src="../../resources/static/img/red_car.svg"
-                                                 th:src="@{/resources/static/img/red_car.svg}"
-                                                 height="50" width="50" alt="red_car"></a>
+        <a href="../" class="navbar-brand"><img src="../../resources/static/img/red_car.svg"
+                                                th:src="@{/resources/static/img/red_car.svg}"
+                                                height="50" width="50" alt="red_car"></a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <a class="nav-item nav-link active" href="#"
@@ -75,7 +75,7 @@
     <ul class="navbar-nav float-right">
         <li class="nav-item">
             <a href="#"
-               th:href="@{/car}"
+               th:href="@{|/car|}"
                class="btn btn-light"
                title="Add car"
                data-toggle="tooltip"
@@ -109,7 +109,9 @@
                              <span data-toggle="modal"
                                    data-target="#hiddenForm"
                                    th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber} +' on date ' +  ${filter}">
-                            <form name="orderForm" action="#" th:action="@{/cars}" th:object="${order}" method="post"
+                            <form th:id="'orderForm__${car.id}__'"  th:action="@{/orders}"
+                                  method="post"
+                                  th:object="${order}"
                                   class="d-none d-md-inline">
                                 <label>
                                     <input size="2" type="hidden" name="carId" th:value="${car.id}"/>
@@ -117,17 +119,17 @@
                                 <label>
                                     <input size="2" type="hidden" name="date" th:value="${filter}"/>
                                 </label>
-                            <a href="#"
-                               class="btn  btn-secondary"
-                               title="Order this car"
-                               data-toggle="tooltip"
-                               data-placement="top">
-                                <i class="fa fa-book"></i><span
-                                    class="d-none d-md-inline">  Order</span></a>
                             </form>
+                                   <a href="#"
+                                      class="btn  btn-secondary"
+                                      title="Order this car"
+                                      data-toggle="tooltip"
+                                      data-placement="top">
+                                <i class="fa fa-book"></i><span
+                                           class="d-none d-md-inline">  Order</span></a>
                              </span>
                             <a href="car.html"
-                               th:href="@{|/car/${car.id}|}"
+                               th:href="@{|/cars/${car.id}|}"
                                class="btn-sm btn-outline-secondary"
                                title="Edit car"
                                data-toggle="tooltip"
@@ -175,7 +177,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a id="deleteUrl" href="cars.html" th:href="@{/cars}" class="btn btn-danger">Delete</a>
+                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
@@ -197,14 +199,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                <a href="#" th:href="@{/cars}"
-                   th:onclick="@{document.forms['orderForm'].submit(); return false;}"
+                <a id="submitOrder" href="#"
+
                    class="btn btn-success">Send</a>
             </div>
         </div>
     </div>
 </div>
-
 
 <script src="../../resources/static/js/jquery-3.4.1.slim.min.js"
         th:src="@{/resources/static/js/jquery-3.4.1.slim.min.js}"></script>
@@ -212,19 +213,27 @@
         th:src="@{/resources/static/js/popper.min.js}"></script>
 <script src="../../resources/static/js/bootstrap.min.js"
         th:src="@{/resources/static/js/bootstrap.min.js}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/masking-input.js" data-autoinit="true"></script>
 <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href = '/car/' + target.data('id') + '/delete';
+        document.getElementById('deleteUrl').href = '/cars/' + target.data('id') + '/delete';
     });
+
     $('#hiddenForm').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
+        $('#submitOrder').on('click', function () {
+            document.getElementById('orderForm'+target.data('id')).submit();
+        });
     });
+
     function changeShowAction() {
         var currActionValue = document.getElementById('filter-button').href;
         var currentUrl = new URL(currActionValue);
@@ -232,14 +241,11 @@
         currentUrl.searchParams.set("filter", filterValue);
         document.getElementById('filter-button').href = currentUrl.href;
     }
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+
     $('#filter-input').inputmask();
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#filter-input').inputmask();
     });
 </script>
-
 </body>
 </html>

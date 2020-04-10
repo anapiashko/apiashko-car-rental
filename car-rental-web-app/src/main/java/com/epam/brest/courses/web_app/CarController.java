@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -95,7 +98,7 @@ public class CarController {
      * @param result binding result
      * @return redirect to view name
      */
-    @PutMapping(value = "/cars/{id}")
+    @PostMapping(value = "/cars/{id}")
     public final String updateCar(@Valid Car car, BindingResult result) {
         LOGGER.debug("updateCar({}, {})", car, result);
 
@@ -130,7 +133,7 @@ public class CarController {
      * @param result binding result
      * @return redirect to view name
      */
-    @PostMapping(value = "/cars")
+    @PostMapping(value = "car")
     public final String createCar(@Valid Car car, BindingResult result) {
         LOGGER.debug("createCar({}, {})", car, result);
 
