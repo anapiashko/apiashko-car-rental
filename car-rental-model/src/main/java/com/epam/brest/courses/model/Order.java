@@ -1,5 +1,9 @@
 package com.epam.brest.courses.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+
 public class Order {
 
     /**
@@ -15,7 +19,8 @@ public class Order {
     /**
      * Date of order.
      */
-    private String date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     public final Integer getId() {
         return id;
@@ -33,11 +38,11 @@ public class Order {
         this.carId = carId;
     }
 
-    public final String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public final void setDate(final String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

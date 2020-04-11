@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
@@ -26,7 +28,7 @@ class OrderServiceImplIT {
 
         //given
         Order order = new Order();
-        order.setDate("2020-12-20");
+        order.setDate(LocalDate.of(2020,12,20));
         order.setCarId(2);
 
         //when

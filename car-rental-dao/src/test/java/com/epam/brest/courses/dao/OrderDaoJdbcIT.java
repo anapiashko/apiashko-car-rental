@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ class OrderDaoJdbcIT {
 
         //given
         Order order = new Order();
-        order.setDate("2020-03-04");
+        order.setDate(LocalDate.of(2020,3,4));
         order.setCarId(3);
 
         Integer id = orderDao.create(order);
@@ -56,7 +57,7 @@ class OrderDaoJdbcIT {
 
         //given
         Order order = new Order();
-        order.setDate("2020-12-20");
+        order.setDate(LocalDate.of(2020,12,20));
         order.setCarId(2);
 
         //when
@@ -71,7 +72,7 @@ class OrderDaoJdbcIT {
 
         //given
         Order order = new Order();
-        order.setDate("2020-11-10");
+        order.setDate(LocalDate.of(2020,11,10));
         order.setCarId(2);
 
         Integer id = orderDao.create(order);
@@ -80,7 +81,7 @@ class OrderDaoJdbcIT {
         Optional<Order> orderOptional = orderDao.findById(id);
         assertTrue(orderOptional.isPresent());
 
-        orderOptional.get().setDate("2020-11-11");
+        orderOptional.get().setDate(LocalDate.of(2020,11,11));
         orderOptional.get().setCarId(3);
 
         //when
@@ -91,7 +92,7 @@ class OrderDaoJdbcIT {
 
         Optional<Order> updatedOptionalOrder = orderDao.findById(id);
         assertTrue(updatedOptionalOrder.isPresent());
-        assertEquals("2020-11-11", updatedOptionalOrder.get().getDate());
+        assertEquals(LocalDate.of(2020,11,11), updatedOptionalOrder.get().getDate());
         assertTrue(3 == updatedOptionalOrder.get().getCarId());
     }
 
@@ -100,7 +101,7 @@ class OrderDaoJdbcIT {
 
         //given
         Order order = new Order();
-        order.setDate("2020-08-10");
+        order.setDate(LocalDate.of(2020,8,10));
         order.setCarId(2);
 
         Integer id = orderDao.create(order);
@@ -108,7 +109,7 @@ class OrderDaoJdbcIT {
 
         Optional<Order> optionalOrder = orderDao.findById(id);
         assertTrue(optionalOrder.isPresent());
-        assertEquals("2020-08-10", optionalOrder.get().getDate());
+        assertEquals(LocalDate.of(2020,8,10), optionalOrder.get().getDate());
         assertTrue(2 == optionalOrder.get().getCarId());
 
         //when

@@ -3,6 +3,7 @@ package com.epam.brest.courses.rest_app;
 import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.rest_app.exception.CustomExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,7 +45,7 @@ class OrderRestControllerIT {
 
     private MockMvcOrderService orderService = new MockMvcOrderService();
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @BeforeEach
     public void before() {
@@ -57,7 +60,7 @@ class OrderRestControllerIT {
     void create() throws Exception {
         //given
         Order order = new Order();
-        order.setDate("2020-12-20");
+        order.setDate(LocalDate.of(2020,12,20));
         order.setCarId(2);
 
         //when

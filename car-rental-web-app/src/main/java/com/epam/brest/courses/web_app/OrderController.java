@@ -4,9 +4,12 @@ import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service_api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 
 /**
  * Order web controller
@@ -22,16 +25,22 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    /**
-     * Create new order.
-     *
-     * @param order new order with filled data
-
-     * @return redirect to view name
-     */
+//    /**
+//     * Create new order.
+//     *
+//     * @param order new order with filled data
+//
+//     * @return redirect to view name
+//     */
     @PostMapping(value = "/orders")
-    public final String createOrder(@ModelAttribute final Order order) {
-        LOGGER.debug("create order: {}", order);
+    public final String createOrder(@RequestParam(value = "carId", required = false) Integer carId,
+                                    @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                    @RequestParam(value = "date", required = false) LocalDate date) {
+       // LOGGER.debug("create order: {}", order);
+
+        Order order = new Order();
+        order.setCarId(carId);
+        order.setDate(date);
 
         orderService.create(order);
         return "redirect:/cars";
