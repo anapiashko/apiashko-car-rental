@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,7 +45,7 @@ public class CarRestControllerTest {
 
     @Test
     void freeCars() throws Exception {
-        String date = "2020-04-03";
+        LocalDate date = LocalDate.of(2020, 4, 3);
         Mockito.when(carService.findAllByDate(date)).thenReturn(Arrays.asList(create(0), create(1)));
 
         mockMvc.perform(

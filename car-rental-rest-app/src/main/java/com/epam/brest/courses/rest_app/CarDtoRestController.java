@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,8 +36,8 @@ public class CarDtoRestController {
      * @return carDto list
      */
     @GetMapping(value = "/car_dtos")
-    public ResponseEntity<List<CarDto>> findAllWithNumberOrders(@RequestParam(value="dateFrom",required = false) String dateFrom
-            , @RequestParam(value = "dateTo",required = false) String dateTo){
+    public ResponseEntity<List<CarDto>> findAllWithNumberOrders(@RequestParam(value="dateFrom",required = false) LocalDate dateFrom
+            , @RequestParam(value = "dateTo",required = false) LocalDate dateTo){
         LOGGER.debug("find all carDtos between (dateFrom = {}, dateTo = {})", dateFrom, dateTo);
 
         return new ResponseEntity<>(carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo), HttpStatus.OK);

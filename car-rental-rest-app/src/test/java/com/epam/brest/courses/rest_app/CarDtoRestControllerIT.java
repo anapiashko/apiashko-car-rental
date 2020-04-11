@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,8 +44,8 @@ class CarDtoRestControllerIT {
 
     @Test
     void carStatistics() throws Exception {
-        String dateFrom = "2020-01-01";
-        String dateTo = "2020-01-31";
+        LocalDate dateFrom = LocalDate.of(2020,1,1);
+        LocalDate dateTo = LocalDate.of(2020,1,31);
         Mockito.when(carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo)).thenReturn(Arrays.asList(create(0), create(1)));
 
         mockMvc.perform(

@@ -7,6 +7,7 @@ import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,18 +49,14 @@ public class CarController {
      * @return view name
      */
     @GetMapping(value = "/cars")
-    public final String freeCars( @RequestParam(name = "filter", required = false) String filter, Model model) throws ParseException {
+    public final String freeCars(@RequestParam(name = "filter", required = false)
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filter,
+                                 Model model) throws ParseException {
         LOGGER.debug("free cars on date: {}", filter);
-        Date dateNow = new Date();
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate dateNow = LocalDate.now();
 
-        if (filter == null || filter.length() == 0) {
-            filter = formatDate.format(dateNow);
-        }
-
-        Date filterDate = formatDate.parse(filter);
-        if(filterDate.before(dateNow)){
-            filter = formatDate.format(dateNow);
+        if (filter == null || filter.isBefore(dateNow)) {
+            filter = LocalDate.now();
         }
 
         List<Car> cars = carService.findAllByDate(filter);
@@ -96,7 +92,7 @@ public class CarController {
      *
      * @param car    to be updated
      * @param result binding result
-     * @return redirect to view name
+     * @return view name
      */
     @PostMapping(value = "/cars/{id}")
     public final String updateCar(@Valid Car car, BindingResult result) {
@@ -131,7 +127,7 @@ public class CarController {
      *
      * @param car    new car with filled data
      * @param result binding result
-     * @return redirect to view name
+     * @return view name
      */
     @PostMapping(value = "car")
     public final String createCar(@Valid Car car, BindingResult result) {
@@ -150,7 +146,7 @@ public class CarController {
      * Delete car.
      *
      * @param id car
-     * @return view name
+     * @return redirect to view name
      */
     @GetMapping(value = "cars/{id}/delete")
     public final String deleteCar(@PathVariable Integer id) {
@@ -169,8 +165,11 @@ public class CarController {
      * @return view name
      */
     @GetMapping(value = "/car-statistics")
-    public String carStatistics(@RequestParam(value="dateFrom",required = false) String dateFrom
-            ,@RequestParam(value = "dateTo",required = false) String dateTo, Model model){
+    public String carStatistics(@RequestParam(value="dateFrom",required = false)
+                                    @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate dateFrom,
+                                @RequestParam(value = "dateTo",required = false)
+                                    @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
+                                Model model){
         LOGGER.debug("carStatistics between (dateFrom = {}, dateTo = {}), model = {}", dateFrom, dateTo, model);
 
         model.addAttribute("dateFrom", dateFrom);

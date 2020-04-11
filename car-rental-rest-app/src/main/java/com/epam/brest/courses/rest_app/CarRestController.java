@@ -6,11 +6,13 @@ import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +39,8 @@ public class CarRestController {
      * @return list of cars
      */
     @GetMapping(value = "/cars/filter/{filter}")
-    public ResponseEntity<List<Car>> freeCars(@PathVariable(name = "filter") String filter) {
+    public ResponseEntity<List<Car>> freeCars(@PathVariable(name = "filter")
+                                                  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filter) {
         LOGGER.debug("find all free cars on date  = {}", filter);
 
         return new ResponseEntity<>(carService.findAllByDate(filter), HttpStatus.OK);

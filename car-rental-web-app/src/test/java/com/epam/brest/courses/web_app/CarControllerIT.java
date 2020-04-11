@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,7 +40,7 @@ public class CarControllerIT {
 
     @Test
     public void shouldReturnListOfFreeCars() throws Exception {
-        String filter = "2020-01-02";
+        LocalDate filter = LocalDate.of(2020,1,2);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/cars?filter="+filter))
                 .andDo(MockMvcResultHandlers.print())

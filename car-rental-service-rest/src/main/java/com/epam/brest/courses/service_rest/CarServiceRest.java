@@ -49,7 +49,7 @@ public class CarServiceRest implements CarService {
     public List<Car> findAllByDate(LocalDate date) {
         LOGGER.debug("findAllByDate(date = {})", date);
 
-        ResponseEntity responseEntity = restTemplate.getForEntity(url+"/filter/"+date, List.class);
+        ResponseEntity responseEntity = restTemplate.getForEntity(url+"/filter/" + date, List.class);
         return (List<Car>) responseEntity.getBody();
     }
 

@@ -25,18 +25,18 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-//    /**
-//     * Create new order.
-//     *
-//     * @param order new order with filled data
-//
-//     * @return redirect to view name
-//     */
+    /**
+     * Create new order.
+     *
+     * @param carId car id
+     * @param date date of the order
+     * @return redirect to view name
+     */
     @PostMapping(value = "/orders")
     public final String createOrder(@RequestParam(value = "carId", required = false) Integer carId,
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                        @DateTimeFormat(pattern = "yyyy-MM-dd")
                                     @RequestParam(value = "date", required = false) LocalDate date) {
-       // LOGGER.debug("create order: {}", order);
+        LOGGER.debug("create order: ({carId = {}, date = {})", carId, date);
 
         Order order = new Order();
         order.setCarId(carId);
