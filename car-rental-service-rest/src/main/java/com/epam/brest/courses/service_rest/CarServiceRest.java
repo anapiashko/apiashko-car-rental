@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class CarServiceRest implements CarService {
      * @param date date
      * @return list of cars
      */
-    public List<Car> findAllByDate(String date) {
+    public List<Car> findAllByDate(LocalDate date) {
         LOGGER.debug("findAllByDate(date = {})", date);
 
         ResponseEntity responseEntity = restTemplate.getForEntity(url+"/filter/"+date, List.class);

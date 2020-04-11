@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class CarDtoServiceImpl implements CarDtoService {
     }
 
     @Override
-    public List<CarDto> findAllWithNumberOfOrders(String dateFrom, String dateTo) {
+    public List<CarDto> findAllWithNumberOfOrders(LocalDate dateFrom, LocalDate dateTo) {
         LOGGER.debug("find all with number of orders (dateFrom = {}, dateTo = {})",dateFrom,dateTo);
 
         return carDtoDao.findAllWithNumberOfOrders(dateFrom,dateTo);

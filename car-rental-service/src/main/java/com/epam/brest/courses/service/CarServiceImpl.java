@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findAllByDate(String date){
+    public List<Car> findAllByDate(LocalDate date){
         LOGGER.debug("find all cars by date:{}", date);
 
         return carDao.findAllByDate(date);

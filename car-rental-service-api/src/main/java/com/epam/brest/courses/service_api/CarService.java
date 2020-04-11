@@ -3,6 +3,7 @@ package com.epam.brest.courses.service_api;
 
 import com.epam.brest.courses.model.Car;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface CarService {
      * @param date date
      * @return cars list
      */
-    List<Car> findAllByDate(String date);
+    List<Car> findAllByDate(LocalDate date);
 
     /**
      * Find car by Id.

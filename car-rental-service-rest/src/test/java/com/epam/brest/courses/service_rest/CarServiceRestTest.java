@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +59,7 @@ class CarServiceRestTest {
     void findAllByDate() throws JsonProcessingException, URISyntaxException {
         LOGGER.debug("shouldFindAllFreeCars()");
         // given
-        String filter = "2020-02-02";
+        LocalDate filter = LocalDate.of(202,2,2);
         mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL+"/filter/"+filter)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)

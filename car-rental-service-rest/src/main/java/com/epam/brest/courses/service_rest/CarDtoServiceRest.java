@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class CarDtoServiceRest implements CarDtoService {
      * @return carDto list
      */
     @Override
-    public List<CarDto> findAllWithNumberOfOrders(String dateFrom, String dateTo){
+    public List<CarDto> findAllWithNumberOfOrders(LocalDate dateFrom, LocalDate dateTo){
         LOGGER.debug("find all cars with numbers of orders()");
 
         ResponseEntity responseEntity = restTemplate.getForEntity(url+"?dateFrom="+dateFrom

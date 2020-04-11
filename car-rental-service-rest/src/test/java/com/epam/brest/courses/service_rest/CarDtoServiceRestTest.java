@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,8 +60,8 @@ class CarDtoServiceRestTest {
 
         LOGGER.debug("shouldFindAllWithNumberOfOrders()");
         // given
-        String dateFrom = "2020-02-02";
-        String dateTo = "2020-03-03";
+        LocalDate dateFrom = LocalDate.of(2020,2,2);
+        LocalDate dateTo = LocalDate.of(2020,3,3);
         mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL+"?dateFrom="+dateFrom
                 +"&dateTo="+dateTo)))
                 .andExpect(method(HttpMethod.GET))
