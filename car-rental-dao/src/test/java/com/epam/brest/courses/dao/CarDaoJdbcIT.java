@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ class CarDaoJdbcIT {
 
     @Test
     void findAllByDate() {
-        String date = "2020-04-03";
+        LocalDate date = LocalDate.of(2020,4,3);
         List<Car> cars = carDao.findAllByDate(date);
 
         assertNotNull(cars);

@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +56,7 @@ public class CarDaoJdbc implements CarDao {
     }
 
     @Override
-    public List<Car> findAllByDate(String date) {
+    public List<Car> findAllByDate(LocalDate date) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderDate", date);
         return namedParameterJdbcTemplate.query(SELECT_ALL_BY_DATE, mapSqlParameterSource, carRowMapper);

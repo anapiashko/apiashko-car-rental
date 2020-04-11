@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class CarDtoDaoJdbc implements CarDtoDao{
@@ -27,7 +28,7 @@ public class CarDtoDaoJdbc implements CarDtoDao{
     }
 
     @Override
-    public List<CarDto> findAllWithNumberOfOrders(String dateFrom, String dateTo) {
+    public List<CarDto> findAllWithNumberOfOrders(LocalDate dateFrom, LocalDate dateTo) {
         LOGGER.debug("find all with number of orders (dateFrom = {}, dateTo = {})", dateFrom, dateTo);
 
         MapSqlParameterSource mapSqlParameterSource =  new MapSqlParameterSource();

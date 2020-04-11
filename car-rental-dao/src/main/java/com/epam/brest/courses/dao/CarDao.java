@@ -2,6 +2,7 @@ package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.model.Car;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public interface CarDao {
      * @param date date
      * @return cars list
      */
-    List<Car> findAllByDate(String date);
+    List<Car> findAllByDate(LocalDate date);
 
     /**
      * Find car by Id.
