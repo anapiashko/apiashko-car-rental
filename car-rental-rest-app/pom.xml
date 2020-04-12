@@ -120,6 +120,7 @@
     </dependencies>
 
     <build>
+        <finalName>car-rental-rest</finalName>
         <plugins>
             <!-- Embedded Jetty HTTP Server for testing web application -->
             <plugin>

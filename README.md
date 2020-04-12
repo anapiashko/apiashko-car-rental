@@ -106,3 +106,23 @@ curl --request POST 'http://localhost:8088/orders' \
     "carId": "3"
 }'
 ```
+
+## Deploying on Tomcat
+First, you should build the project. Go to project folder and execute  
+```
+mvn clean install
+```
+Then, you can find  war-files in: 
+>  /car-rental-web-app/target/car-rental-web.war
+>  /car-rental-rest-app/target/car-rental-rest.war
+
+Copy them to your tomcat server in webapps folder.
+It's recommended to restart tomcat for normal work.
+If everything is correct you can see the result at:
+```
+http://localhost:8080/car-rental-web/
+```
+For REST service for example:
+```
+http://localhost:8080/car-rental-rest/cars/1
+```
