@@ -11,6 +11,17 @@ Setup java 8 and Maven
       
      mvn clean install
 
+### Start Web using Maven Jetty plugin 
+    
+To start Web using Maven Jetty plugin use:
+```
+cd car-rental-web-app
+mvn jetty:run
+```
+After starting, the app will be available at
+```
+http://localhost:8080
+```
 
 ## Rest server
 
