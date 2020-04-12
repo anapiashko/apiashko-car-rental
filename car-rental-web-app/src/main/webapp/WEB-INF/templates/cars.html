@@ -222,8 +222,11 @@
 
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
+
+        var URLh = window.location.href;
+       // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href = '/cars/' + target.data('id') + '/delete';
+        document.getElementById('deleteUrl').href = URLh +"/"+ target.data('id') + '/delete';
     });
 
     $('#hiddenForm').on('show.bs.modal', function (event) {

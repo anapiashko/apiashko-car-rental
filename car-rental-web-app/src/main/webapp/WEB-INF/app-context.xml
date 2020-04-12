@@ -27,7 +27,7 @@
         <property name="locations">
             <list>
                 <value>classpath:application.properties</value>
-<!--                <value>classpath:dao.properties</value>-->
+                <value>classpath:application-${CAR_RENTAL_ENV}.properties</value>
             </list>
         </property>
     </bean>
@@ -42,17 +42,17 @@
     </bean>
 
     <bean id="carServiceRest" class="com.epam.brest.courses.service_rest.CarServiceRest">
-        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.cars}"/>
+        <constructor-arg index="0" value="${base-url}/${point.cars}"/>
         <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
     <bean id="carDtoServiceRest" class="com.epam.brest.courses.service_rest.CarDtoServiceRest">
-        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.car_dtos}"/>
+        <constructor-arg index="0" value="${base-url}/${point.car_dtos}"/>
         <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
     <bean id="orderServiceRest" class="com.epam.brest.courses.service_rest.OrderServiceRest">
-        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.orders}"/>
+        <constructor-arg index="0" value="${base-url}/${point.orders}"/>
         <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 

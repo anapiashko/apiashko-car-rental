@@ -108,12 +108,27 @@ curl --request POST 'http://localhost:8088/orders' \
 ```
 
 ## Deploying on Tomcat
+
+App needs environment variable CAR_RENTAL_ENV to start using
+ web and REST apps together for development and production.
+
+Create CATALINA_BASE/bin/setenv.sh file and put the following line in it, 
+and then start the Tomcat.
+```
+export CAR_RENTAL_ENV=prod
+```
+You can set up variable from Intellij. Go to run -> edit configurations -> Runner.
+In field Environment variables put CAR_RENTAL_ENV=prod.
+
+Go to project
+
 First, you should build the project. Go to project folder and execute  
 ```
 mvn clean install
 ```
 Then, you can find  war-files in: 
 >  /car-rental-web-app/target/car-rental-web.war
+>
 >  /car-rental-rest-app/target/car-rental-rest.war
 
 Copy them to your tomcat server in webapps folder.
