@@ -174,6 +174,12 @@ public class CarController {
 
         model.addAttribute("dateFrom", dateFrom);
         model.addAttribute("dateTo", dateTo);
+
+        if (dateFrom == null || dateTo == null || dateTo.isBefore(dateFrom)) {
+            model.addAttribute("incorrectPeriod", true);
+            return "period";
+        }
+
         model.addAttribute("cars", carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo));
         return "statistics";
     }

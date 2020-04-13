@@ -42,12 +42,18 @@
     <div class="card-body">
         <p class="card-text">Specify the period for calculating statistics.</p>
 
+        <div th:if="${incorrectPeriod}" class="alert alert-danger">
+            <p>Fields cannot be empty</p>
+                <p>First date has to be earlier then second:</p>
+        </div>
+
         <div class="input-group mb-3">
 
             <div class="input-group-prepend">
                 <span class="input-group-text">from  </span>
             </div>
             <input id="field_dateFrom"
+                   th:class="${incorrectPeriod} ? 'form-control is-invalid' : 'form-control'"
                    placeholder="yyyy-mm-dd"
                    data-inputmask="'mask': '9999-99-99'"
                    th:value="${dateFrom}"
@@ -61,6 +67,7 @@
                 <span class="input-group-text">to  </span>
             </div>
             <input id="field_dateTo"
+                   th:class="${incorrectPeriod} ? 'form-control is-invalid' : 'form-control'"
                    type="text"
                    placeholder="yyyy-mm-dd"
                    data-inputmask="'mask': '9999-99-99'"

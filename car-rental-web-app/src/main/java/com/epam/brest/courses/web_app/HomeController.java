@@ -1,6 +1,7 @@
 package com.epam.brest.courses.web_app;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -24,7 +25,8 @@ public class HomeController {
      * @return view name
      */
     @GetMapping(value = "/period")
-    public String putPeriod(){
+    public String putPeriod(Model model){
+        model.addAttribute("incorrectPeriod", false);
         return "period";
     }
 }
