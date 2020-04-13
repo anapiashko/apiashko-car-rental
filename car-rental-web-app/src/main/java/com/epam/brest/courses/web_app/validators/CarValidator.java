@@ -8,6 +8,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import static com.epam.brest.courses.constants.CarConstants.CAR_BRAND_SIZE;
+import static com.epam.brest.courses.constants.CarConstants.CAR_REGISTER_SIZE;
 
 /**
  * Car validator.
@@ -31,6 +32,11 @@ public class CarValidator implements Validator {
         if (StringUtils.hasLength(car.getBrand())
                 && car.getBrand().length() > CAR_BRAND_SIZE) {
             errors.rejectValue("brand", "brand.maxSize");
+        }
+
+        if (StringUtils.hasLength(car.getRegisterNumber())
+                && car.getRegisterNumber().length() > CAR_REGISTER_SIZE) {
+            errors.rejectValue("registerNumber", "registerNumber.maxSize");
         }
     }
 }
