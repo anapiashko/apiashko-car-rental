@@ -4,7 +4,7 @@ car rental app
 
 
 ## How build
-Setup java 8 and Maven
+Setup java 8, Maven and Environment variable see [environment_setup.md](environment_setup.md)
   
  ## Build project 
  Goto Project folder and execute  
@@ -12,11 +12,13 @@ Setup java 8 and Maven
      mvn clean install
 
 ### Start Web using Maven Jetty plugin 
-    
+
+Set up variable CAR_RENTAL_ENV=dev using IntelliJ (see [environment_setup.md](environment_setup.md))
+
 To start Web using Maven Jetty plugin use:
 ```
 cd car-rental-web-app
-mvn jetty:run
+CAR_RENTAL_ENV=dev mvn jetty:run
 ```
 After starting, the app will be available at
 ```
@@ -109,16 +111,15 @@ curl --request POST 'http://localhost:8088/orders' \
 
 ## Deploying on Tomcat
 
-App needs environment variable CAR_RENTAL_ENV to start using
- web and REST apps together for development and production.
+Set up variable CAR_RENTAL_ENV=prod using tomcat (see [environment_setup.md](environment_setup.md))
+
+Briefly:
 
 Create CATALINA_BASE/bin/setenv.sh file and put the following line in it, 
 and then start the Tomcat.
 ```
 export CAR_RENTAL_ENV=prod
 ```
-You can set up variable from Intellij. Go to run -> edit configurations -> Runner.
-In field Environment variables put CAR_RENTAL_ENV=prod.
 
 Go to project
 
