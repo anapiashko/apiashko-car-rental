@@ -19,6 +19,9 @@ mvn site
 Open to see the result:
 > /target/site/index.html
 
+Go to see javadocs for the project
+> /target/site/apidocs/index.html
+
 ### Start Web using Maven Jetty plugin 
 
 Set up variable CAR_RENTAL_ENV=dev using IntelliJ (see [environment_setup.md](environment_setup.md))
