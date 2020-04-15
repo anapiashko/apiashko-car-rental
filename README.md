@@ -7,9 +7,17 @@ car rental app
 Setup java 8, Maven and Environment variable see [environment_setup.md](environment_setup.md)
   
  ## Build project 
- Goto Project folder and execute  
+ Go to Project folder and execute  
       
      mvn clean install
+   
+## Make a report 
+Go to Project folder and execute  
+```
+mvn site
+```
+Open to see the result:
+> /target/site/index.html
 
 ### Start Web using Maven Jetty plugin 
 
