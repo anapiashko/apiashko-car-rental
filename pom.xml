@@ -11,6 +11,9 @@
     <modules>
         <module>spring-boot-rest-app</module>
         <module>car-rental-rest-app</module>
+        <module>car-rental-service</module>
+        <module>car-rental-service-api</module>
+        <module>car-rental-model</module>
     </modules>
 
     <properties>
@@ -35,6 +38,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>2.2.6.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.9.10.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
