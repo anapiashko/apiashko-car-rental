@@ -4,13 +4,16 @@ import com.epam.brest.courses.dao.mapper.CarDtoRowMapper;
 import com.epam.brest.courses.model.dto.CarDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Component
 public class CarDtoDaoJdbc implements CarDtoDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoDaoJdbc.class);
@@ -22,6 +25,7 @@ public class CarDtoDaoJdbc implements CarDtoDao {
     @Value("${carDto.selectAllInPeriod}")
     private String SELECT_ALL_IN_PERIOD;
 
+    @Autowired
     public CarDtoDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }

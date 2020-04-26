@@ -4,17 +4,22 @@ import com.epam.brest.courses.dao.mapper.CarRowMapper;
 import com.epam.brest.courses.model.Car;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Component
+@PropertySource("classpath:dao.properties")
 public class CarDaoJdbc implements CarDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarDaoJdbc.class);
@@ -44,6 +49,7 @@ public class CarDaoJdbc implements CarDao {
     @Value("${car.checkForUniqueRegistNum}")
     private String CHECK_FOR_UNIQUE_REGIST_NUM;
 
+    @Autowired
     public CarDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
