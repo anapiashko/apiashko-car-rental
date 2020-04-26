@@ -32,6 +32,11 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest.courses</groupId>
+                <artifactId>car-rental-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest.courses</groupId>
                 <artifactId>car-rental-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
