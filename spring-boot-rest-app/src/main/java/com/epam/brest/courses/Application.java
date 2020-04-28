@@ -1,9 +1,9 @@
-package com.epam.brest.courses.spring_boot_rest;
+package com.epam.brest.courses;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.epam.brest")
+@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
