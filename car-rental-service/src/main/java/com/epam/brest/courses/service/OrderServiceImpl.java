@@ -21,12 +21,12 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
 
     @Autowired
-    public OrderServiceImpl(final OrderDao orderDao) {
+    public OrderServiceImpl(OrderDao orderDao) {
         this.orderDao = orderDao;
     }
 
     @Override
-    public final Integer create(final Order order) {
+    public Integer create(Order order) {
         LOGGER.debug("create (order:{})", order);
 
         return orderDao.create(order);

@@ -5,6 +5,7 @@ import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class CarServiceImpl implements CarService {
 
     private final CarDao carDao;
 
+    @Autowired
     public CarServiceImpl(CarDao carDao) {
         this.carDao = carDao;
     }
