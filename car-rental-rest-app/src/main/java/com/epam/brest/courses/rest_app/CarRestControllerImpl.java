@@ -1,6 +1,5 @@
 package com.epam.brest.courses.rest_app;
 
-import com.epam.brest.course.rest_app_api.CarRestController;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class CarRestControllerImpl implements CarRestController {
+public class CarRestControllerImpl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarRestControllerImpl.class);
 
@@ -26,7 +25,7 @@ public class CarRestControllerImpl implements CarRestController {
     }
 
     @GetMapping(value = "/cars")
-    public List<Car> version(){
+    public List<Car> findAll(){
         return carService.findAll();
     }
 }

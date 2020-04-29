@@ -52,11 +52,5 @@
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
     </dependency>
-<!--    <dependency>-->
-<!--        <groupId>com.epam.brest.courses</groupId>-->
-<!--        <artifactId>spring-boot-rest-app</artifactId>-->
-<!--        <version>1.0-SNAPSHOT</version>-->
-<!--        <scope>test</scope>-->
-<!--    </dependency>-->
 </dependencies>
 </project>
