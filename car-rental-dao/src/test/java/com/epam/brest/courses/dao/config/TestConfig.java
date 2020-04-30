@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 @TestConfiguration
-@ComponentScan
 public class TestConfig {
 
     @Bean

@@ -16,8 +16,12 @@ public class OrderRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderRestController.class);
 
+    private final OrderService orderService;
+
     @Autowired
-    private OrderService orderService;
+    public OrderRestController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     /**
      * Create order.

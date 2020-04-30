@@ -1,6 +1,8 @@
-package com.epam.brest.courses.service.config;
+package com.epam.brest.courses.rest_app.config;
 
 import com.epam.brest.courses.dao.*;
+import com.epam.brest.courses.rest_app.CarRestController;
+import com.epam.brest.courses.rest_app.OrderRestController;
 import com.epam.brest.courses.service.CarDtoServiceImpl;
 import com.epam.brest.courses.service.CarServiceImpl;
 import com.epam.brest.courses.service.OrderServiceImpl;
@@ -10,6 +12,7 @@ import com.epam.brest.courses.service_api.OrderService;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -18,7 +21,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 @TestConfiguration
+@ComponentScan(basePackages="com.epam.brest.courses.*")
 public class TestConfig {
+
+    @Bean
+    public OrderRestController orderRestController(){
+        return new OrderRestController(orderService());
+    }
+
+    @Bean
+    public CarRestController carRestController(){
+        return new CarRestController(carService());
+    }
 
     @Bean
     public OrderService orderService(){
@@ -74,5 +88,4 @@ public class TestConfig {
         pspc.setLocations(resources);
         return pspc;
     }
-
 }
