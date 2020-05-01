@@ -1,20 +1,16 @@
 package com.epam.brest.courses.service;
 
-//import com.epam.brest.courses.Application;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service.config.TestConfig;
 import com.epam.brest.courses.service_api.CarService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

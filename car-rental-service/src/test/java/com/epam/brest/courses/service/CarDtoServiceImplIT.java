@@ -1,7 +1,5 @@
 package com.epam.brest.courses.service;
 
-//import com.epam.brest.courses.Application;
-
 import com.epam.brest.courses.model.dto.CarDto;
 import com.epam.brest.courses.service.config.TestConfig;
 import com.epam.brest.courses.service_api.CarDtoService;
