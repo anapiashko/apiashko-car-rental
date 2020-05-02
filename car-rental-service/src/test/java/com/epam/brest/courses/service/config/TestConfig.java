@@ -52,11 +52,11 @@ public class TestConfig {
 
     @Bean
     public NamedParameterJdbcTemplate jdbcTemplate(){
-        return new NamedParameterJdbcTemplate(getDataSource());
+        return new NamedParameterJdbcTemplate(dataSource());
     }
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
         dataSourceBuilder.url("jdbc:h2:mem:test");

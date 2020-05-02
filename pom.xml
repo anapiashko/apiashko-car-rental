@@ -17,6 +17,7 @@
         <module>car-rental-dao</module>
         <module>spring-boot-web-app</module>
         <module>car-rental-web-app</module>
+        <module>car-rental-service-rest</module>
     </modules>
 
     <properties>
@@ -84,6 +85,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-json</artifactId>
+                <version>${org.springframework.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${org.springframework.boot.version}</version>
                 <scope>test</scope>
@@ -98,7 +104,11 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>2.9.10.3</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>2.11.0</version>
+            </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
@@ -140,9 +150,22 @@
                 <version>${validation-api.version}</version>
             </dependency>
             <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>4.0.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>3.0.1-b08</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
