@@ -1,6 +1,7 @@
---auto
 DROP TABLE IF EXISTS order_record;
 DROP TABLE IF EXISTS car;
+
+--auto
 
 CREATE TABLE car (
                       car_id   INTEGER NOT NULL AUTO_INCREMENT,

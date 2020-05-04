@@ -22,6 +22,10 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest.courses</groupId>
+            <artifactId>car-rental-test-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest.courses</groupId>
             <artifactId>car-rental-service-api</artifactId>
         </dependency>
         <dependency>

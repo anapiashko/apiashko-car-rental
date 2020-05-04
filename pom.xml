@@ -18,6 +18,7 @@
         <module>spring-boot-web-app</module>
         <module>car-rental-web-app</module>
         <module>car-rental-service-rest</module>
+        <module>car-rental-test-db</module>
     </modules>
 
     <properties>
@@ -33,6 +34,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.epam.brest.courses</groupId>
+                <artifactId>car-rental-test-db</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.epam.brest.courses</groupId>
                 <artifactId>car-rental-dao</artifactId>
