@@ -6,32 +6,33 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = TestConfig.class)
-class HomeControllerIT {
+@ContextConfiguration(classes = {TestConfig.class, ThymeleafConfig.class})
+@Sql({"classpath:schema-h2.sql", "classpath:data-h2.sql"})
+class OrderControllerIT {
 
     private MockMvc mockMvc;
 
     @Autowired
-    private HomeController homeController;
+    private OrderController orderController;
 
     @BeforeEach
     public void setup() {
-        mockMvc =  MockMvcBuilders.standaloneSetup(homeController)
+        mockMvc =  MockMvcBuilders.standaloneSetup(orderController)
                 .setViewResolvers(new ThymeleafConfig().viewResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .alwaysDo(MockMvcResultHandlers.print())
@@ -39,24 +40,14 @@ class HomeControllerIT {
     }
 
     @Test
-    void selectData() throws Exception {
+    void shouldCreateOrder() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(view().name("findCar"))
-        ;
-    }
-
-    @Test
-    void putPeriod() throws Exception {
-        mockMvc.perform(
-                MockMvcRequestBuilders.get("/period"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
-                .andExpect(view().name("period"))
-                .andExpect(model().attribute("incorrectPeriod", false))
-        ;
+                MockMvcRequestBuilders.post("/orders")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("carId", "3")
+                        .param("date", "2020-01-01")
+        ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/cars"))
+                .andExpect(redirectedUrl("/cars"));
     }
 }

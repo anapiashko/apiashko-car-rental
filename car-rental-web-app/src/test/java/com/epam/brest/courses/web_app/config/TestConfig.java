@@ -8,10 +8,11 @@ import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.OrderService;
 import com.epam.brest.courses.web_app.CarController;
+import com.epam.brest.courses.web_app.HomeController;
+import com.epam.brest.courses.web_app.OrderController;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -20,8 +21,17 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 @TestConfiguration
-@ComponentScan(basePackages="com.epam.brest.courses.*")
 public class TestConfig {
+
+    @Bean
+    public HomeController homeController(){
+        return new HomeController();
+    }
+
+    @Bean
+    public OrderController orderController(){
+        return new OrderController(orderService());
+    }
 
     @Bean
     public CarController carController(){
@@ -60,11 +70,11 @@ public class TestConfig {
 
     @Bean
     public NamedParameterJdbcTemplate jdbcTemplate(){
-        return new NamedParameterJdbcTemplate(getDataSource());
+        return new NamedParameterJdbcTemplate(dataSource());
     }
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
         dataSourceBuilder.url("jdbc:h2:mem:test");
