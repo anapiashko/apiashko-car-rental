@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {TestConfig.class, ThymeleafConfig.class})
+@ContextConfiguration(classes = {TestConfig.class})
 @Sql({"classpath:schema-h2.sql", "classpath:data-h2.sql"})
 class CarControllerIT {
 
