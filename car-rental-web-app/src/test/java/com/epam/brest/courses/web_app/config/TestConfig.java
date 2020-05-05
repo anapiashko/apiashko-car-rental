@@ -93,4 +93,14 @@ public class TestConfig {
         return pspc;
     }
 
+//    @Bean
+//    public ServiceProperties serviceProperties(){
+//        return  ServiceProperties.builder()
+//                .baseUrl("http://localhost:8088")
+//                .carUrl("cars")
+//                .carDtoUrl("car_dtos")
+//                .orderUrl("orders")
+//                .build();
+//    }
+
 }
