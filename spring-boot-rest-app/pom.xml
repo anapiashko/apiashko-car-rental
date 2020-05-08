@@ -42,24 +42,24 @@
         </dependency>
     </dependencies>
 
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>dev</id>-->
-<!--            <properties>-->
-<!--                <type>develop</type>-->
-<!--            </properties>-->
-<!--            <activation>-->
-<!--                <activeByDefault>true</activeByDefault>-->
-<!--            </activation>-->
-<!--        </profile>-->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
 
-<!--        <profile>-->
-<!--            <id>prod</id>-->
-<!--            <properties>-->
-<!--                <type>release</type>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--    </profiles>-->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <resources>
