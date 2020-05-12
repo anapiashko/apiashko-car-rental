@@ -83,14 +83,14 @@ public class CarRestControllerIT {
         car.setRegisterNumber("5380 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Integer id = carService.create(car);
+        Car savedCar = carService.create(car);
 
         //when
-        Optional<Car> optionalCar = carService.findById(id);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
 
         //then
         assertTrue(optionalCar.isPresent());
-        assertEquals(id,optionalCar.get().getId());
+        assertEquals(savedCar.getId(),optionalCar.get().getId());
         assertEquals("Honda", optionalCar.get().getBrand());
         assertEquals("5380 AB-1", optionalCar.get().getRegisterNumber());
         assertEquals(0 ,BigDecimal.valueOf(150).compareTo(optionalCar.get().getPrice()));
@@ -104,8 +104,8 @@ public class CarRestControllerIT {
         car.setRegisterNumber("5312 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Integer id = carService.create(car);
-        Optional<Car> optionalCar = carService.findById(id);
+        Car savedCar = carService.create(car);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
 
         assertTrue(optionalCar.isPresent());
         optionalCar.get().setBrand("HONDA");
@@ -117,9 +117,9 @@ public class CarRestControllerIT {
 
         //then
         assertTrue(1 == result);
-        Optional<Car> updatedOptionalCar = carService.findById(id);
+        Optional<Car> updatedOptionalCar = carService.findById(savedCar.getId());
         assertTrue(optionalCar.isPresent());
-        assertEquals(id,updatedOptionalCar.get().getId());
+        assertEquals(savedCar.getId(),updatedOptionalCar.get().getId());
         assertEquals("HONDA", updatedOptionalCar.get().getBrand());
         assertEquals("7350 AB-1", updatedOptionalCar.get().getRegisterNumber());
         assertEquals(0, BigDecimal.valueOf(200).compareTo(updatedOptionalCar.get().getPrice()));
@@ -134,15 +134,15 @@ public class CarRestControllerIT {
         car.setPrice(BigDecimal.valueOf(150));
 
         //when
-        Integer id = carService.create(car);
+        Car savedCar = carService.create(car);
 
         //then
-        assertNotNull(id);
+        assertNotNull(savedCar.getId());
 
-        Optional<Car> optionalCar = carService.findById(id);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
         assertTrue(optionalCar.isPresent());
 
-        assertEquals(id,optionalCar.get().getId());
+        assertEquals(savedCar.getId(),optionalCar.get().getId());
         assertEquals("Honda", optionalCar.get().getBrand());
         assertEquals("5302 AB-1", optionalCar.get().getRegisterNumber());
     }
@@ -155,13 +155,13 @@ public class CarRestControllerIT {
         car.setRegisterNumber("9302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Integer id = carService.create(car);
+        Car savedCar = carService.create(car);
 
         //when
-        int result = carService.delete(id);
+        carService.delete(savedCar.getId());
 
         //then
-        assertTrue(1 == result);
+       // assertTrue(1 == result);
     }
 
     @Test
@@ -185,7 +185,7 @@ public class CarRestControllerIT {
         car1.setBrand("BMW");
         car1.setRegisterNumber("4343 AB-0");
         car1.setPrice(new BigDecimal("150"));
-        Integer id = carService.create(car1);
+        Car id = carService.create(car1);
         assertNotNull(id);
 
         Car car2 = new Car();
@@ -208,9 +208,9 @@ public class CarRestControllerIT {
         assertEquals(errorResponse.getMessage(), VALIDATION_ERROR);
     }
 
-    class MockMvcCarService {
+    private class MockMvcCarService {
 
-        public List<Car> findAll() throws Exception {
+        List<Car> findAll() throws Exception {
             LOGGER.debug("findAll()");
             MockHttpServletResponse response = mockMvc.perform(get(CARS_ENDPOINT+"/filter/2020-03-04")
                     .accept(MediaType.APPLICATION_JSON)
@@ -221,7 +221,7 @@ public class CarRestControllerIT {
             return objectMapper.readValue(response.getContentAsString(), new TypeReference<List<Car>>() {});
         }
 
-        public Optional<Car> findById(Integer carId) throws Exception {
+        Optional<Car> findById(Integer carId) throws Exception {
 
             LOGGER.debug("findById({})", carId);
             MockHttpServletResponse response = mockMvc.perform(get(CARS_ENDPOINT + "/" + carId)
@@ -231,7 +231,7 @@ public class CarRestControllerIT {
             return Optional.of(objectMapper.readValue(response.getContentAsString(), Car.class));
         }
 
-        public Integer create(Car car) throws Exception {
+        Car create(Car car) throws Exception {
 
             LOGGER.debug("create({})", car);
             String json = objectMapper.writeValueAsString(car);
@@ -242,10 +242,10 @@ public class CarRestControllerIT {
                             .accept(MediaType.APPLICATION_JSON)
                     ).andExpect(status().isCreated())
                             .andReturn().getResponse();
-            return objectMapper.readValue(response.getContentAsString(), Integer.class);
+            return objectMapper.readValue(response.getContentAsString(), Car.class);
         }
 
-        private int update(Car car) throws Exception {
+        int update(Car car) throws Exception {
 
             LOGGER.debug("update({})", car);
             MockHttpServletResponse response =
@@ -258,7 +258,7 @@ public class CarRestControllerIT {
             return objectMapper.readValue(response.getContentAsString(), Integer.class);
         }
 
-        private int delete(Integer carId) throws Exception {
+        void delete(Integer carId) throws Exception {
 
             LOGGER.debug("delete(id:{})", carId);
             MockHttpServletResponse response = mockMvc.perform(
@@ -267,7 +267,7 @@ public class CarRestControllerIT {
             ).andExpect(status().isOk())
                     .andReturn().getResponse();
 
-            return objectMapper.readValue(response.getContentAsString(), Integer.class);
+            //return objectMapper.readValue(response.getContentAsString(), Integer.class);
         }
     }
 }

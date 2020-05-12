@@ -69,15 +69,15 @@ class OrderRestControllerIT {
         order.setCarId(2);
 
         //when
-        Integer id = orderService.create(order);
+        Order savedOrder = orderService.create(order);
 
         //then
-        assertNotNull(id);
+        assertNotNull(savedOrder);
     }
 
     class MockMvcOrderService {
 
-        public Integer create(Order order) throws Exception {
+        public Order create(Order order) throws Exception {
 
             LOGGER.debug("create({})", order);
             String json = objectMapper.writeValueAsString(order);
@@ -88,7 +88,7 @@ class OrderRestControllerIT {
                             .accept(MediaType.APPLICATION_JSON)
                     ).andExpect(status().isCreated())
                             .andReturn().getResponse();
-            return objectMapper.readValue(response.getContentAsString(), Integer.class);
+            return objectMapper.readValue(response.getContentAsString(), Order.class);
         }
     }
 }
