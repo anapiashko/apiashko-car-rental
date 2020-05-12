@@ -62,14 +62,14 @@ class OrderServiceRestTest {
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withStatus(HttpStatus.CREATED)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString("1"))
+                        .body(mapper.writeValueAsString(order))
                 );
         // when
-        Integer id = orderServiceRest.create(order);
+        Order savedOrder = orderServiceRest.create(order);
 
         // then
         mockServer.verify();
-        assertNotNull(id);
+        assertNotNull(savedOrder);
     }
 
     private Order create(int index) {

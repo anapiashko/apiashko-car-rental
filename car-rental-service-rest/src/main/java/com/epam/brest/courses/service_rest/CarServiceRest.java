@@ -72,11 +72,11 @@ public class CarServiceRest implements CarService {
      * @param car order record.
      * @return id created car
      */
-    public Integer create(Car car) {
+    public Car create(Car car) {
         LOGGER.debug("create({})", car);
 
-        ResponseEntity responseEntity = restTemplate.postForEntity(url, car, Integer.class);
-        return (Integer) responseEntity.getBody();
+        ResponseEntity responseEntity = restTemplate.postForEntity(url, car, Car.class);
+        return (Car)responseEntity.getBody();
     }
 
     /**
@@ -101,13 +101,13 @@ public class CarServiceRest implements CarService {
      * @param carId car id.
      * @return number deleted cars.
      */
-    public int delete(Integer carId) {
+    public void delete(Integer carId) {
         LOGGER.debug("delete({})", carId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Car> entity = new HttpEntity<>(headers);
         ResponseEntity<Integer> result = restTemplate.exchange(url+"/"+carId, HttpMethod.DELETE, entity, Integer.class);
-        return result.getBody();
+        //return result.getBody();
     }
 }
