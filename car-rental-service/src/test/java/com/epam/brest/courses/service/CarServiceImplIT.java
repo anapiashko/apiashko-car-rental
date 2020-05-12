@@ -3,7 +3,6 @@ package com.epam.brest.courses.service;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service.config.TestConfig;
 import com.epam.brest.courses.service_api.CarService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,20 +50,21 @@ class CarServiceImplIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("7702 AB-1");
+        car.setRegisterNumber("5002 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Integer id = carService.create(car);
+        //Integer id = carDao.save(car);
+        Car savedCar = carService.create(car);
 
         //when
-        Optional<Car> optionalCar = carService.findById(id);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
 
         //then
-        Assert.assertTrue(optionalCar.isPresent());
-        assertEquals(id,optionalCar.get().getId());
-        assertEquals("Honda", optionalCar.get().getBrand());
-        assertEquals("7702 AB-1", optionalCar.get().getRegisterNumber());
-        assertEquals(0 ,BigDecimal.valueOf(150).compareTo(optionalCar.get().getPrice()));
+        assertTrue(optionalCar.isPresent());
+        assertEquals(savedCar.getId(),optionalCar.get().getId());
+        assertEquals(savedCar.getBrand(), optionalCar.get().getBrand());
+        assertEquals(savedCar.getRegisterNumber(), optionalCar.get().getRegisterNumber());
+        assertEquals(0 ,savedCar.getPrice().compareTo(optionalCar.get().getPrice()));
     }
 
     @Test
@@ -72,21 +72,22 @@ class CarServiceImplIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5309 AB-1");
+        car.setRegisterNumber("5302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
         //when
-        Integer id = carService.create(car);
+        //Integer id = carDao.save(car);
+        Car savedCar = carService.create(car);
 
         //then
-        assertNotNull(id);
+        assertNotNull(savedCar.getId());
 
-        Optional<Car> optionalCar = carService.findById(id);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
         assertTrue(optionalCar.isPresent());
 
-        assertEquals(id,optionalCar.get().getId());
-        assertEquals("Honda", optionalCar.get().getBrand());
-        assertEquals("5309 AB-1", optionalCar.get().getRegisterNumber());
+        assertEquals(savedCar.getId(),optionalCar.get().getId());
+        assertEquals(savedCar.getBrand(), optionalCar.get().getBrand());
+        assertEquals(savedCar.getRegisterNumber(), optionalCar.get().getRegisterNumber());
     }
 
     @Test
@@ -94,11 +95,12 @@ class CarServiceImplIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5302 AB-1");
+        car.setRegisterNumber("7302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Integer id = carService.create(car);
-        Optional<Car> optionalCar = carService.findById(id);
+        //Integer id = carDao.save(car);
+        Car savedCar = carService.create(car);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
 
         assertTrue(optionalCar.isPresent());
         optionalCar.get().setBrand("HONDA");
@@ -110,9 +112,9 @@ class CarServiceImplIT {
 
         //then
         assertTrue(1 == result);
-        Optional<Car> updatedOptionalCar = carService.findById(id);
+        Optional<Car> updatedOptionalCar = carService.findById(savedCar.getId());
         assertTrue(optionalCar.isPresent());
-        assertEquals(id,updatedOptionalCar.get().getId());
+        assertEquals(savedCar.getId(),updatedOptionalCar.get().getId());
         assertEquals("HONDA", updatedOptionalCar.get().getBrand());
         assertEquals("7350 AB-1", updatedOptionalCar.get().getRegisterNumber());
         assertEquals(0, BigDecimal.valueOf(200).compareTo(updatedOptionalCar.get().getPrice()));
@@ -123,17 +125,18 @@ class CarServiceImplIT {
         //given
         Car car = new Car();
         car.setBrand("Honda");
-        car.setRegisterNumber("5102 AB-1");
+        car.setRegisterNumber("5402 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Integer id = carService.create(car);
+        //Integer id = carDao.save(car);
+        Car savedCar = carService.create(car);;
 
         //when
-        int result = carService.delete(id);
+        carService.delete(savedCar.getId());
 
         //then
-        assertTrue(1 == result);
-        Optional<Car> optionalCar = carService.findById(id);
+        //assertTrue(1 == result);
+        Optional<Car> optionalCar = carService.findById(savedCar.getId());
         assertFalse(optionalCar.isPresent());
     }
 }

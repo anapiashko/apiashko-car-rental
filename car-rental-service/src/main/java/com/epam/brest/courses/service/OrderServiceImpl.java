@@ -26,9 +26,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer create(Order order) {
+    public Order create(Order order) {
         LOGGER.debug("create (order:{})", order);
 
-        return orderDao.create(order);
+        return orderDao.save(order);
     }
 }

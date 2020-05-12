@@ -38,7 +38,7 @@ public interface CarService {
      * @param car order record.
      * @return persisted order id.
      */
-    Integer create(Car car);
+    Car create(Car car);
 
     /**
      * Update car by id.
@@ -52,7 +52,6 @@ public interface CarService {
      * Delete car by id.
      *
      * @param carId car id.
-     * @return number of updated records in the database.
      */
-    int delete(Integer carId);
+    void delete(Integer carId);
 }

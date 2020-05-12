@@ -35,7 +35,7 @@ class OrderServiceImplIT {
         order.setCarId(2);
 
         //when
-        Integer id = orderService.create(order);
+        Order id = orderService.create(order);
 
         //then
         assertNotNull(id);
