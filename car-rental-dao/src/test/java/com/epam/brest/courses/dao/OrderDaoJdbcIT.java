@@ -45,14 +45,15 @@ class OrderDaoJdbcIT {
         order.setDate(LocalDate.of(2020,3,4));
         order.setCarId(3);
 
-        Integer id = orderDao.create(order);
+        //Integer id = orderDao.save(order);
+        Order savedOrder = orderDao.save(order);
 
         //when
-        Optional<Order> optionalOrder = orderDao.findById(id);
+        Optional<Order> optionalOrder = orderDao.findById(savedOrder.getId());
 
         //then
         assertTrue(optionalOrder.isPresent());
-        assertEquals(id, optionalOrder.get().getId());
+        assertEquals(savedOrder.getId(), optionalOrder.get().getId());
         assertEquals(order.getDate(),optionalOrder.get().getDate());
         assertEquals(order.getCarId(), optionalOrder.get().getCarId());
     }
@@ -66,10 +67,11 @@ class OrderDaoJdbcIT {
         order.setCarId(2);
 
         //when
-        Integer id = orderDao.create(order);
+        //Integer id = orderDao.save(order);
+        Order savedOrder = orderDao.save(order);
 
         //then
-        assertNotNull(id);
+        assertNotNull(savedOrder.getId());
     }
 
     @Test
@@ -80,10 +82,11 @@ class OrderDaoJdbcIT {
         order.setDate(LocalDate.of(2020,11,10));
         order.setCarId(2);
 
-        Integer id = orderDao.create(order);
-        assertNotNull(id);
+        //Integer id = orderDao.save(order);
+        Order savedOrder = orderDao.save(order);
+        assertNotNull(savedOrder.getId());
 
-        Optional<Order> orderOptional = orderDao.findById(id);
+        Optional<Order> orderOptional = orderDao.findById(savedOrder.getId());
         assertTrue(orderOptional.isPresent());
 
         orderOptional.get().setDate(LocalDate.of(2020,11,11));
@@ -95,7 +98,7 @@ class OrderDaoJdbcIT {
         //then
         assertTrue(1 == result);
 
-        Optional<Order> updatedOptionalOrder = orderDao.findById(id);
+        Optional<Order> updatedOptionalOrder = orderDao.findById(savedOrder.getId());
         assertTrue(updatedOptionalOrder.isPresent());
         assertEquals(LocalDate.of(2020,11,11), updatedOptionalOrder.get().getDate());
         assertTrue(3 == updatedOptionalOrder.get().getCarId());
@@ -109,21 +112,22 @@ class OrderDaoJdbcIT {
         order.setDate(LocalDate.of(2020,8,10));
         order.setCarId(2);
 
-        Integer id = orderDao.create(order);
-        assertNotNull(id);
+        //Integer id = orderDao.save(order);
+        Order savedOrder = orderDao.save(order);
+        assertNotNull(savedOrder.getId());
 
-        Optional<Order> optionalOrder = orderDao.findById(id);
+        Optional<Order> optionalOrder = orderDao.findById(savedOrder.getId());
         assertTrue(optionalOrder.isPresent());
         assertEquals(LocalDate.of(2020,8,10), optionalOrder.get().getDate());
         assertTrue(2 == optionalOrder.get().getCarId());
 
         //when
-        int result = orderDao.delete(id);
+        orderDao.deleteById(savedOrder.getId());
 
         //then
-        assertTrue(1 == result);
+        //assertTrue(1 == result);
 
-        Optional<Order> deletedOrder = orderDao.findById(id);
+        Optional<Order> deletedOrder = orderDao.findById(savedOrder.getId());
         assertFalse(deletedOrder.isPresent());
     }
 }

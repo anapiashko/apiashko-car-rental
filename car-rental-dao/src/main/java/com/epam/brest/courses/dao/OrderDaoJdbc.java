@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Profile(value = "jdbc")
 @PropertySource("classpath:dao.properties")
 public class OrderDaoJdbc implements OrderDao {
 
@@ -66,7 +68,7 @@ public class OrderDaoJdbc implements OrderDao {
     }
 
     @Override
-    public final Integer create(final Order order) {
+    public final Order save(final Order order) {
         LOGGER.trace("create(order:{})", order);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -74,7 +76,8 @@ public class OrderDaoJdbc implements OrderDao {
                 .addValue("carId", order.getCarId());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT, mapSqlParameterSource, keyHolder);
-        return keyHolder.getKey().intValue();
+        Integer id = keyHolder.getKey().intValue();
+        return findById(id).isPresent() ? findById(id).get() : null;
     }
 
     @Override
@@ -90,11 +93,11 @@ public class OrderDaoJdbc implements OrderDao {
     }
 
     @Override
-    public final int delete(final Integer orderId) {
+    public final void deleteById(final Integer orderId) {
         LOGGER.trace("delete order by id:{})", orderId);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("orderRecordId", orderId);
-        return namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource);
+        namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource);
     }
 }

@@ -28,7 +28,7 @@ public interface OrderDao {
      * @param order order record.
      * @return persisted order id.
      */
-    Integer create(Order order);
+    Order save(Order order);
 
     /**
      * Update order record.
@@ -42,7 +42,6 @@ public interface OrderDao {
      * Delete order record.
      *
      * @param orderId order id.
-     * @return number of updated records in the database.
      */
-    int delete(Integer orderId);
+    void deleteById(Integer orderId);
 }

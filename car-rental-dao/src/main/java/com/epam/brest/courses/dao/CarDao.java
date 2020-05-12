@@ -36,7 +36,7 @@ public interface CarDao {
      * @param car car record.
      * @return persisted car id.
      */
-    Integer create(Car car);
+    Car save(Car car);
 
     /**
      * Update car by id.
@@ -50,8 +50,7 @@ public interface CarDao {
      * Delete car by id.
      *
      * @param carId car id.
-     * @return number of updated records in the database.
      */
-    int delete(Integer carId);
+    void deleteById(Integer carId);
 
 }

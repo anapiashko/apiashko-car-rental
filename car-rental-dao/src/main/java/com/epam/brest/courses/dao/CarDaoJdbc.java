@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Profile(value = "jdbc")
 @PropertySource("classpath:dao.properties")
 public class CarDaoJdbc implements CarDao {
 
@@ -26,7 +28,7 @@ public class CarDaoJdbc implements CarDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final CarRowMapper carRowMapper =  new CarRowMapper();
+    private final CarRowMapper carRowMapper = new CarRowMapper();
 
     @Value("${car.selectAll}")
     private String SELECT_ALL;
@@ -75,12 +77,12 @@ public class CarDaoJdbc implements CarDao {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carId", carId);
 
-        List<Car> cars =  namedParameterJdbcTemplate.query(SELECT_BY_ID, mapSqlParameterSource, carRowMapper);
+        List<Car> cars = namedParameterJdbcTemplate.query(SELECT_BY_ID, mapSqlParameterSource, carRowMapper);
         return Optional.ofNullable(DataAccessUtils.uniqueResult(cars));
     }
 
     @Override
-    public Integer create(Car car) {
+    public Car save(Car car) {
         LOGGER.trace("create(car:{})", car);
 
         if (isRegisterNumberUniqueReturnCarIfFound(car).isPresent()) {
@@ -94,14 +96,15 @@ public class CarDaoJdbc implements CarDao {
 
         KeyHolder key = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT, mapSqlParameterSource, key);
-        return key.getKey().intValue();
+        Integer id = key.getKey().intValue();
+        return findById(id).isPresent()? findById(id).get() : null;
     }
 
     @SuppressWarnings("ConstantConditions")
     private Optional<Car> isRegisterNumberUniqueReturnCarIfFound(Car car) {
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource("carRegisterNumber", car.getRegisterNumber());
-        List<Car> cars =  namedParameterJdbcTemplate.query(CHECK_FOR_UNIQUE_REGIST_NUM, mapSqlParameterSource, carRowMapper);
+        List<Car> cars = namedParameterJdbcTemplate.query(CHECK_FOR_UNIQUE_REGIST_NUM, mapSqlParameterSource, carRowMapper);
         return Optional.ofNullable(DataAccessUtils.uniqueResult(cars));
     }
 
@@ -112,7 +115,7 @@ public class CarDaoJdbc implements CarDao {
         Optional<Car> optionalCar = isRegisterNumberUniqueReturnCarIfFound(car);
 
         if (optionalCar.isPresent()) {
-            if(!optionalCar.get().getId().equals(car.getId())) {
+            if (!optionalCar.get().getId().equals(car.getId())) {
                 throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
             }
         }
@@ -127,12 +130,12 @@ public class CarDaoJdbc implements CarDao {
     }
 
     @Override
-    public int delete(Integer carId) {
+    public void deleteById(Integer carId) {
         LOGGER.trace("delete car by id:{})", carId);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("carId", carId);
 
-        return namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource);
+        namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource);
     }
 }
