@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "order_records")
+@Table(name = "order_record")
 public class Order {
     /**
      * Order id.
@@ -24,6 +24,7 @@ public class Order {
      * Date of order.
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "order_date")
     private LocalDate date;
 
     public final Integer getId() {

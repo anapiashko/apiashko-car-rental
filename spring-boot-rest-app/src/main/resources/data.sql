@@ -1,0 +1,42 @@
+--DROP TABLE IF EXISTS order_record;
+--DROP TABLE IF EXISTS car;
+--
+----auto
+--
+--CREATE TABLE car (
+--                      id   INTEGER NOT NULL AUTO_INCREMENT,
+--                      brand VARCHAR(45) NOT NULL ,
+--                      register_number VARCHAR(15) NOT NULL UNIQUE,
+--                      price DECIMAL(10,2) NOT NULL DEFAULT 0,
+--                      PRIMARY KEY (id)
+--);
+--
+--
+--
+----rent_record
+--
+--CREATE TABLE order_record (
+--                     id    INTEGER NOT NULL AUTO_INCREMENT,
+--                     date TIMESTAMP(6),
+--                     car_id INTEGER NOT NULL,
+--                     UNIQUE (date,car_id),
+--                     PRIMARY KEY (id),
+--                     CONSTRAINT record_to_car_fk
+--                         FOREIGN KEY (car_id)
+--                             REFERENCES car (id)
+--                             ON DELETE NO ACTION
+--                             ON UPDATE NO ACTION
+--);
+--
+--INSERT INTO car (id, brand, price, register_number) VALUES (1, 'NTEF', 240, '3456 AB-1');
+--INSERT INTO car (id, brand, price, register_number) VALUES (2, 'AUDI', 140, '0056 AB-1');
+--INSERT INTO car (id, brand, price, register_number) VALUES (3, 'TYOYTA', 200, '3836 AB-1');
+--
+--
+--
+--INSERT INTO order_record(id, date, car_id) VALUES (1, '2020-01-01', 2);
+--INSERT INTO order_record(id, date, car_id) VALUES (2, '2020-01-29', 3);
+--INSERT INTO order_record(id, date, car_id) VALUES (3, '2020-01-07', 2);
+--
+--INSERT INTO order_record(id, date, car_id) VALUES (5, '2020-04-03', 3);
+--INSERT INTO order_record(id, date, car_id) VALUES (6, '2020-04-03', 2);
