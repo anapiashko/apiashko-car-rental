@@ -17,9 +17,34 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>javax.persistence-api</artifactId>
+            <groupId>javax.persistence</groupId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>jdbc</id>
+            <properties>
+                <activatedProperties>jdbc</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>jpa</id>
+            <properties>
+                <activatedProperties>jpa</activatedProperties>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-jpa</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>
