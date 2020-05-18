@@ -1,6 +1,11 @@
 package com.epam.brest.courses.service.config;
 
-import com.epam.brest.courses.dao.*;
+import com.epam.brest.courses.dao.CarDao;
+import com.epam.brest.courses.dao.CarDtoDao;
+import com.epam.brest.courses.dao.OrderDao;
+import com.epam.brest.courses.dao.jdbc.CarDaoJdbc;
+import com.epam.brest.courses.dao.jdbc.CarDtoDaoJdbc;
+import com.epam.brest.courses.dao.jdbc.OrderDaoJdbc;
 import com.epam.brest.courses.service.CarDtoServiceImpl;
 import com.epam.brest.courses.service.CarServiceImpl;
 import com.epam.brest.courses.service.OrderServiceImpl;

@@ -1,6 +1,11 @@
 package com.epam.brest.courses.dao.config;
 
-import com.epam.brest.courses.dao.*;
+import com.epam.brest.courses.dao.CarDao;
+import com.epam.brest.courses.dao.CarDtoDao;
+import com.epam.brest.courses.dao.OrderDao;
+import com.epam.brest.courses.dao.jdbc.CarDaoJdbc;
+import com.epam.brest.courses.dao.jdbc.CarDtoDaoJdbc;
+import com.epam.brest.courses.dao.jdbc.OrderDaoJdbc;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

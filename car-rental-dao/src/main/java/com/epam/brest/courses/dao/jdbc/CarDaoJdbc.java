@@ -1,5 +1,6 @@
-package com.epam.brest.courses.dao;
+package com.epam.brest.courses.dao.jdbc;
 
+import com.epam.brest.courses.dao.CarDao;
 import com.epam.brest.courses.dao.mapper.CarRowMapper;
 import com.epam.brest.courses.model.Car;
 import org.slf4j.Logger;
