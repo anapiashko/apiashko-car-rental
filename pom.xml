@@ -38,6 +38,7 @@
                 <groupId>com.epam.brest.courses</groupId>
                 <artifactId>car-rental-test-db</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.epam.brest.courses</groupId>
