@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 @ExtendWith(MockitoExtension.class)
-public class CarDtoRestControllerIT {
+public class CarDtoDaoRestControllerIT {
 
     @InjectMocks
     private CarDtoRestController carDtoRestController;

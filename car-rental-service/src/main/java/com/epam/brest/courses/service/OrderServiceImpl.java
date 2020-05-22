@@ -1,6 +1,5 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.OrderDao;
 import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service_api.OrderService;
 import org.slf4j.Logger;

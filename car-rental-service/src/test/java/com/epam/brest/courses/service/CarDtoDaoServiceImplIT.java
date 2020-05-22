@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfig.class})
 @Sql({"classpath:schema-h2.sql", "classpath:data-h2.sql"})
-class CarDtoServiceImplIT {
+class CarDtoDaoServiceImplIT {
 
     private final CarDtoService carDtoService;
 
     @Autowired
-    CarDtoServiceImplIT(CarDtoService carDtoService) {
+    CarDtoDaoServiceImplIT(CarDtoService carDtoService) {
         this.carDtoService = carDtoService;
     }
 

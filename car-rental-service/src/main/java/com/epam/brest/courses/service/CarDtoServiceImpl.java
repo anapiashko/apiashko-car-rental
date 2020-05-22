@@ -1,6 +1,5 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.CarDtoDao;
 import com.epam.brest.courses.model.dto.CarDto;
 import com.epam.brest.courses.service_api.CarDtoService;
 import org.slf4j.Logger;
