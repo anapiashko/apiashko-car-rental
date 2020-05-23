@@ -13,5 +13,5 @@ public interface OrderService {
      * @param order order record.
      * @return persisted order id.
      */
-    Integer create(Order order);
+    Order create(Order order);
 }

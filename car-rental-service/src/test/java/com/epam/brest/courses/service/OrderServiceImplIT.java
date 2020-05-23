@@ -4,19 +4,18 @@ import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service.config.TestConfig;
 import com.epam.brest.courses.service_api.OrderService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@EntityScan("com.epam.brest.courses.*")
 @ContextConfiguration(classes = {TestConfig.class})
-@Sql({"classpath:schema-h2.sql", "classpath:data-h2.sql"})
 class OrderServiceImplIT {
 
     private final OrderService orderService;
@@ -35,9 +34,9 @@ class OrderServiceImplIT {
         order.setCarId(2);
 
         //when
-        Integer id = orderService.create(order);
+        Order savedOrder = orderService.create(order);
 
         //then
-        assertNotNull(id);
+        assertNotNull(savedOrder);
     }
 }

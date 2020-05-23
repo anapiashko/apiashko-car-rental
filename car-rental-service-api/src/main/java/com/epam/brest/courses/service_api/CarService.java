@@ -27,18 +27,18 @@ public interface CarService {
     /**
      * Find car by Id.
      *
-     * @param carId order Id.
-     * @return order
+     * @param carId car Id.
+     * @return car
      */
     Optional<Car> findById(Integer carId);
 
     /**
-     * Persist new order record.
+     * Persist new car.
      *
-     * @param car order record.
-     * @return persisted order id.
+     * @param car car for persist.
+     * @return persisted car.
      */
-    Integer create(Car car);
+    Car create(Car car);
 
     /**
      * Update car by id.
@@ -52,7 +52,6 @@ public interface CarService {
      * Delete car by id.
      *
      * @param carId car id.
-     * @return number of updated records in the database.
      */
-    int delete(Integer carId);
+    void delete(Integer carId);
 }

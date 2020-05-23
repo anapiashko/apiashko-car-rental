@@ -1,5 +1,6 @@
 package com.epam.brest.courses.service;
 
+import com.epam.brest.courses.dao.CarDao;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
@@ -47,10 +48,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Integer create(Car car) {
+    public Car create(Car car) {
         LOGGER.debug("create (car:{})", car);
 
-        return carDao.create(car);
+        return  carDao.save(car);
     }
 
     @Override
@@ -61,9 +62,9 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public int delete(Integer carId) {
+    public void delete(Integer carId) {
         LOGGER.debug("delete car by id(carId:{})", carId);
 
-        return carDao.delete(carId);
+        carDao.deleteById(carId);
     }
 }
