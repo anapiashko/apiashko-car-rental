@@ -1,18 +1,30 @@
 package com.epam.brest.courses.dao.config;
 
+import com.epam.brest.courses.dao.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 
 @TestConfiguration
-@EnableJpaRepositories
-@ComponentScan(value = "com.epam.brest.courses.*")
 public class TestConfig {
+
+    @Bean
+    public CarDtoDao carDtoDao(){
+        return new CarDtoDaoJdbc(jdbcTemplate());
+    }
+
+    @Bean
+    public CarDao carDao(){
+        return new CarDaoJdbc(jdbcTemplate());
+    }
+
+    @Bean
+    public OrderDao orderDao(){
+        return new OrderDaoJdbc(jdbcTemplate());
+    }
 
     @Bean
     public NamedParameterJdbcTemplate jdbcTemplate(){

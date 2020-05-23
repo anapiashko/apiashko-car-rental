@@ -1,25 +1,57 @@
 package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.model.Car;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface CarDao extends CrudRepository<Car, Integer> {
-
+public interface CarDao {
+    /**
+     * Find all cars in database.
+     *
+     * @return cars list.
+     */
     List<Car> findAll();
 
-    @Query(value = "select  * from car where id not in (SELECT car_id from order_record where order_date = :date)", nativeQuery = true)
-    List<Car> findAllByDate(@Param("date") LocalDate date);
+    /**
+     * Find all cars by date in database.
+     *
+     * @param date date
+     * @return cars list
+     */
+    List<Car> findAllByDate(LocalDate date);
 
-    @Modifying
-    @Query(value = "UPDATE car SET brand = :#{#forUpdate.brand}, price = :#{#forUpdate.price}, register_number = :#{#forUpdate.registerNumber}"
-           + " WHERE id =:#{#forUpdate.id}", nativeQuery = true)
-    int update(@Param("forUpdate") Car car);
+    /**
+     * Find car by Id.
+     *
+     * @param carId car Id.
+     * @return car
+     */
+    Optional<Car> findById(Integer carId);
+
+    /**
+     * Persist new car record.
+     *
+     * @param car car record.
+     * @return persisted car id.
+     */
+    Integer create(Car car);
+
+    /**
+     * Update car by id.
+     *
+     * @param car car.
+     * @return number of updated cars in the database.
+     */
+    int update(Car car);
+
+    /**
+     * Delete car by id.
+     *
+     * @param carId car id.
+     * @return number of updated records in the database.
+     */
+    int delete(Integer carId);
+
 }
