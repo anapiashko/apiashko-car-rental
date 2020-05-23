@@ -2,12 +2,17 @@ package com.epam.brest.courses.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "order_record")
 public class Order {
     /**
      * Order id.
      */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -19,6 +24,7 @@ public class Order {
      * Date of order.
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "order_date")
     private LocalDate date;
 
     public final Integer getId() {
@@ -29,11 +35,11 @@ public class Order {
         this.id = id;
     }
 
-    public final Integer getCarId() {
+    public Integer getCarId() {
         return carId;
     }
 
-    public final void setCarId(final Integer carId) {
+    public void setCarId(final Integer carId) {
         this.carId = carId;
     }
 

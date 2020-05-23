@@ -1,11 +1,17 @@
 package com.epam.brest.courses.model;
 
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "car")
 public class Car {
     /**
      * Car id.
      */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -31,27 +37,27 @@ public class Car {
         this.id = id;
     }
 
-    public final String getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public final void setBrand(final String brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
 
-    public final BigDecimal getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public final void setPrice(final BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public final String getRegisterNumber() {
+    public String getRegisterNumber() {
         return registerNumber;
     }
 
-    public final void setRegisterNumber(final String registerNumber) {
+    public void setRegisterNumber(String registerNumber) {
         this.registerNumber = registerNumber;
     }
 

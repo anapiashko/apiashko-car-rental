@@ -1,13 +1,21 @@
 package com.epam.brest.courses.model.dto;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Car Dto.
  */
+@Entity
 public class CarDto {
 
     /**
      * CarDto id.
      */
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
     /**
@@ -25,35 +33,35 @@ public class CarDto {
      */
     private Integer numberOrders;
 
-    public final Integer getId() {
+    public Integer getId() {
         return id;
     }
 
-    public final void setId(final Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
-    public final String getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public final void setBrand(final String brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
 
-    public final String getRegisterNumber() {
+    public String getRegisterNumber() {
         return registerNumber;
     }
 
-    public final void setRegisterNumber(final String registerNumber) {
+    public void setRegisterNumber(String registerNumber) {
         this.registerNumber = registerNumber;
     }
 
-    public final Integer getNumberOrders() {
+    public Integer getNumberOrders() {
         return numberOrders;
     }
 
-    public final void setNumberOrders(final Integer numberOrders) {
+    public void setNumberOrders(Integer numberOrders) {
         this.numberOrders = numberOrders;
     }
 
