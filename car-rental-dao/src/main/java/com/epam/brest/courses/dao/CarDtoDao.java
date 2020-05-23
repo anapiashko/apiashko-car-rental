@@ -16,5 +16,5 @@ public interface CarDtoDao extends CrudRepository<CarDto, Integer> {
             "  select car_id, count(car_id) as number_orders from (" +
             "  select * from order_record where order_date between :dateFrom and :dateTo) group by car_id) as t" +
             "   left join car on t.car_id = car.id", nativeQuery = true)
-    List<CarDtoDao> findAllWithNumberOfOrders(@Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
+    List<CarDto> findAllWithNumberOfOrders(@Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
 }
