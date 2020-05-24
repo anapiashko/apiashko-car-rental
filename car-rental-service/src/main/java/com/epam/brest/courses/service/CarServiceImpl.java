@@ -1,6 +1,6 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.CarDao;
+import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
@@ -19,52 +19,52 @@ public class CarServiceImpl implements CarService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarServiceImpl.class);
 
-    private final CarDao carDao;
+    private final CarRepository carRepository;
 
     @Autowired
-    public CarServiceImpl(CarDao carDao) {
-        this.carDao = carDao;
+    public CarServiceImpl(CarRepository carRepository) {
+        this.carRepository = carRepository;
     }
 
     @Override
     public List<Car> findAll() {
         LOGGER.debug("find all cars()");
 
-        return carDao.findAll();
+        return carRepository.findAll();
     }
 
     @Override
     public List<Car> findAllByDate(LocalDate date){
         LOGGER.debug("find all cars by date:{}", date);
 
-        return carDao.findAllByDate(date);
+        return carRepository.findAllByDate(date);
     }
 
     @Override
     public Optional<Car> findById(Integer carId) {
         LOGGER.debug("find car by id : {}", carId);
 
-        return carDao.findById(carId);
+        return carRepository.findById(carId);
     }
 
     @Override
     public Car create(Car car) {
         LOGGER.debug("create (car:{})", car);
 
-        return  carDao.save(car);
+        return  carRepository.save(car);
     }
 
     @Override
     public int update(Car car) {
         LOGGER.debug("update (car:{})", car);
 
-        return carDao.update(car);
+        return carRepository.update(car);
     }
 
     @Override
     public void delete(Integer carId) {
         LOGGER.debug("delete car by id(carId:{})", carId);
 
-        carDao.deleteById(carId);
+        carRepository.deleteById(carId);
     }
 }

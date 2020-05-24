@@ -1,6 +1,6 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.CarDtoDao;
+import com.epam.brest.courses.dao.CarDtoRepository;
 import com.epam.brest.courses.model.dto.CarDto;
 import com.epam.brest.courses.service_api.CarDtoService;
 import org.slf4j.Logger;
@@ -18,17 +18,17 @@ public class CarDtoServiceImpl implements CarDtoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoServiceImpl.class);
 
-    private final CarDtoDao carDtoDao;
+    private final CarDtoRepository carDtoRepository;
 
     @Autowired
-    public CarDtoServiceImpl(CarDtoDao carDtoDao) {
-        this.carDtoDao = carDtoDao;
+    public CarDtoServiceImpl(CarDtoRepository carDtoRepository) {
+        this.carDtoRepository = carDtoRepository;
     }
 
     @Override
     public List<CarDto> findAllWithNumberOfOrders(LocalDate dateFrom, LocalDate dateTo) {
         LOGGER.debug("find all with number of orders (dateFrom = {}, dateTo = {})",dateFrom,dateTo);
 
-        return carDtoDao.findAllWithNumberOfOrders(dateFrom,dateTo);
+        return carDtoRepository.findAllWithNumberOfOrders(dateFrom,dateTo);
     }
 }

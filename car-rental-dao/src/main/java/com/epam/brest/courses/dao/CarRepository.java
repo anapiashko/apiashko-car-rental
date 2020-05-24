@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface CarDao extends CrudRepository<Car, Integer> {
+public interface CarRepository extends CrudRepository<Car, Integer> {
 
     List<Car> findAll();
 

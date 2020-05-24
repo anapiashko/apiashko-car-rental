@@ -18,18 +18,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @EntityScan("com.epam.brest.courses.*")
 @ContextConfiguration(classes = {TestConfig.class})
-class OrderDaoRepoIT {
+class OrderRepositoryIT {
 
-    private final OrderDao orderDao;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    OrderDaoRepoIT(OrderDao orderDao) {
-        this.orderDao = orderDao;
+    OrderRepositoryIT(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     @Test
     public void shouldFindAllOrderRecords() {
-        List<Order> orders = orderDao.findAll();
+        List<Order> orders = orderRepository.findAll();
         assertNotNull(orders);
         //assertTrue(orders.size() > 0);
     }
@@ -43,10 +43,10 @@ class OrderDaoRepoIT {
         order.setCarId(3);
 
         //Integer id = orderDao.save(order);
-        Order savedOrder = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
 
         //when
-        Optional<Order> optionalOrder = orderDao.findById(savedOrder.getId());
+        Optional<Order> optionalOrder = orderRepository.findById(savedOrder.getId());
 
         //then
         assertTrue(optionalOrder.isPresent());
@@ -65,7 +65,7 @@ class OrderDaoRepoIT {
 
         //when
         //Integer id = orderDao.save(order);
-        Order savedOrder = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
 
         //then
         assertNotNull(savedOrder.getId());
@@ -80,22 +80,22 @@ class OrderDaoRepoIT {
         order.setCarId(2);
 
         //Integer id = orderDao.save(order);
-        Order savedOrder = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
         assertNotNull(savedOrder.getId());
 
-        Optional<Order> orderOptional = orderDao.findById(savedOrder.getId());
+        Optional<Order> orderOptional = orderRepository.findById(savedOrder.getId());
         assertTrue(orderOptional.isPresent());
 
         orderOptional.get().setDate(LocalDate.of(2020,11,11));
         orderOptional.get().setCarId(3);
 
         //when
-        int result = orderDao.update(orderOptional.get());
+        int result = orderRepository.update(orderOptional.get());
 
         //then
         assertTrue(1 == result);
 
-        Optional<Order> updatedOptionalOrder = orderDao.findById(savedOrder.getId());
+        Optional<Order> updatedOptionalOrder = orderRepository.findById(savedOrder.getId());
         assertTrue(updatedOptionalOrder.isPresent());
         assertEquals(LocalDate.of(2020,11,11), updatedOptionalOrder.get().getDate());
         assertTrue(3 == updatedOptionalOrder.get().getCarId());
@@ -110,21 +110,21 @@ class OrderDaoRepoIT {
         order.setCarId(2);
 
         //Integer id = orderDao.save(order);
-        Order savedOrder = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
         assertNotNull(savedOrder.getId());
 
-        Optional<Order> optionalOrder = orderDao.findById(savedOrder.getId());
+        Optional<Order> optionalOrder = orderRepository.findById(savedOrder.getId());
         assertTrue(optionalOrder.isPresent());
         assertEquals(LocalDate.of(2020,8,10), optionalOrder.get().getDate());
         assertTrue(2 == optionalOrder.get().getCarId());
 
         //when
-        orderDao.deleteById(savedOrder.getId());
+        orderRepository.deleteById(savedOrder.getId());
 
         //then
         //assertTrue(1 == result);
 
-        Optional<Order> deletedOrder = orderDao.findById(savedOrder.getId());
+        Optional<Order> deletedOrder = orderRepository.findById(savedOrder.getId());
         assertFalse(deletedOrder.isPresent());
     }
 }

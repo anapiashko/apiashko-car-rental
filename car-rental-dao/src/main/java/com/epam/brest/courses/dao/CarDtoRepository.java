@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface CarDtoDao extends CrudRepository<CarDto, Integer> {
+public interface CarDtoRepository extends CrudRepository<CarDto, Integer> {
 
     @Query(value = "select car.id, car.brand, car.register_number, t.number_orders from(" +
             "  select car_id, count(car_id) as number_orders from (" +

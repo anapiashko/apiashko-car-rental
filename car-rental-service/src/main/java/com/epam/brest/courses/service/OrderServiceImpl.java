@@ -1,6 +1,6 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.OrderDao;
+import com.epam.brest.courses.dao.OrderRepository;
 import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service_api.OrderService;
 import org.slf4j.Logger;
@@ -18,17 +18,17 @@ public class OrderServiceImpl implements OrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    private final OrderDao orderDao;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao) {
-        this.orderDao = orderDao;
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     @Override
     public Order create(Order order) {
         LOGGER.debug("create (order:{})", order);
 
-        return orderDao.save(order);
+        return orderRepository.save(order);
     }
 }

@@ -19,18 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @EntityScan("com.epam.brest.courses.*")
 @ContextConfiguration(classes = {TestConfig.class})
-class CarDaoRepoIT {
+class CarRepositoryIT {
 
-    private final CarDao carDao;
+    private final CarRepository carRepository;
 
     @Autowired
-    CarDaoRepoIT(CarDao carDao) {
-        this.carDao = carDao;
+    CarRepositoryIT(CarRepository carRepository) {
+        this.carRepository = carRepository;
     }
 
     @Test
     void findAll() {
-        List<Car> cars = carDao.findAll();
+        List<Car> cars = carRepository.findAll();
         assertNotNull(cars);
        // assertTrue(cars.size() > 0);
     }
@@ -38,7 +38,7 @@ class CarDaoRepoIT {
     @Test
     void findAllByDate() {
         LocalDate date = LocalDate.of(2020,4,3);
-        List<Car> cars = carDao.findAllByDate(date);
+        List<Car> cars = carRepository.findAllByDate(date);
 
         assertNotNull(cars);
     }
@@ -51,10 +51,10 @@ class CarDaoRepoIT {
         car.setRegisterNumber("5002 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Car savedCar = carDao.save(car);
+        Car savedCar = carRepository.save(car);
 
         //when
-        Optional<Car> optionalCar = carDao.findById(savedCar.getId());
+        Optional<Car> optionalCar = carRepository.findById(savedCar.getId());
 
         //then
         assertTrue(optionalCar.isPresent());
@@ -73,12 +73,12 @@ class CarDaoRepoIT {
         car.setPrice(BigDecimal.valueOf(150));
 
         //when
-        Car savedCar = carDao.save(car);
+        Car savedCar = carRepository.save(car);
 
         //then
         assertNotNull(savedCar.getId());
 
-        Optional<Car> optionalCar = carDao.findById(savedCar.getId());
+        Optional<Car> optionalCar = carRepository.findById(savedCar.getId());
         assertTrue(optionalCar.isPresent());
 
         assertEquals(savedCar.getId(),optionalCar.get().getId());
@@ -94,8 +94,8 @@ class CarDaoRepoIT {
         car.setRegisterNumber("7302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Car savedCar = carDao.save(car);
-        Optional<Car> optionalCar = carDao.findById(savedCar.getId());
+        Car savedCar = carRepository.save(car);
+        Optional<Car> optionalCar = carRepository.findById(savedCar.getId());
 
         assertTrue(optionalCar.isPresent());
         optionalCar.get().setBrand("HONDA");
@@ -103,11 +103,11 @@ class CarDaoRepoIT {
         optionalCar.get().setPrice(BigDecimal.valueOf(200));
 
         //when
-        int result = carDao.update(optionalCar.get());
+        int result = carRepository.update(optionalCar.get());
 
         //then
         assertTrue(1 == result);
-        Optional<Car> updatedOptionalCar = carDao.findById(savedCar.getId());
+        Optional<Car> updatedOptionalCar = carRepository.findById(savedCar.getId());
         assertTrue(optionalCar.isPresent());
         assertEquals(savedCar.getId(),updatedOptionalCar.get().getId());
         assertEquals("HONDA", updatedOptionalCar.get().getBrand());
@@ -123,13 +123,13 @@ class CarDaoRepoIT {
         car.setRegisterNumber("5402 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        Car savedCar = carDao.save(car);;
+        Car savedCar = carRepository.save(car);;
 
         //when
-        carDao.deleteById(savedCar.getId());
+        carRepository.deleteById(savedCar.getId());
 
         //then
-        Optional<Car> optionalCar = carDao.findById(savedCar.getId());
+        Optional<Car> optionalCar = carRepository.findById(savedCar.getId());
         assertFalse(optionalCar.isPresent());
     }
 }

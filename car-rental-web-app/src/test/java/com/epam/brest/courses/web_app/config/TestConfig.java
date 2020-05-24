@@ -1,8 +1,8 @@
 package com.epam.brest.courses.web_app.config;
 
-import com.epam.brest.courses.dao.CarDao;
-import com.epam.brest.courses.dao.CarDtoDao;
-import com.epam.brest.courses.dao.OrderDao;
+import com.epam.brest.courses.dao.CarDtoRepository;
+import com.epam.brest.courses.dao.CarRepository;
+import com.epam.brest.courses.dao.OrderRepository;
 import com.epam.brest.courses.service.CarDtoServiceImpl;
 import com.epam.brest.courses.service.CarServiceImpl;
 import com.epam.brest.courses.service.OrderServiceImpl;
@@ -31,13 +31,13 @@ import javax.sql.DataSource;
 public class TestConfig {
 
     @Autowired
-    private CarDtoDao carDtoDao;
+    private CarDtoRepository carDtoRepository;
 
     @Autowired
-    private CarDao carDao;
+    private CarRepository carRepository;
 
     @Autowired
-    private OrderDao orderDao;
+    private OrderRepository orderRepository;
 
     @Bean
     public OrderController orderController(){
@@ -52,17 +52,17 @@ public class TestConfig {
 
     @Bean
     public OrderService orderService(){
-        return new OrderServiceImpl(orderDao);
+        return new OrderServiceImpl(orderRepository);
     }
 
     @Bean
     public CarDtoService carDtoService() {
-        return new CarDtoServiceImpl(carDtoDao);
+        return new CarDtoServiceImpl(carDtoRepository);
     }
 
     @Bean
     public CarService carService() {
-        return new CarServiceImpl(carDao);
+        return new CarServiceImpl(carRepository);
     }
 
     @Bean

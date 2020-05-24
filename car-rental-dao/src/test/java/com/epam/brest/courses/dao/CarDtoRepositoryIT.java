@@ -1,8 +1,7 @@
-package com.epam.brest.courses.service;
+package com.epam.brest.courses.dao;
 
+import com.epam.brest.courses.dao.config.TestConfig;
 import com.epam.brest.courses.model.dto.CarDto;
-import com.epam.brest.courses.service.config.TestConfig;
-import com.epam.brest.courses.service_api.CarDtoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -17,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DataJpaTest
 @EntityScan("com.epam.brest.courses.*")
 @ContextConfiguration(classes = {TestConfig.class})
-class CarDtoDaoServiceImplIT {
+class CarDtoRepositoryIT {
 
-    private final CarDtoService carDtoService;
+    private final CarDtoRepository carDtoRepository;
 
     @Autowired
-    CarDtoDaoServiceImplIT(CarDtoService carDtoService) {
-        this.carDtoService = carDtoService;
+    CarDtoRepositoryIT(CarDtoRepository carDtoRepository) {
+        this.carDtoRepository = carDtoRepository;
     }
 
     @Test
@@ -33,9 +32,9 @@ class CarDtoDaoServiceImplIT {
         LocalDate dateTo = LocalDate.of(2020,1,15);
 
         //when
-        List<CarDto> list = carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo);
+        List<CarDto> carDtoList = carDtoRepository.findAllWithNumberOfOrders(dateFrom, dateTo);
 
         //then
-        assertNotNull(list);
+        assertNotNull(carDtoList);
     }
 }
