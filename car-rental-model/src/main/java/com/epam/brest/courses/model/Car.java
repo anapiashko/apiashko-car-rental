@@ -22,6 +22,7 @@ public class Car {
     /**
      * Car registration number.
      */
+    @Column(name = "register_number")
     private String registerNumber;
 
     /**

@@ -18,6 +18,7 @@ public class Order {
     /**
      * Car id.
      */
+    @Column(name = "car_id")
     private Integer carId;
 
     /**
