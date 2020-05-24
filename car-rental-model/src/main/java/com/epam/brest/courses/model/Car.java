@@ -22,7 +22,7 @@ public class Car {
     /**
      * Car registration number.
      */
-    @Column(name = "register_number")
+    @Column(name = "register_number", unique = true)
     private String registerNumber;
 
     /**
