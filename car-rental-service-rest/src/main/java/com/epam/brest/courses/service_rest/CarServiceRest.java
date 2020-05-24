@@ -75,7 +75,7 @@ public class CarServiceRest implements CarService {
     public Car create(Car car) {
         LOGGER.debug("create({})", car);
 
-        ResponseEntity responseEntity = restTemplate.postForEntity(url, car, Integer.class);
+        ResponseEntity responseEntity = restTemplate.postForEntity(url, car, Car.class);
         return (Car) responseEntity.getBody();
     }
 

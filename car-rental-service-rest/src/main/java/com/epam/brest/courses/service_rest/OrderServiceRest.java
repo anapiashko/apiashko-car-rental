@@ -32,7 +32,7 @@ public class OrderServiceRest implements OrderService {
     public Order create(Order order){
         LOGGER.debug("create({})", order);
 
-        ResponseEntity responseEntity = restTemplate.postForEntity(url,order,Integer.class);
+        ResponseEntity responseEntity = restTemplate.postForEntity(url,order,Order.class);
         return (Order) responseEntity.getBody();
     }
 }
