@@ -1,15 +1,5 @@
 package com.epam.brest.courses.web_app.config;
 
-import com.epam.brest.courses.dao.*;
-import com.epam.brest.courses.service.CarDtoServiceImpl;
-import com.epam.brest.courses.service.CarServiceImpl;
-import com.epam.brest.courses.service.OrderServiceImpl;
-import com.epam.brest.courses.service_api.CarDtoService;
-import com.epam.brest.courses.service_api.CarService;
-import com.epam.brest.courses.service_api.OrderService;
-import com.epam.brest.courses.web_app.CarController;
-import com.epam.brest.courses.web_app.HomeController;
-import com.epam.brest.courses.web_app.OrderController;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -23,50 +13,50 @@ import javax.sql.DataSource;
 @TestConfiguration
 public class TestConfig {
 
-    @Bean
-    public HomeController homeController(){
-        return new HomeController();
-    }
-
-    @Bean
-    public OrderController orderController(){
-        return new OrderController(orderService());
-    }
-
-    @Bean
-    public CarController carController(){
-        return new CarController(carService(), carDtoService());
-    }
-
-    @Bean
-    public OrderService orderService(){
-        return new OrderServiceImpl(orderDao());
-    }
-
-    @Bean
-    public CarDtoService carDtoService(){
-        return new CarDtoServiceImpl(carDtoDao());
-    }
-
-    @Bean
-    public CarService carService(){
-        return new CarServiceImpl(carDao());
-    }
-
-    @Bean
-    public CarDtoDao carDtoDao(){
-        return new CarDtoDaoJdbc(jdbcTemplate());
-    }
-
-    @Bean
-    public CarDao carDao(){
-        return new CarDaoJdbc(jdbcTemplate());
-    }
-
-    @Bean
-    public OrderDao orderDao(){
-        return new OrderDaoJdbc(jdbcTemplate());
-    }
+//    @Bean
+//    public HomeController homeController(){
+//        return new HomeController();
+//    }
+//
+//    @Bean
+//    public OrderController orderController(){
+//        return new OrderController(orderService());
+//    }
+//
+//    @Bean
+//    public CarController carController(){
+//        return new CarController(carService(), carDtoService());
+//    }
+//
+//    @Bean
+//    public OrderService orderService(){
+//        return new OrderServiceImpl(orderDao());
+//    }
+//
+//    @Bean
+//    public CarDtoService carDtoService(){
+//        return new CarDtoServiceImpl(carDtoDao());
+//    }
+//
+//    @Bean
+//    public CarService carService(){
+//        return new CarServiceImpl(carDao());
+//    }
+//
+//    @Bean
+//    public CarDtoDao carDtoDao(){
+//        return new CarDtoDaoJdbc(jdbcTemplate());
+//    }
+//
+//    @Bean
+//    public CarDao carDao(){
+//        return new CarDaoJdbc(jdbcTemplate());
+//    }
+//
+//    @Bean
+//    public OrderDao orderDao(){
+//        return new OrderDaoJdbc(jdbcTemplate());
+//    }
 
     @Bean
     public NamedParameterJdbcTemplate jdbcTemplate(){
