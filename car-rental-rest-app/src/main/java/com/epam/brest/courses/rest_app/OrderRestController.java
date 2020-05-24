@@ -30,7 +30,7 @@ public class OrderRestController {
      * @return id created record
      */
     @PostMapping(value = "/orders")
-    public ResponseEntity<Integer> create(@RequestBody Order order){
+    public ResponseEntity<Order> create(@RequestBody Order order){
         LOGGER.debug("create order({})",order);
 
         return new ResponseEntity<>(orderService.create(order), HttpStatus.CREATED);

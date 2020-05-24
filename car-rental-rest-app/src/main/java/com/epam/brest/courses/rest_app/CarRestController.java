@@ -84,7 +84,7 @@ public class CarRestController {
      * @return id created car
      */
     @PostMapping(value = "/cars", consumes = "application/json", produces = "application/json")
-    public final ResponseEntity<Integer> create(@RequestBody Car car) {
+    public final ResponseEntity<Car> create(@RequestBody Car car) {
         LOGGER.debug("create car({})", car);
         return new ResponseEntity<>(carService.create(car), HttpStatus.CREATED);
     }
@@ -96,10 +96,10 @@ public class CarRestController {
      * @return number deleted records
      */
     @DeleteMapping(value = "/cars/{id}", produces = {"application/json"})
-    public final ResponseEntity<Integer> delete(@PathVariable(name = "id") Integer id) {
+    public final ResponseEntity<Void> delete(@PathVariable(name = "id") Integer id) {
         LOGGER.debug("delete car({})", id);
 
-        int result = carService.delete(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        carService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

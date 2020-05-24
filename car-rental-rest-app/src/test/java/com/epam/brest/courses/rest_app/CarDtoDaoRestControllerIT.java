@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 @ExtendWith(MockitoExtension.class)
-public class CarDtoDaoRestControllerIT {
+class CarDtoDaoRestControllerIT {
 
     @InjectMocks
     private CarDtoRestController carDtoRestController;
@@ -32,13 +32,13 @@ public class CarDtoDaoRestControllerIT {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(carDtoRestController)
                 .build();
     }
 
     @AfterEach
-    public void end() {
+    void end() {
         Mockito.verifyNoMoreInteractions(carDtoService);
     }
 

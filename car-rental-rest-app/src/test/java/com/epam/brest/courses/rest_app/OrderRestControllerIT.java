@@ -7,16 +7,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@EntityScan("com.epam.brest.courses.*")
 @ContextConfiguration(classes = {TestConfig.class})
-@Sql({"classpath:schema-h2.sql", "classpath:data-h2.sql"})
 class OrderRestControllerIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderRestControllerIT.class);
@@ -69,15 +68,15 @@ class OrderRestControllerIT {
         order.setCarId(2);
 
         //when
-        Integer id = orderService.create(order);
+        Order savedOrder = orderService.create(order);
 
         //then
-        assertNotNull(id);
+        assertNotNull(savedOrder);
     }
 
     class MockMvcOrderService {
 
-        public Integer create(Order order) throws Exception {
+        public Order create(Order order) throws Exception {
 
             LOGGER.debug("create({})", order);
             String json = objectMapper.writeValueAsString(order);
@@ -88,7 +87,7 @@ class OrderRestControllerIT {
                             .accept(MediaType.APPLICATION_JSON)
                     ).andExpect(status().isCreated())
                             .andReturn().getResponse();
-            return objectMapper.readValue(response.getContentAsString(), Integer.class);
+            return objectMapper.readValue(response.getContentAsString(), Order.class);
         }
     }
 }
