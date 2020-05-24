@@ -87,14 +87,14 @@ class CarServiceRestTest {
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withStatus(HttpStatus.CREATED)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString("1"))
+                        .body(mapper.writeValueAsString(car))
                 );
         // when
-        Integer id = carServiceRest.create(car);
+        Car savedCar = carServiceRest.create(car);
 
         // then
         mockServer.verify();
-        assertNotNull(id);
+        assertNotNull(savedCar);
     }
 
     @Test
@@ -166,11 +166,11 @@ class CarServiceRestTest {
                         .body(mapper.writeValueAsString("1"))
                 );
         // when
-        int result = carServiceRest.delete(id);
+        carServiceRest.delete(id);
 
         // then
         mockServer.verify();
-        assertTrue(1 == result);
+        // assertTrue(1 == result);
     }
 
     private Car create(int index) {

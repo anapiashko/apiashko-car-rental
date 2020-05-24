@@ -29,10 +29,10 @@ public class OrderServiceRest implements OrderService {
      * @param order order record.
      * @return id created record.
      */
-    public Integer create(Order order){
+    public Order create(Order order){
         LOGGER.debug("create({})", order);
 
         ResponseEntity responseEntity = restTemplate.postForEntity(url,order,Integer.class);
-        return (Integer) responseEntity.getBody();
+        return (Order) responseEntity.getBody();
     }
 }

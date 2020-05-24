@@ -56,27 +56,27 @@ class OrderServiceRestTest {
     void create() throws JsonProcessingException, URISyntaxException {
         LOGGER.debug("shouldCreateDepartment()");
         // given
-       Order order = create(0);
+        Order order = create(0);
 
         mockServer.expect(ExpectedCount.once(), requestTo(new URI(ORDERS_URL)))
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withStatus(HttpStatus.CREATED)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString("1"))
+                        .body(mapper.writeValueAsString(order))
                 );
         // when
-        Integer id = orderServiceRest.create(order);
+        Order savedOrder = orderServiceRest.create(order);
 
         // then
         mockServer.verify();
-        assertNotNull(id);
+        assertNotNull(savedOrder);
     }
 
     private Order create(int index) {
-       Order order = new Order();
-       order.setId(index);
-       order.setDate(LocalDate.of(2020+index,3,4));
-       order.setCarId(100+index);
-       return order;
+        Order order = new Order();
+        order.setId(index);
+        order.setDate(LocalDate.of(2020+index,3,4));
+        order.setCarId(100+index);
+        return order;
     }
 }
