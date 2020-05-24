@@ -65,6 +65,27 @@ class CarRepositoryIT {
     }
 
     @Test
+    void findByRegisterNumber() {
+        //given
+        Car car = new Car();
+        car.setBrand("Honda");
+        car.setRegisterNumber("5002 AB-1");
+        car.setPrice(BigDecimal.valueOf(150));
+
+        Car savedCar = carRepository.save(car);
+
+        //when
+        Optional<Car> optionalCar = carRepository.findByRegisterNumber(savedCar.getRegisterNumber());
+
+        //then
+        assertTrue(optionalCar.isPresent());
+        assertEquals(savedCar.getId(),optionalCar.get().getId());
+        assertEquals(savedCar.getBrand(), optionalCar.get().getBrand());
+        assertEquals(savedCar.getRegisterNumber(), optionalCar.get().getRegisterNumber());
+        assertEquals(0 ,savedCar.getPrice().compareTo(optionalCar.get().getPrice()));
+    }
+
+    @Test
     void create() {
         //given
         Car car = new Car();

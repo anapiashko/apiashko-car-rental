@@ -34,7 +34,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findAllByDate(LocalDate date){
+    public List<Car> findAllByDate(LocalDate date) {
         LOGGER.debug("find all cars by date:{}", date);
 
         return carRepository.findAllByDate(date);
@@ -51,12 +51,24 @@ public class CarServiceImpl implements CarService {
     public Car create(Car car) {
         LOGGER.debug("create (car:{})", car);
 
-        return  carRepository.save(car);
+        if (carRepository.findByRegisterNumber(car.getRegisterNumber()).isPresent()) {
+            throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
+        }
+
+        return carRepository.save(car);
     }
 
     @Override
     public int update(Car car) {
         LOGGER.debug("update (car:{})", car);
+
+        Optional<Car> optionalCar = carRepository.findByRegisterNumber(car.getRegisterNumber());
+
+        if (optionalCar.isPresent()) {
+            if (!optionalCar.get().getId().equals(car.getId())) {
+                throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
+            }
+        }
 
         return carRepository.update(car);
     }
