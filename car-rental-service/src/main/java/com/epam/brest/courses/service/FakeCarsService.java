@@ -26,15 +26,19 @@ public class FakeCarsService implements FakeService {
     @Override
     public void createSampleData(Integer number) {
         for (int i = 0; i < number; i++) {
-            String brand = faker.commerce().material();
+            String brand = faker.space().nasaSpaceCraft();
             String registerNumber = faker.regexify("[0-9]{4} AB-[1-7]{1}");
             BigDecimal price = new BigDecimal(faker.commerce().price(50.0,1000.0));
 
-            Car car = new Car();
-            car.setBrand(brand);
-            car.setRegisterNumber(registerNumber);
-            car.setPrice(price);
-            carRepository.save(car);
+            if(!carRepository.findByRegisterNumber(registerNumber).isPresent()) {
+                Car car = new Car();
+                car.setBrand(brand);
+                car.setRegisterNumber(registerNumber);
+                car.setPrice(price);
+                carRepository.save(car);
+            }else{
+                number++;
+            }
         }
     }
 }

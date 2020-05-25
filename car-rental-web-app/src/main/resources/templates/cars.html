@@ -102,6 +102,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="car : ${cars}">
+                        <td th:text="${car.id}">1</td> <!--added for dev-->
                         <td th:text="${car.brand}">BMW</td>
                         <td th:text="${car.registerNumber}">3909 AB-1</td>
                         <td th:text="${car.price} + '   $'">140 $</td>
@@ -154,7 +155,6 @@
         </div>
     </div>
 </div>
-
 
 <footer>
     <hr/>
