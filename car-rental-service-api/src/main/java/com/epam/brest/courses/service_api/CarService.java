@@ -1,6 +1,7 @@
 package com.epam.brest.courses.service_api;
 
 import com.epam.brest.courses.model.Car;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,14 @@ public interface CarService {
      * @return cars list
      */
     List<Car> findAllByDate(LocalDate date);
+
+    /**
+     * Find part of cars by date in database.
+     *
+     * @param date date
+     * @return cars list
+     */
+    List<Car> findAllByDate(LocalDate date, Pageable pageable);
 
     /**
      * Find car by Id.

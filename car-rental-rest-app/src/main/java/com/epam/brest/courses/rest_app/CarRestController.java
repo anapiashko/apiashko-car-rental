@@ -6,6 +6,7 @@ import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,12 @@ public class CarRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarRestController.class);
 
+
+    private static final int BUTTONS_TO_SHOW = 3;
+    private static final int INITIAL_PAGE = 0;
+    private static final int INITIAL_PAGE_SIZE = 15;
+    private static final int[] PAGE_SIZES = { 5, 10};
+
     private final CarService carService;
 
     @Autowired
@@ -38,10 +45,15 @@ public class CarRestController {
      */
     @GetMapping(value = "/cars/filter/{filter}")
     public ResponseEntity<List<Car>> freeCars(@PathVariable(name = "filter")
-                                              @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filter) {
+                                              @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filter
+                                              ,@RequestParam("page") Optional<Integer> pageNumber
+                                              ,@RequestParam("pageSize") Optional<Integer> pageSize) {
         LOGGER.debug("find all free cars on date  = {}", filter);
 
-        return new ResponseEntity<>(carService.findAllByDate(filter), HttpStatus.OK);
+        int size = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int page = (pageNumber.orElse(0) < 1) ? INITIAL_PAGE : pageNumber.get() - 1;
+
+        return new ResponseEntity<>(carService.findAllByDate(filter, PageRequest.of(page, size)), HttpStatus.OK);
     }
 
     /**

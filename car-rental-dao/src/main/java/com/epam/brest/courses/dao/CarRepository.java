@@ -1,6 +1,7 @@
 package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.model.Car;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,6 +21,9 @@ public interface CarRepository extends CrudRepository<Car, Integer> {
 
     @Query(value = "select  * from car where id not in (SELECT car_id from order_record where order_date = :date)", nativeQuery = true)
     List<Car> findAllByDate(@Param("date") LocalDate date);
+
+    @Query(value = "select  * from car where id not in (SELECT car_id from order_record where order_date = :date)", nativeQuery = true)
+    List<Car> findAllByDate(@Param("date") LocalDate date, Pageable pageable);
 
     @Modifying
     @Query(value = "UPDATE car SET brand = :#{#forUpdate.brand}, price = :#{#forUpdate.price}, register_number = :#{#forUpdate.registerNumber}"

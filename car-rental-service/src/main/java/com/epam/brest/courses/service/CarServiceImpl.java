@@ -6,6 +6,7 @@ import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,13 @@ public class CarServiceImpl implements CarService {
         LOGGER.debug("find all cars by date:{}", date);
 
         return carRepository.findAllByDate(date);
+    }
+
+    @Override
+    public List<Car> findAllByDate(LocalDate date,  Pageable pageable) {
+        LOGGER.debug("find all cars by date:{}", date);
+
+        return carRepository.findAllByDate(date, pageable);
     }
 
     @Override
