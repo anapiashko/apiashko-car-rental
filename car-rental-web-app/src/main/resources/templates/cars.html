@@ -94,6 +94,7 @@
                 <table class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
+                        <th></th>
                         <th>Brand</th>
                         <th>Number</th>
                         <th>Price a day</th>
@@ -110,7 +111,7 @@
                              <span data-toggle="modal"
                                    data-target="#hiddenForm"
                                    th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber} +' on date ' +  ${filter}">
-                            <form th:id="'orderForm__${car.id}__'"  th:action="@{/orders}"
+                            <form th:id="'orderForm__${car.id}__'" th:action="@{/orders}"
                                   th:method="@{post}"
 
                                   class="d-none d-md-inline">
@@ -151,11 +152,105 @@
                     </tr>
                     </tbody>
                 </table>
+                <!--                <div class="row">-->
+                <!--                    <div class="form-group col-md-1">-->
+                <!--                        <select class="form-control pagination" id="pageSizeSelect">-->
+                <!--                            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"-->
+                <!--                                    th:value="${pageSize}"-->
+                <!--                                    th:selected="${pageSize} == ${selectedPageSize}"></option>-->
+                <!--                        </select>-->
+                <!--                    </div>-->
+                <!--                    <div th:if="${carPage.totalPages != 1}"-->
+                <!--                         class="form-group col-md-11 pagination-centered">-->
+                <!--                        <ul class="pagination">-->
+                <!--                            <li th:class="${currentPage == 0} ? disabled"><a-->
+                <!--                                    class="pageLink"-->
+                <!--                                    th:href="@{/(pageSize=${selectedPageSize}, page=1)}">Previous</a>-->
+                <!--                            </li>-->
+                <!--                            <li th:class="${currentPage == 0} ? disabled"><a-->
+                <!--                                    class="pageLink"-->
+                <!--                                    th:href="@{/(pageSize=${selectedPageSize}, page=${currentPage})}">Next</a>-->
+                <!--                            </li>-->
+                <!--                            <li-->
+                <!--                                                    th:class="${currentPage == (page - 1)} ? 'active pointer-disabled'"-->
+                <!--                                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">-->
+                <!--                                <a class="pageLink"-->
+                <!--                                   th:href="@{/(pageSize=${selectedPageSize}, page=${page})}"-->
+                <!--                                   th:text="${page}"></a>-->
+                <!--                            </li>-->
+                <!--                            <li-->
+                <!--                                    th:class="${carPage.number + 1 == carPage.totalPages} ? disabled">-->
+                <!--                                <a class="pageLink"-->
+                <!--                                   th:href="@{/(pageSize=${selectedPageSize}, page=${carPage.number + 2})}">Next</a>-->
+                <!--                            </li>-->
+                <!--                            <li-->
+                <!--                                    th:class="${carPage.number + 1 == carPage.totalPages} ? disabled">-->
+                <!--                                <a class="pageLink"-->
+                <!--                                   th:href="@{/(pageSize=${selectedPageSize}, page=${carPage.totalPages})}">Previous</a>-->
+                <!--                            </li>-->
+                <!--                        </ul>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+                <div th:if="${carPage.totalPages > 0}" class="pagination"
+                     th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/cars(size=${carPage.size}, page=${pageNumber})}"
+                       th:text=${pageNumber}
+                       th:class="${pageNumber==carPage.number + 1} ? active"></a>
+                </div>
+
+                <!--                 customers pagination -->
+                <!--                                <nav aria-label="Pagination" th:if="${carPage.totalPages > 0}"}">-->
+                <!--                                    <ul class="pagination justify-content-center font-weight-medium">-->
+                <!--                                        <li class="page-item" th:classappend="${carPage.number eq 0} ? 'disabled'">-->
+                <!--                                            <a class="page-link svg-icon"-->
+                <!--                                               th:href="@{/cars?page={id}(id=${carPage.number lt 2 ? 1 : carPage.number})}"-->
+                <!--                                               aria-label="Previous"-->
+                <!--                                               title="Previous Page" rel="tooltip">-->
+                <!--                                                <span aria-hidden="true" data-feather="chevrons-left" width="20" height="20"></span>-->
+                <!--                                            </a>-->
+                <!--                                        </li>-->
+                <!--                                        <li class="page-item" th:classappend="${i eq carPage.number + 1} ? 'active'"-->
+                <!--                                            th:each="i : ${#numbers.sequence( carPage.number + 1, carPage.totalPages > 10 + carPage.number ? carPage.number + 10 : carPage.totalPages, 1)}">-->
+                <!--                                            <a class="page-link"-->
+                <!--                                               th:href="@{/cars?page={id}(id=${i})}" th:text="${i}"-->
+                <!--                                               th:title="${'Page '+ i}"-->
+                <!--                                               rel="tooltip"></a>-->
+                <!--                                        </li>-->
+                <!--                                        <li class="page-item disabled" th:if="${carPage.number + 10 < carPage.totalPages}">-->
+                <!--                                            <a class="page-link svg-icon" href="#">-->
+                <!--                                                <span data-feather="more-horizontal" width="20" height="20"></span>-->
+                <!--                                            </a>-->
+                <!--                                        </li>-->
+                <!--                                        <li class="page-item" th:classappend="${carPage.number + 1 eq carPage.totalPages} ? 'disabled'">-->
+                <!--                                            <a class="page-link svg-icon"-->
+                <!--                                               th:href="@{/cars?page={id}(id=${carPage.number + 2})}"-->
+                <!--                                               aria-label="Next"-->
+                <!--                                               title="Next Page" rel="tooltip">-->
+                <!--                                                <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20"></span>-->
+                <!--                                            </a>-->
+                <!--                                        </li>-->
+                <!--                                    </ul>-->
+                <!--                                </nav>-->
+
+                <!--bootstrap-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
-
 <footer>
     <hr/>
     <p class="text-center">&copy; 2020</p>
@@ -224,16 +319,16 @@
         var target = $(event.relatedTarget);
 
         var URLh = window.location.href;
-       // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href = URLh +"/"+ target.data('id') + '/delete';
+        document.getElementById('deleteUrl').href = URLh + "/" + target.data('id') + '/delete';
     });
 
     $('#hiddenForm').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
         $('#submitOrder').on('click', function () {
-            document.getElementById('orderForm'+target.data('id')).submit();
+            document.getElementById('orderForm' + target.data('id')).submit();
         });
     });
 

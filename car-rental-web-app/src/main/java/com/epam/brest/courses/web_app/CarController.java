@@ -7,6 +7,9 @@ import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +32,11 @@ import java.util.Optional;
 public class CarController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
+
+    private static final int BUTTONS_TO_SHOW = 3;
+    private static final int INITIAL_PAGE = 0;
+    private static final int INITIAL_PAGE_SIZE = 15;
+    private static final int[] PAGE_SIZES = { 5, 10};
 
     private CarValidator carValidator = new CarValidator();
 
@@ -49,19 +58,28 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
+                                ,@RequestParam("page") Optional<Integer> pageNumber
+                                ,@RequestParam("size") Optional<Integer> pageSize, Model model) {
         LOGGER.debug("free cars on date: {}", date);
 
-      //  LocalDate date = LocalDate.parse(filter);
         LocalDate dateNow = LocalDate.now();
 
         if (date == null || date.isBefore(dateNow)) {
             date = LocalDate.now();
         }
 
-        List<Car> cars = carService.findAllByDate(date);
+        int size = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int page = (pageNumber.orElse(0) < 1) ? INITIAL_PAGE : pageNumber.get() - 1;
+
+        List<Car> cars = carService.findAllByDate(date, PageRequest.of(page, size));
+        Page<Car> carPage = new PageImpl<>(cars);
+
         model.addAttribute("filter", date);
         model.addAttribute("cars",cars);
+
+        model.addAttribute("carPage", carPage);
+        model.addAttribute("pageNumbers", Arrays.asList(1,2,3,4,5,6,7,8,9,10));
         return "cars";
     }
 

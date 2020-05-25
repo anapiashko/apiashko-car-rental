@@ -4,6 +4,7 @@ import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,6 +51,20 @@ public class CarServiceRest implements CarService {
         LOGGER.debug("findAllByDate(date = {})", date);
 
         ResponseEntity responseEntity = restTemplate.getForEntity(url+"/filter/" + date, List.class);
+        return (List<Car>) responseEntity.getBody();
+    }
+
+    /**
+     * Find all free cars on date.
+     *
+     * @param date date
+     * @return list of cars
+     */
+    public List<Car> findAllByDate(LocalDate date, Pageable pageable) {
+        LOGGER.debug("findAllByDate(date = {})", date);
+
+        ResponseEntity responseEntity = restTemplate.getForEntity(url+"/filter/"
+                + date+"?page="+pageable.getPageNumber()+"&size="+pageable.getPageSize(), List.class);
         return (List<Car>) responseEntity.getBody();
     }
 

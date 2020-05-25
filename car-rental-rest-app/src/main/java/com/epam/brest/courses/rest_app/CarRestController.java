@@ -47,7 +47,7 @@ public class CarRestController {
     public ResponseEntity<List<Car>> freeCars(@PathVariable(name = "filter")
                                               @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate filter
                                               ,@RequestParam("page") Optional<Integer> pageNumber
-                                              ,@RequestParam("pageSize") Optional<Integer> pageSize) {
+                                              ,@RequestParam("size") Optional<Integer> pageSize) {
         LOGGER.debug("find all free cars on date  = {}", filter);
 
         int size = pageSize.orElse(INITIAL_PAGE_SIZE);
