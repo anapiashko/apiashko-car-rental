@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,16 +32,13 @@ public class CarController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
 
-    private static final int BUTTONS_TO_SHOW = 3;
+    private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 15;
-    private static final int[] PAGE_SIZES = { 5, 10};
-
-    private CarValidator carValidator = new CarValidator();
-
+    private static final int[] PAGE_SIZES = {5, 10};
     private final CarService carService;
-
     private final CarDtoService carDtoService;
+    private CarValidator carValidator = new CarValidator();
 
     @Autowired
     public CarController(CarService carService, CarDtoService carDtoService) {
@@ -58,9 +54,9 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
-                                ,@RequestParam("page") Optional<Integer> pageNumber
-                                ,@RequestParam("size") Optional<Integer> pageSize, Model model) {
+                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
+            , @RequestParam("page") Optional<Integer> pageNumber
+            , @RequestParam("size") Optional<Integer> pageSize, Model model) {
         LOGGER.debug("free cars on date: {}", date);
 
         LocalDate dateNow = LocalDate.now();
@@ -70,16 +66,20 @@ public class CarController {
         }
 
         int size = pageSize.orElse(INITIAL_PAGE_SIZE);
-        int page = (pageNumber.orElse(0) < 1) ? INITIAL_PAGE : pageNumber.get() - 1;
+        int page = (pageNumber.orElse(0) < 1) ? INITIAL_PAGE : pageNumber.get()-1;
 
         List<Car> cars = carService.findAllByDate(date, PageRequest.of(page, size));
         Page<Car> carPage = new PageImpl<>(cars);
 
+        int totalPages = (int) Math.ceil((double)carService.findAllByDate(date).size()/INITIAL_PAGE_SIZE);
+
         model.addAttribute("filter", date);
-        model.addAttribute("cars",cars);
+        model.addAttribute("cars", cars);
 
         model.addAttribute("carPage", carPage);
-        model.addAttribute("pageNumbers", Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPageNumber", page);
+        model.addAttribute("buttonsToShow", BUTTONS_TO_SHOW);
         return "cars";
     }
 
@@ -178,16 +178,16 @@ public class CarController {
      * Show cars with number of orders.
      *
      * @param dateFrom date from
-     * @param dateTo date to
-     * @param model model
+     * @param dateTo   date to
+     * @param model    model
      * @return view name
      */
     @GetMapping(value = "/car-statistics")
-    public String carStatistics(@RequestParam(value="dateFrom",required = false)
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-                                @RequestParam(value = "dateTo",required = false)
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
-                                Model model){
+    public String carStatistics(@RequestParam(value = "dateFrom", required = false)
+                                @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+                                @RequestParam(value = "dateTo", required = false)
+                                @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
+                                Model model) {
         LOGGER.debug("carStatistics between (dateFrom = {}, dateTo = {}), model = {}", dateFrom, dateTo, model);
 
         model.addAttribute("dateFrom", dateFrom);

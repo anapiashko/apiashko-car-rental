@@ -50,14 +50,15 @@ public class CarRestController {
                                               ,@RequestParam("size") Optional<Integer> pageSize) {
         LOGGER.debug("find all free cars on date  = {}", filter);
 
-        int size = pageSize.orElse(INITIAL_PAGE_SIZE);
-        int page = (pageNumber.orElse(0) < 1) ? INITIAL_PAGE : pageNumber.get() - 1;
-
-        return new ResponseEntity<>(carService.findAllByDate(filter, PageRequest.of(page, size)), HttpStatus.OK);
+        if(pageNumber.isPresent() && pageSize.isPresent()) {
+            return new ResponseEntity<>(carService.findAllByDate(filter, PageRequest.of(pageNumber.get(), pageSize.get())), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(carService.findAllByDate(filter), HttpStatus.OK);
+        }
     }
 
     /**
-     * Find car bi id.
+     * Find car by id.
      *
      * @param id carId
      * @return car
