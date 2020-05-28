@@ -4,30 +4,53 @@ import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.dao.OrderRepository;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.model.Order;
-import com.epam.brest.courses.service_api.FakeOrderService;
+import com.epam.brest.courses.service_api.FakeService;
 import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class FakeOrderServiceImpl implements FakeOrderService {
+public class FakeServiceImpl implements FakeService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FakeOrderServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FakeServiceImpl.class);
+
     private final CarRepository carRepository;
     private final OrderRepository orderRepository;
     private Faker faker = new Faker();
 
-    public FakeOrderServiceImpl(OrderRepository orderRepository, CarRepository carRepository) {
+    public FakeServiceImpl(CarRepository carRepository, OrderRepository orderRepository) {
         this.carRepository = carRepository;
         this.orderRepository = orderRepository;
     }
 
     @Override
-    public void createSampleData(Integer number) {
+    public void createCarDataSample(Integer number) {
+        LOGGER.debug("generate {} car(s)", number);
+
+        for (int i = 0; i < number; i++) {
+            String brand = faker.space().nasaSpaceCraft();
+            String registerNumber = faker.regexify("[0-9]{4} AB-[1-7]{1}");
+            BigDecimal price = new BigDecimal(faker.commerce().price(50.0, 1000.0));
+
+            if (!carRepository.findByRegisterNumber(registerNumber).isPresent()) {
+                Car car = new Car();
+                car.setBrand(brand);
+                car.setRegisterNumber(registerNumber);
+                car.setPrice(price);
+                carRepository.save(car);
+            } else {
+                number++;
+            }
+        }
+    }
+
+    @Override
+    public void createOrderDataSample(Integer number) {
         LOGGER.debug("generate {} order(s)", number);
 
         for (int i = 0; i < number; i++) {
