@@ -170,11 +170,11 @@
                                th:title="${'Page '+ i}"
                                rel="tooltip"></a>
                         </li>
-                        <li class="page-item disabled" th:if="${currentPageNumber + buttonsToShow < totalPages}">
-                            <a class="page-link svg-icon" href="#">
-                                <span data-feather="more-horizontal" width="20" height="20">Next</span>
-                            </a>
-                        </li>
+                        <!--                        <li class="page-item disabled" th:if="${currentPageNumber + buttonsToShow < totalPages}">-->
+                        <!--                            <a class="page-link svg-icon" href="#">-->
+                        <!--                                <span data-feather="more-horizontal" width="20" height="20">Next</span>-->
+                        <!--                            </a>-->
+                        <!--                        </li>-->
                         <li class="page-item" th:classappend="${currentPageNumber + 1 == totalPages} ? 'disabled'">
                             <a class="page-link svg-icon"
                                th:href="@{/cars?page={id}(id=${currentPageNumber + 2})}"
