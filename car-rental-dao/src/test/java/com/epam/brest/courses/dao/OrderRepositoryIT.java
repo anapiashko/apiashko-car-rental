@@ -56,6 +56,27 @@ class OrderRepositoryIT {
     }
 
     @Test
+    public void shouldFindOrderByDateAndCarId(){
+
+        //given
+        Order order = new Order();
+        order.setDate(LocalDate.of(2020,3,4));
+        order.setCarId(3);
+
+        //Integer id = orderDao.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        //when
+        Optional<Order> optionalOrder = orderRepository.findByDateAndCarId(savedOrder.getDate(), savedOrder.getCarId());
+
+        //then
+        assertTrue(optionalOrder.isPresent());
+        assertEquals(savedOrder.getId(), optionalOrder.get().getId());
+        assertEquals(order.getDate(),optionalOrder.get().getDate());
+        assertEquals(order.getCarId(), optionalOrder.get().getCarId());
+    }
+
+    @Test
     public void shouldCreateOrder(){
 
         //given
