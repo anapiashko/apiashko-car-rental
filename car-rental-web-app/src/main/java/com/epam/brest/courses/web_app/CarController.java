@@ -7,8 +7,6 @@ import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -34,7 +32,7 @@ public class CarController {
 
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 15;
+    private static final int INITIAL_PAGE_SIZE = 10;
     private static final int[] PAGE_SIZES = {5, 10};
     private final CarService carService;
     private final CarDtoService carDtoService;
@@ -69,14 +67,12 @@ public class CarController {
         int page = (pageNumber.orElse(0) < 1) ? INITIAL_PAGE : pageNumber.get()-1;
 
         List<Car> cars = carService.findAllByDate(date, PageRequest.of(page, size));
-        Page<Car> carPage = new PageImpl<>(cars);
 
         int totalPages = (int) Math.ceil((double)carService.findAllByDate(date).size()/INITIAL_PAGE_SIZE);
 
         model.addAttribute("filter", date);
         model.addAttribute("cars", cars);
 
-        model.addAttribute("carPage", carPage);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPageNumber", page);
         model.addAttribute("buttonsToShow", BUTTONS_TO_SHOW);
