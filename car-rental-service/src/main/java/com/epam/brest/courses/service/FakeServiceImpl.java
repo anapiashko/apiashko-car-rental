@@ -54,7 +54,7 @@ public class FakeServiceImpl implements FakeService {
         LOGGER.debug("generate {} order(s)", number);
 
         for (int i = 0; i < number; i++) {
-            LocalDate date = LocalDate.of(faker.number().numberBetween(2018,2020), faker.number().numberBetween(1,12), faker.number().numberBetween(1,30));
+            LocalDate date = LocalDate.of(faker.number().numberBetween(2018,2021), faker.number().numberBetween(1,12), faker.number().numberBetween(1,30));
             List<Car> cars = carRepository.findAll();
             Integer carId = faker.number().numberBetween(cars.get(0).getId(),cars.get(cars.size()-1).getId());
 

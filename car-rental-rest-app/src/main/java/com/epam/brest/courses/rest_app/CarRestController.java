@@ -24,12 +24,6 @@ public class CarRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarRestController.class);
 
-
-    private static final int BUTTONS_TO_SHOW = 3;
-    private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 15;
-    private static final int[] PAGE_SIZES = { 5, 10};
-
     private final CarService carService;
 
     @Autowired
