@@ -1,15 +1,20 @@
 package com.epam.brest.courses.web_app;
 
 import com.epam.brest.courses.model.Order;
+import com.epam.brest.courses.model.dto.OrderDto;
+import com.epam.brest.courses.service_api.OrderDtoService;
 import com.epam.brest.courses.service_api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Order web controller
@@ -21,8 +26,26 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(final OrderService orderService) {
+    private final OrderDtoService orderDtoService;
+
+    public OrderController(final OrderService orderService, OrderDtoService orderDtoService) {
         this.orderService = orderService;
+        this.orderDtoService = orderDtoService;
+    }
+
+    /**
+     * Find all orders.
+     *
+     * @param model model
+     * @return view name
+     */
+    @GetMapping(value = "/orders")
+    public final String getAll(Model model){
+        LOGGER.debug("find all orders ()");
+
+        List<OrderDto> orders = orderDtoService.findAllOrdersWithCar();
+        model.addAttribute("orders", orders);
+        return "orders";
     }
 
     /**

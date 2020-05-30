@@ -2,9 +2,11 @@ package com.epam.brest.courses.web_app.config;
 
 import com.epam.brest.courses.dao.CarDtoRepository;
 import com.epam.brest.courses.dao.CarRepository;
+import com.epam.brest.courses.dao.OrderDtoRepository;
 import com.epam.brest.courses.dao.OrderRepository;
 import com.epam.brest.courses.service.CarDtoServiceImpl;
 import com.epam.brest.courses.service.CarServiceImpl;
+import com.epam.brest.courses.service.OrderDtoServiceImpl;
 import com.epam.brest.courses.service.OrderServiceImpl;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
@@ -39,9 +41,12 @@ public class TestConfig {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private OrderDtoRepository orderDtoRepository;
+
     @Bean
     public OrderController orderController(){
-        return new OrderController(orderService());
+        return new OrderController(orderService(), orderDtoService());
     }
 
     @Bean
@@ -58,6 +63,11 @@ public class TestConfig {
     @Bean
     public CarDtoService carDtoService() {
         return new CarDtoServiceImpl(carDtoRepository);
+    }
+
+    @Bean
+    public OrderDtoServiceImpl orderDtoService() {
+        return new OrderDtoServiceImpl(orderDtoRepository);
     }
 
     @Bean

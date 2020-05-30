@@ -2,6 +2,7 @@ package com.epam.brest.courses.web_app.config;
 
 import com.epam.brest.courses.service_rest.CarDtoServiceRest;
 import com.epam.brest.courses.service_rest.CarServiceRest;
+import com.epam.brest.courses.service_rest.OrderDtoServiceRest;
 import com.epam.brest.courses.service_rest.OrderServiceRest;
 import com.epam.brest.courses.web_app.CarController;
 import com.epam.brest.courses.web_app.OrderController;
@@ -23,7 +24,7 @@ public class WebConfig {
 
     @Bean
     public OrderController orderController(){
-        return new OrderController(orderServiceRest());
+        return new OrderController(orderServiceRest(), orderDtoServiceRest());
     }
 
     @Bean
@@ -44,6 +45,11 @@ public class WebConfig {
     @Bean
     public CarDtoServiceRest carDtoServiceRest() {
         return new CarDtoServiceRest(props.getBaseUrl() + "/" + props.getCarDtoUrl(), restTemplate());
+    }
+
+    @Bean
+    public OrderDtoServiceRest orderDtoServiceRest() {
+        return new OrderDtoServiceRest(props.getBaseUrl() + "/" + props.getOrderDtoUrl(), restTemplate());
     }
 
     @Bean
