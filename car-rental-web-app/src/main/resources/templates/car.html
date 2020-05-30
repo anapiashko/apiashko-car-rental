@@ -23,11 +23,13 @@
         </button>
         <a href="../"  class="navbar-brand"><img src="../static/img/red_car.svg"
                                                  th:src="@{/img/red_car.svg}"
-                                                 height="50" width="50" alt="red_car"></a>
+                                                 height="50" width="60" alt="red_car"></a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <a class="nav-item nav-link " href="#"
+                <a class="nav-item nav-link active" href="#"
                    th:href="@{/}">Make order</a>
+                <a class="nav-item nav-link" href="#"
+                   th:href="@{/orders}">Show orders</a>
                 <a class="nav-item nav-link" href="period.html"
                    th:href="@{/period}">Statistics</a>
             </ul>
