@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -24,13 +23,6 @@ class OrderServiceImplIT {
     @Autowired
     OrderServiceImplIT(OrderService orderService) {
         this.orderService = orderService;
-    }
-
-    @Test
-    public void shouldFindAllOrderRecords() {
-        List<Order> orders = orderService.findAll();
-        assertNotNull(orders);
-        //assertTrue(orders.size() > 0);
     }
 
     @Test
