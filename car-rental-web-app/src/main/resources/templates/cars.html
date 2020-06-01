@@ -76,6 +76,26 @@
     <span class="navbar-brand text-uppercase mr-auto">List of free cars</span>
     <ul class="navbar-nav float-right">
         <li class="nav-item">
+            <div class="dropdown">
+                <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Excel">
+                    <i class="fa fa-file-excel-o"></i>
+                    Excel
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a id="export_xlsx" class="dropdown-item" href="#">Save in xlsx</a>
+                    <a id="import_xlsx" class="dropdown-item" href="#">Upload from xlsx</a>
+                </div>
+            </div>
+<!--            <a href="#"-->
+<!--               th:href="@{|/car|}"--><!--               class="btn btn-light"-->
+<!--               title="Excel"-->
+<!--               data-toggle="tooltip"-->
+<!--               data-placement="bottom">-->
+<!--                <i class="fa fa-file-excel-o"></i> <span-->
+<!--                    class="d-none d-sm-inline">Excel</span></a>-->
+        </li>
+        <li class="nav-item">
             <a href="#"
                th:href="@{|/car|}"
                class="btn btn-light"
@@ -111,7 +131,7 @@
                              <span data-toggle="modal"
                                    data-target="#hiddenForm"
                                    th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber} +' on date ' +  ${filter}">
-                            <form th:id="'orderForm__${car.id}__'"  th:action="@{/orders}"
+                            <form th:id="'orderForm__${car.id}__'" th:action="@{/orders}"
                                   th:method="@{post}"
 
                                   class="d-none d-md-inline">
@@ -222,20 +242,27 @@
         $('[data-toggle="tooltip"]').tooltip()
     });
 
+    $('#export_xlsx').on('click', function () {
+        document.getElementById('export_xlsx').href = '/cars' + "/" + "export_xlsx";
+    });
+    $('#import_xlsx').on('click', function () {
+        document.getElementById('import_xlsx').href = '/cars' + "/" + "import_xlsx";
+    });
+
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
 
         var URLh = window.location.href;
-       // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href = URLh +"/"+ target.data('id') + '/delete';
+        document.getElementById('deleteUrl').href = URLh + "/" + target.data('id') + '/delete';
     });
 
     $('#hiddenForm').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
         $('#submitOrder').on('click', function () {
-            document.getElementById('orderForm'+target.data('id')).submit();
+            document.getElementById('orderForm' + target.data('id')).submit();
         });
     });
 

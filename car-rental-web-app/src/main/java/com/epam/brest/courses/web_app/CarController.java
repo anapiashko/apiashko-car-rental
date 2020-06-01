@@ -184,5 +184,24 @@ public class CarController {
         return "statistics";
     }
 
+    @GetMapping(value = "/cars/export_xlsx")
+    public String saveAsXlsx(){
+
+        //TODO: download db as archive
+        Integer a = 6;
+
+        Integer b = 90;
+        return "redirect:/cars";
+    }
+
+    @GetMapping(value = "/cars/import_xlsx")
+    public String uploadFromXlsx(){
+
+        Integer a = 6;
+
+        Integer b = 90;
+        return "redirect:/cars";
+    }
+
 }
 

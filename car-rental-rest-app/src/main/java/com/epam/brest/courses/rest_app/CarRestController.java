@@ -3,6 +3,7 @@ package com.epam.brest.courses.rest_app;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.rest_app.exception.ErrorResponse;
 import com.epam.brest.courses.service_api.CarService;
+import com.epam.brest.courses.service_api.ExcelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -25,9 +27,12 @@ public class CarRestController {
 
     private final CarService carService;
 
+    private final ExcelService excelService;
+
     @Autowired
-    public CarRestController(CarService carServices) {
+    public CarRestController(CarService carServices, ExcelService excelService) {
         this.carService = carServices;
+        this.excelService = excelService;
     }
 
     /**
@@ -42,6 +47,21 @@ public class CarRestController {
         LOGGER.debug("find all free cars on date  = {}", filter);
 
         return new ResponseEntity<>(carService.findAllByDate(filter), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/cars/export_xlsx")
+    public String saveAsXlsx() throws IOException {
+
+        //TODO: download db as archive
+        excelService.exportFromDB();
+        return "redirect:/cars";
+    }
+
+    @GetMapping(value = "/cars/import_xlsx")
+    public String uploadFromXlsx(@RequestParam(value = "file", required = false) String fileName){
+
+        excelService.importInDB(fileName);
+        return "redirect:/cars";
     }
 
     /**
