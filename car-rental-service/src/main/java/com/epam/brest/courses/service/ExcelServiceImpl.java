@@ -45,26 +45,29 @@ public class ExcelServiceImpl implements ExcelService {
         Cell cell;
         Row row;
         //
-        XSSFCellStyle style = workbook.createCellStyle();
-        style.setLocked(false);
+        XSSFCellStyle lockStyle = workbook.createCellStyle();
+        lockStyle.setLocked(true);
+        XSSFCellStyle unlockStyle = workbook.createCellStyle();
+        unlockStyle.setLocked(false);
 
         row = sheet.createRow(rownum);
 
         // Id
         cell = row.createCell(0, CellType.STRING);
         cell.setCellValue("id");
+        cell.setCellStyle(unlockStyle);
         // Brand
         cell = row.createCell(1, CellType.STRING);
         cell.setCellValue("brand");
-        cell.setCellStyle(style);
+        cell.setCellStyle(unlockStyle);
         // Registration number
         cell = row.createCell(2, CellType.STRING);
         cell.setCellValue("registerNumber");
-        cell.setCellStyle(style);
+        cell.setCellStyle(unlockStyle);
         // Price
         cell = row.createCell(3, CellType.STRING);
         cell.setCellValue("price");
-        cell.setCellStyle(style);
+        cell.setCellStyle(unlockStyle);
 
         // Data
         for (Car car : cars) {
@@ -72,17 +75,21 @@ public class ExcelServiceImpl implements ExcelService {
             row = sheet.createRow(rownum);
 
             // Brand (A)
-            cell = row.createCell(0, CellType.STRING);
+            cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue(car.getId());
+            cell.setCellStyle(lockStyle);
             // Brand (B)
             cell = row.createCell(1, CellType.STRING);
             cell.setCellValue(car.getBrand());
+            cell.setCellStyle(unlockStyle);
             // Registration number (C)
             cell = row.createCell(2, CellType.STRING);
             cell.setCellValue(car.getRegisterNumber());
+            cell.setCellStyle(unlockStyle);
             // Price (D)
             cell = row.createCell(3, CellType.NUMERIC);
             cell.setCellValue(car.getPrice().toString());
+            cell.setCellStyle(unlockStyle);
 
         }
         File file = new File("cars.xlsx");
@@ -94,6 +101,7 @@ public class ExcelServiceImpl implements ExcelService {
 
     }
 
+    @Override
     public void importInDB(String fileName) {
         final DataFormatter df = new DataFormatter();
         try {
