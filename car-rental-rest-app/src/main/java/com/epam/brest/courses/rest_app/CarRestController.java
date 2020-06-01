@@ -7,11 +7,14 @@ import com.epam.brest.courses.service_api.ExcelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -35,6 +38,21 @@ public class CarRestController {
         this.excelService = excelService;
     }
 
+    @GetMapping(value = "cars/download/cars.xlsx")
+    public ResponseEntity<InputStreamResource> excelCarsReport() throws IOException {
+        List<Car> cars = carService.findAll();
+
+        ByteArrayInputStream in = excelService.carsToExcel(cars);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=cars.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
+    }
+
     /**
      * Find all free cars on date.
      *
@@ -47,14 +65,6 @@ public class CarRestController {
         LOGGER.debug("find all free cars on date  = {}", filter);
 
         return new ResponseEntity<>(carService.findAllByDate(filter), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/cars/export_xlsx")
-    public String saveAsXlsx() throws IOException {
-
-        //TODO: download db as archive
-        excelService.exportFromDB();
-        return "redirect:/cars";
     }
 
     @GetMapping(value = "/cars/import_xlsx")

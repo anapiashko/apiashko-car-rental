@@ -3,20 +3,16 @@ package com.epam.brest.courses.service;
 import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.ExcelService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -34,70 +30,53 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
-    public void exportFromDB() throws IOException {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Car sheet");
-        sheet.protectSheet("password");
+    public ByteArrayInputStream carsToExcel(List<Car> cars) throws IOException {
+        String[] COLUMNs = {"Id", "Brand", "RegisterNumber", "Price"};
+        try (
+                Workbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()
+        ) {
+            CreationHelper createHelper = workbook.getCreationHelper();
 
-        List<Car> cars = carRepository.findAll();
+            Sheet sheet = workbook.createSheet("cars");
 
-        int rownum = 0;
-        Cell cell;
-        Row row;
-        //
-        XSSFCellStyle lockStyle = workbook.createCellStyle();
-        lockStyle.setLocked(true);
-        XSSFCellStyle unlockStyle = workbook.createCellStyle();
-        unlockStyle.setLocked(false);
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setColor(IndexedColors.BLACK.getIndex());
 
-        row = sheet.createRow(rownum);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
 
-        // Id
-        cell = row.createCell(0, CellType.STRING);
-        cell.setCellValue("id");
-        cell.setCellStyle(unlockStyle);
-        // Brand
-        cell = row.createCell(1, CellType.STRING);
-        cell.setCellValue("brand");
-        cell.setCellStyle(unlockStyle);
-        // Registration number
-        cell = row.createCell(2, CellType.STRING);
-        cell.setCellValue("registerNumber");
-        cell.setCellStyle(unlockStyle);
-        // Price
-        cell = row.createCell(3, CellType.STRING);
-        cell.setCellValue("price");
-        cell.setCellStyle(unlockStyle);
+            // Row for Header
+            Row headerRow = sheet.createRow(0);
 
-        // Data
-        for (Car car : cars) {
-            rownum++;
-            row = sheet.createRow(rownum);
+            // Header
+            for (int col = 0; col < COLUMNs.length; col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(COLUMNs[col]);
+                cell.setCellStyle(headerCellStyle);
+            }
 
-            // Brand (A)
-            cell = row.createCell(0, CellType.NUMERIC);
-            cell.setCellValue(car.getId());
-            cell.setCellStyle(lockStyle);
-            // Brand (B)
-            cell = row.createCell(1, CellType.STRING);
-            cell.setCellValue(car.getBrand());
-            cell.setCellStyle(unlockStyle);
-            // Registration number (C)
-            cell = row.createCell(2, CellType.STRING);
-            cell.setCellValue(car.getRegisterNumber());
-            cell.setCellStyle(unlockStyle);
-            // Price (D)
-            cell = row.createCell(3, CellType.NUMERIC);
-            cell.setCellValue(car.getPrice().toString());
-            cell.setCellStyle(unlockStyle);
+            // CellStyle for Price
+            CellStyle ageCellStyle = workbook.createCellStyle();
+            ageCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("#"));
 
+            int rowIdx = 1;
+            for (Car customer : cars) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(customer.getId());
+                row.createCell(1).setCellValue(customer.getBrand());
+                row.createCell(2).setCellValue(customer.getRegisterNumber());
+
+                Cell ageCell = row.createCell(3);
+                ageCell.setCellValue(customer.getPrice().toString());
+                ageCell.setCellStyle(ageCellStyle);
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
         }
-        File file = new File("cars.xlsx");
-      //  file.getParentFile().mkdirs();
-
-        FileOutputStream outFile = new FileOutputStream(file);
-        workbook.write(outFile);
-        System.out.println("Created file: " + file.getAbsolutePath());
 
     }
 

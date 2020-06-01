@@ -1,10 +1,14 @@
 package com.epam.brest.courses.service_api;
 
+import com.epam.brest.courses.model.Car;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 
 public interface ExcelService {
 
-    void exportFromDB() throws IOException;
+    ByteArrayInputStream carsToExcel(List<Car> cars) throws IOException;
 
     void importInDB(String fileName);
 }
