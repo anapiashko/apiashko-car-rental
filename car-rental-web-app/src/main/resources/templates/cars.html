@@ -83,17 +83,12 @@
                     Excel
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a id="export_xlsx" class="dropdown-item" href="http://localhost:8088/cars/download/cars.xlsx">Save in xlsx</a>
-                    <a id="import_xlsx" class="dropdown-item" href="#">Upload from xlsx</a>
+                    <a id="export_xlsx" class="dropdown-item" href="http://localhost:8088/cars/download/cars.xlsx">Save
+                        in xlsx</a>
+                    <a id="import_xlsx" class="dropdown-item" href="#" data-toggle="modal" data-target="#uploadDialog">Upload
+                        from xlsx</a>
                 </div>
             </div>
-<!--            <a href="#"-->
-<!--               th:href="@{|/car|}"--><!--               class="btn btn-light"-->
-<!--               title="Excel"-->
-<!--               data-toggle="tooltip"-->
-<!--               data-placement="bottom">-->
-<!--                <i class="fa fa-file-excel-o"></i> <span-->
-<!--                    class="d-none d-sm-inline">Excel</span></a>-->
         </li>
         <li class="nav-item">
             <a href="#"
@@ -182,6 +177,42 @@
     <hr/>
     <p class="text-center">&copy; 2020</p>
 </footer>
+
+<!--Uploading cars from excel -->
+<div class="modal fade bd-example-modal-xl" id="uploadDialog" tabindex="-1"
+     role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Uploading .xlsx file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">Anastasiya</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Learn template</h5>
+                <p><a href="http://localhost:8088/cars/download/cars.xlsx"> <i class="fa fa-download"></i> Download</a>
+                    the template and fill it in, or edit your file according to the template </p>
+                <hr>
+                <h5>Browse and Upload file</h5>
+                <form id="uploadForm" method="post" th:action="@{/cars/import_xlsx}" enctype="multipart/form-data">
+                    <input type="file" name="file">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="cars.html"
+                   th:href="@{/cars}"
+                   th:onclick="@{document.forms['uploadForm'].submit(); return false;}"
+                   class="btn btn-primary"
+                   title="Upload cars"
+                   data-toggle="tooltip"
+                   data-placement="top">
+                    <i class="d-none d-sm-inline fa fa-save"></i> Save</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Confirm delete Modal -->
 <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"

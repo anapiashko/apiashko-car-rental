@@ -10,5 +10,5 @@ public interface ExcelService {
 
     ByteArrayInputStream carsToExcel(List<Car> cars) throws IOException;
 
-    void importInDB(String fileName);
+    List<Car> importInDB(String fileName);
 }

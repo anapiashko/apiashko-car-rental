@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -38,21 +39,6 @@ public class CarRestController {
         this.excelService = excelService;
     }
 
-    @GetMapping(value = "cars/download/cars.xlsx")
-    public ResponseEntity<InputStreamResource> excelCarsReport() throws IOException {
-        List<Car> cars = carService.findAll();
-
-        ByteArrayInputStream in = excelService.carsToExcel(cars);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=cars.xlsx");
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .body(new InputStreamResource(in));
-    }
-
     /**
      * Find all free cars on date.
      *
@@ -67,10 +53,34 @@ public class CarRestController {
         return new ResponseEntity<>(carService.findAllByDate(filter), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/cars/import_xlsx")
-    public String uploadFromXlsx(@RequestParam(value = "file", required = false) String fileName){
+    @GetMapping(value = "cars/download/cars.xlsx")
+    public ResponseEntity<InputStreamResource> excelCarsReport() throws IOException {
+        LOGGER.debug("export car table to excel sheet ()");
 
-        excelService.importInDB(fileName);
+        List<Car> cars = carService.findAll();
+
+        ByteArrayInputStream in = excelService.carsToExcel(cars);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=cars.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
+    }
+
+    @PostMapping(value = "/cars/import_xlsx")
+    public String uploadFromXlsx(@RequestBody String filename) throws IOException {
+        LOGGER.debug("import excel sheet to car table)");
+
+        if(!(new File(filename).exists())){
+            System.out.println("Not such file");
+        }
+
+        List<Car> cars = excelService.importInDB(filename);
+
+        Integer s = 7;
         return "redirect:/cars";
     }
 
