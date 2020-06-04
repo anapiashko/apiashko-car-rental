@@ -111,6 +111,7 @@
                 <table class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
+                        <th>Id</th>
                         <th>Brand</th>
                         <th>Number</th>
                         <th>Price a day</th>
@@ -119,6 +120,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="car : ${cars}">
+                        <td th:text="${car.id}">1</td> <!--for dev only-->
                         <td th:text="${car.brand}">BMW</td>
                         <td th:text="${car.registerNumber}">3909 AB-1</td>
                         <td th:text="${car.price} + '   $'">140 $</td>

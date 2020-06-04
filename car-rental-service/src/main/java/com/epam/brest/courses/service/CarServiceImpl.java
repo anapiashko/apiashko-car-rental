@@ -52,10 +52,17 @@ public class CarServiceImpl implements CarService {
         LOGGER.debug("create (car:{})", car);
 
         if (carRepository.findByRegisterNumber(car.getRegisterNumber()).isPresent()) {
-            throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
+            throw new IllegalArgumentException("Car with the same registration number already exists in DB.");
         }
 
         return carRepository.save(car);
+    }
+
+    @Override
+    public List<Car> saveAll(List<Car> cars){
+        LOGGER.debug("save all cars from list ()");
+
+        return (List<Car>) carRepository.saveAll(cars);
     }
 
     @Override

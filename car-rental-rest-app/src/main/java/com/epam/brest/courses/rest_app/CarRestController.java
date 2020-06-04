@@ -75,7 +75,8 @@ public class CarRestController {
 
         List<Car> cars = excelService.excelToCars(filename);
 
-        return cars;
+        List<Car> savedCars = carService.saveAll(cars);
+        return savedCars;
     }
 
     /**

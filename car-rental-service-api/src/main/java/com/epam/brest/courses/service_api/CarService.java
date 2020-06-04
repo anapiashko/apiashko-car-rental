@@ -41,6 +41,14 @@ public interface CarService {
     Car create(Car car);
 
     /**
+     * Save all cars from list.
+     *
+     * @param cars list if cars
+     * @return list of cars
+     */
+    List<Car> saveAll(List<Car> cars);
+
+    /**
      * Update car by id.
      *
      * @param car car.

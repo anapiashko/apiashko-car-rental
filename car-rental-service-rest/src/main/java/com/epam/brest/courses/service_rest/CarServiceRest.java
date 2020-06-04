@@ -33,6 +33,7 @@ public class CarServiceRest implements CarService {
      *
      * @return list of cars
      */
+    @Override
     public List<Car> findAll() {
         LOGGER.debug("findAll()");
 
@@ -46,6 +47,7 @@ public class CarServiceRest implements CarService {
      * @param date date
      * @return list of cars
      */
+    @Override
     public List<Car> findAllByDate(LocalDate date) {
         LOGGER.debug("findAllByDate(date = {})", date);
 
@@ -59,6 +61,7 @@ public class CarServiceRest implements CarService {
      * @param carId order Id.
      * @return optional car
      */
+    @Override
     public Optional<Car> findById(Integer carId) {
         LOGGER.debug("findById({})", carId);
 
@@ -72,6 +75,7 @@ public class CarServiceRest implements CarService {
      * @param car order record.
      * @return id created car
      */
+    @Override
     public Car create(Car car) {
         LOGGER.debug("create({})", car);
 
@@ -80,11 +84,23 @@ public class CarServiceRest implements CarService {
     }
 
     /**
+     * Save all cars from list.
+     *
+     * @param cars list if cars
+     * @return list of cars
+     */
+    @Override
+    public List<Car> saveAll(List<Car> cars) {
+        return null;
+    }
+
+    /**
      * Update car.
      *
      * @param car car.
      * @return number changed records
      */
+    @Override
     public int update(Car car) {
         LOGGER.debug("update({})", car);
 
@@ -99,8 +115,8 @@ public class CarServiceRest implements CarService {
      * Delete car from db.
      *
      * @param carId car id.
-     * @return number deleted cars.
      */
+    @Override
     public void delete(Integer carId) {
         LOGGER.debug("delete({})", carId);
 
