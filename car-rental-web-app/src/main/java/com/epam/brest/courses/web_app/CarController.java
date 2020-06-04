@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -202,20 +201,11 @@ public class CarController {
         }
 
         String uuidFile = UUID.randomUUID().toString();
-//        String resultFilename = uuidFile + "_" + file.getOriginalFilename();
-        String resultFilename = file.getOriginalFilename();
+        String resultFilename = uuidFile + "." + file.getOriginalFilename();
 
         file.transferTo(new File(uploadPath + "/" + resultFilename));
-        Resource resource = file.getResource();
-
-        //Get the file and save it somewhere
-//        byte[]bytes = file.getBytes();
-//        Path path = Paths.get(uploadPath +"/"+ file.getOriginalFilename());
-//        Files.write(path, bytes);
 
         excelService.excelToCars(uploadPath + "/" + resultFilename);
-
-//        excelService.importInDB(uploadPath + "/" + file.getOriginalFilename());
 
         return "redirect:/cars";
     }
