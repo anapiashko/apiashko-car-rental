@@ -14,7 +14,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -81,9 +83,14 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
-    public void importInDB(String fileName) {
+    public List<Car> excelToCars(String fileName) {
+
+        List<Car> cars = new LinkedList<>();
         final DataFormatter df = new DataFormatter();
+
         try {
+
+          //  FileInputStream file = new FileInputStream("/"+"home/anastasiya/LABA/apiashko-car-rental/car-rental-web-app/src/main/resources/cars.xlsx");
 
             FileInputStream file = new FileInputStream(fileName);
             //Create Workbook instance holding reference to .xlsx file
@@ -95,13 +102,14 @@ public class ExcelServiceImpl implements ExcelService {
             //Iterate through each rows one by one
             Iterator<Row> rowIterator = sheet.iterator();
 
-            int rownum = 0;
+            int rownum = 1;
             int colnum = 0;
             Row r = rowIterator.next();
 
             int rowcount = sheet.getLastRowNum();
             int colcount = r.getPhysicalNumberOfCells();
             data = new Object[rowcount][colcount];
+
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
 
@@ -111,12 +119,24 @@ public class ExcelServiceImpl implements ExcelService {
                 while (cellIterator.hasNext()) {
 
                     Cell cell = cellIterator.next();
+                    if(cell.getCellType() == CellType.BLANK){
+                        break;
+                    }
+
                     //Check the cell type and format accordingly
                     data[rownum][colnum] = df.formatCellValue(cell);
                     System.out.print(df.formatCellValue(cell));
                     colnum++;
                     System.out.println("-");
                 }
+                if(colnum < 4){
+                    break;
+                }
+                Car car = new Car();
+                car.setBrand((String)data[rownum][1]);
+                car.setRegisterNumber((String)data[rownum][2]);
+                car.setPrice(new BigDecimal((String)data[rownum][3]));
+                cars.add(car);
                 rownum++;
                 System.out.println();
             }
@@ -125,6 +145,6 @@ public class ExcelServiceImpl implements ExcelService {
             e.printStackTrace();
         }
 
-        //return data;
+        return cars;
     }
 }

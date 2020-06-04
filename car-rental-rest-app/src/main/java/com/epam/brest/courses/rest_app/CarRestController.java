@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -70,18 +69,13 @@ public class CarRestController {
                 .body(new InputStreamResource(in));
     }
 
-    @PostMapping(value = "/cars/import_xlsx")
-    public String uploadFromXlsx(@RequestBody String filename) throws IOException {
+    @GetMapping(value = "/cars/import_xlsx")
+    public List<Car> uploadFromExcel(@RequestParam(value = "filename", required = false) String filename) {
         LOGGER.debug("import excel sheet to car table)");
 
-        if(!(new File(filename).exists())){
-            System.out.println("Not such file");
-        }
+        List<Car> cars = excelService.excelToCars(filename);
 
-        List<Car> cars = excelService.importInDB(filename);
-
-        Integer s = 7;
-        return "redirect:/cars";
+        return cars;
     }
 
     /**
