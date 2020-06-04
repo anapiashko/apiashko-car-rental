@@ -27,7 +27,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String VALIDATION_ERROR = "validation_error";
 
     @ExceptionHandler(CarNotFoundException.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(final CarNotFoundException ex, final WebRequest request) {
+    public final ResponseEntity<ErrorResponse> handleCarNotFoundException(final CarNotFoundException ex, final WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(CAR_NOT_FOUND, details);

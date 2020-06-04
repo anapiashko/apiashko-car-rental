@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +64,25 @@ public class CarRestController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=cars.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
+    }
+
+    @GetMapping(value = "cars/download/template.xlsx")
+    public ResponseEntity<InputStreamResource> excelTTemplateReport() throws IOException {
+        LOGGER.debug("export template table to excel sheet ()");
+
+        List<Car> cars = new LinkedList<>();
+        cars.add(new Car(1, "BMW", "0000 AB-0", BigDecimal.valueOf(100)));
+        cars.add(new Car(2, "Brand", "0001 AB-1", BigDecimal.valueOf(150.9)));
+
+        ByteArrayInputStream in = excelService.carsToExcel(cars);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=template.xlsx");
 
         return ResponseEntity
                 .ok()

@@ -30,6 +30,16 @@ public class Car {
      */
     private BigDecimal price;
 
+    public Car() {
+    }
+
+    public Car(Integer id, String brand, String registerNumber, BigDecimal price) {
+        this.id = id;
+        this.brand = brand;
+        this.registerNumber = registerNumber;
+        this.price = price;
+    }
+
     public final Integer getId() {
         return id;
     }

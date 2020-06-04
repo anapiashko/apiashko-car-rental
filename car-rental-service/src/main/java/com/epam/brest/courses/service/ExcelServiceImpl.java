@@ -24,7 +24,7 @@ import java.util.List;
 public class ExcelServiceImpl implements ExcelService {
 
     private final CarRepository carRepository;
-    Object[][] data = null;
+    private Object[][] data = null;
 
     @Autowired
     public ExcelServiceImpl(CarRepository carRepository) {
@@ -102,7 +102,7 @@ public class ExcelServiceImpl implements ExcelService {
             //Iterate through each rows one by one
             Iterator<Row> rowIterator = sheet.iterator();
 
-            int rownum = 1;
+            int rownum = 0;
             int colnum = 0;
             Row r = rowIterator.next();
 
