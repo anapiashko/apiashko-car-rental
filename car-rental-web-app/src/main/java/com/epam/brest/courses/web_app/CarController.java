@@ -3,10 +3,13 @@ package com.epam.brest.courses.web_app;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
+import com.epam.brest.courses.service_api.ExcelService;
 import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +18,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Car web controller.
@@ -28,17 +35,18 @@ import java.util.Optional;
 public class CarController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
-
+    private final CarService carService;
+    private final CarDtoService carDtoService;
+    private final ExcelService excelService;
+    @Value("${upload.path}")
+    private String uploadPath;
     private CarValidator carValidator = new CarValidator();
 
-    private final CarService carService;
-
-    private final CarDtoService carDtoService;
-
     @Autowired
-    public CarController(CarService carService, CarDtoService carDtoService) {
+    public CarController(CarService carService, CarDtoService carDtoService, ExcelService excelService) {
         this.carService = carService;
         this.carDtoService = carDtoService;
+        this.excelService = excelService;
     }
 
     /**
@@ -49,10 +57,10 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
+                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
         LOGGER.debug("free cars on date: {}", date);
 
-      //  LocalDate date = LocalDate.parse(filter);
+        //  LocalDate date = LocalDate.parse(filter);
         LocalDate dateNow = LocalDate.now();
 
         if (date == null || date.isBefore(dateNow)) {
@@ -61,7 +69,7 @@ public class CarController {
 
         List<Car> cars = carService.findAllByDate(date);
         model.addAttribute("filter", date);
-        model.addAttribute("cars",cars);
+        model.addAttribute("cars", cars);
         return "cars";
     }
 
@@ -160,16 +168,16 @@ public class CarController {
      * Show cars with number of orders.
      *
      * @param dateFrom date from
-     * @param dateTo date to
-     * @param model model
+     * @param dateTo   date to
+     * @param model    model
      * @return view name
      */
     @GetMapping(value = "/car-statistics")
-    public String carStatistics(@RequestParam(value="dateFrom",required = false)
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-                                @RequestParam(value = "dateTo",required = false)
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
-                                Model model){
+    public String carStatistics(@RequestParam(value = "dateFrom", required = false)
+                                @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+                                @RequestParam(value = "dateTo", required = false)
+                                @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
+                                Model model) {
         LOGGER.debug("carStatistics between (dateFrom = {}, dateTo = {}), model = {}", dateFrom, dateTo, model);
 
         model.addAttribute("dateFrom", dateFrom);
@@ -184,12 +192,31 @@ public class CarController {
         return "statistics";
     }
 
-    @GetMapping(value = "/cars/import_xlsx")
-    public String uploadFromXlsx(){
+    @PostMapping(value = "/cars/import_xlsx")
+    public String uploadFromXlsx(@RequestParam("file") MultipartFile file) throws IOException {
+        LOGGER.debug("import excel sheet to car table)");
 
-        Integer a = 6;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
 
-        Integer b = 90;
+        String uuidFile = UUID.randomUUID().toString();
+//        String resultFilename = uuidFile + "_" + file.getOriginalFilename();
+        String resultFilename = file.getOriginalFilename();
+
+        file.transferTo(new File(uploadPath + "/" + resultFilename));
+        Resource resource = file.getResource();
+
+        //Get the file and save it somewhere
+//        byte[]bytes = file.getBytes();
+//        Path path = Paths.get(uploadPath +"/"+ file.getOriginalFilename());
+//        Files.write(path, bytes);
+
+        excelService.excelToCars(uploadPath + "/" + resultFilename);
+
+//        excelService.importInDB(uploadPath + "/" + file.getOriginalFilename());
+
         return "redirect:/cars";
     }
 
