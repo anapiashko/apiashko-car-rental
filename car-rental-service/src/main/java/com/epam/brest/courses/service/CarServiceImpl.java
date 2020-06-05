@@ -64,7 +64,7 @@ public class CarServiceImpl implements CarService {
 
         for(Car car: cars){
             if (carRepository.findByRegisterNumber(car.getRegisterNumber()).isPresent()) {
-                throw new IllegalArgumentException("Car with the same registration number already exists in DB.");
+                throw new IllegalArgumentException("Car with the same registration number already exists : " + car.getRegisterNumber());
             }
         }
 
@@ -79,7 +79,7 @@ public class CarServiceImpl implements CarService {
 
         if (optionalCar.isPresent()) {
             if (!optionalCar.get().getId().equals(car.getId())) {
-                throw new IllegalArgumentException("Car with the same registration number already exsists in DB.");
+                throw new IllegalArgumentException("Car with the same registration number already exists in DB.");
             }
         }
 

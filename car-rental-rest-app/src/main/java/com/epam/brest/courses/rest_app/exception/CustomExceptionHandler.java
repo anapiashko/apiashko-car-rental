@@ -8,6 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<ErrorResponse> handleIllegalArgumentException(final Exception ex, final WebRequest request) {
 
         return new ResponseEntity<>(
-                new ErrorResponse(VALIDATION_ERROR, ex),
+                new ErrorResponse(VALIDATION_ERROR,  Arrays.asList(ex.getMessage())),
                 HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

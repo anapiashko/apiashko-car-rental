@@ -72,7 +72,7 @@ public class CarRestController {
     }
 
     @GetMapping(value = "cars/download/template.xlsx")
-    public ResponseEntity<InputStreamResource> excelTTemplateReport() throws IOException {
+    public ResponseEntity<InputStreamResource> excelTemplateReport() throws IOException {
         LOGGER.debug("export template table to excel sheet ()");
 
         List<Car> cars = new LinkedList<>();
@@ -91,13 +91,14 @@ public class CarRestController {
     }
 
     @GetMapping(value = "/cars/import_xlsx")
-    public List<Car> uploadFromExcel(@RequestParam(value = "filename", required = false) String filename) {
+    public ResponseEntity<List<Car>> uploadFromExcel(@RequestParam(value = "filename", required = false) String filename) {
         LOGGER.debug("import excel sheet to car table)");
 
         List<Car> cars = excelService.excelToCars(filename);
 
         List<Car> savedCars = carService.saveAll(cars);
-        return savedCars;
+
+        return new ResponseEntity<>(savedCars, HttpStatus.CREATED);
     }
 
     /**

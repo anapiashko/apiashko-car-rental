@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -192,8 +194,12 @@ public class CarController {
     }
 
     @PostMapping(value = "/cars/import_xlsx")
-    public String uploadFromXlsx(@RequestParam("file") MultipartFile file) throws IOException {
+    public String uploadFromXlsx(@RequestParam("file") MultipartFile file, Model model) throws IOException {
         LOGGER.debug("import excel sheet to car table)");
+
+        if (file.isEmpty()) {
+            return "redirect:/cars";
+        }
 
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
@@ -205,7 +211,16 @@ public class CarController {
 
         file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-        excelService.excelToCars(uploadPath + "/" + resultFilename);
+//        excelService.excelToCars(uploadPath + "/" + resultFilename);
+
+        try{
+            excelService.excelToCars(uploadPath + "/" + resultFilename);
+        }catch (HttpStatusCodeException e){
+            if (HttpStatus.UNPROCESSABLE_ENTITY == e.getStatusCode()) {
+                model.addAttribute("message", "WebController Car Exception");
+            }
+//            return "cars";
+        }
 
         return "redirect:/cars";
     }

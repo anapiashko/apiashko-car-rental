@@ -15,6 +15,14 @@
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <title>Cars</title>
 </head>
+<style>
+    @media (min-width: 768px) {
+        .modal-xl {
+            width: 90%;
+            max-width: 1200px;
+        }
+    }
+</style>
 <body>
 
 <header>
@@ -180,8 +188,28 @@
     <p class="text-center">&copy; 2020</p>
 </footer>
 
+<div id="rejectSave" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Uploading cars from excel -->
-<div class="modal fade bd-example-modal-xl" id="uploadDialog" tabindex="-1"
+<div class="modal fade  bd-example-modal-xl" id="uploadDialog" tabindex="-1"
      role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -198,119 +226,126 @@
                 <hr>
                 <h5>Browse and Upload file</h5>
                 <form id="uploadForm" method="post" th:action="@{/cars/import_xlsx}" enctype="multipart/form-data">
-                    <input type="file" name="file">
+                    <input class="form-control"
+                           type="file" name="file">
+                    <div th:if="${message}"
+                         class="invalid-feedback"
+                         th:errors="${message}">[errors]</div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="cars.html"
-                   th:href="@{/cars}"
-                   th:onclick="@{document.forms['uploadForm'].submit(); return false;}"
-                   class="btn btn-primary"
-                   title="Upload cars"
-                   data-toggle="tooltip"
-                   data-placement="top">
-                    <i class="d-none d-sm-inline fa fa-save"></i> Save</a>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="cars.html"
+                       th:href="@{/cars}"
+                       th:onclick="@{document.forms['uploadForm'].submit(); return false;}"
+                       class="btn btn-primary"
+                       title="Upload cars"
+                       data-toggle="tooltip"
+                       data-placement="top">
+                        <i class="d-none d-sm-inline fa fa-save"></i> Save</a>
+                </div>
 
-<!-- Confirm delete Modal -->
-<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-danger">
-                <h5 class="modal-title" id="exampleModalLabel">Delete car</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Please confirm delete
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
+<!--                <div th:if="${message}">-->
+<!--                    <h2 th:text="${message}"/>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
-</div>
 
-<!-- Confirm adding order -->
-<div class="modal fade" id="hiddenForm" tabindex="-1" role="dialog"
-     aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-success">
-                <h5 class="modal-title" id="modalLabel">Send order</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Please confirm adding
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                <a id="submitOrder" href="#"
-
-                   class="btn btn-success">Send</a>
+    <!-- Confirm delete Modal -->
+    <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-danger">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete car</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Please confirm delete
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="../static/js/jquery-3.4.1.slim.min.js"
-        th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
-<script src="../static/js/popper.min.js"
-        th:src="@{/js/popper.min.js}"></script>
-<script src="../static/js/bootstrap.min.js"
-        th:src="@{/js/bootstrap.min.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
-<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/masking-input.js" data-autoinit="true"></script>
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
+    <!-- Confirm adding order -->
+    <div class="modal fade" id="hiddenForm" tabindex="-1" role="dialog"
+         aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-success">
+                    <h5 class="modal-title" id="modalLabel">Send order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Please confirm adding
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <a id="submitOrder" href="#"
 
-    // $('#export_xlsx').on('click', function () {
-    //     document.getElementById('export_xlsx').href = '/cars' + "/" + "export_xlsx";
-    // });
-    $('#import_xlsx').on('click', function () {
-        document.getElementById('import_xlsx').href = '/cars' + "/" + "import_xlsx";
-    });
+                       class="btn btn-success">Send</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    $('#deleteDialog').on('show.bs.modal', function (event) {
-        var target = $(event.relatedTarget);
-
-        var URLh = window.location.href;
-        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
-        $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href = URLh + "/" + target.data('id') + '/delete';
-    });
-
-    $('#hiddenForm').on('show.bs.modal', function (event) {
-        var target = $(event.relatedTarget);
-        $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
-        $('#submitOrder').on('click', function () {
-            document.getElementById('orderForm' + target.data('id')).submit();
+    <script src="../static/js/jquery-3.4.1.slim.min.js"
+            th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
+    <script src="../static/js/popper.min.js"
+            th:src="@{/js/popper.min.js}"></script>
+    <script src="../static/js/bootstrap.min.js"
+            th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/masking-input.js" data-autoinit="true"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
         });
-    });
 
-    function changeShowAction() {
-        var currActionValue = document.getElementById('filter-button').href;
-        var currentUrl = new URL(currActionValue);
-        var filterValue = document.getElementById('filter-input').value;
-        currentUrl.searchParams.set("filter", filterValue);
-        document.getElementById('filter-button').href = currentUrl.href;
-    }
+        // $('#export_xlsx').on('click', function () {
+        //     document.getElementById('export_xlsx').href = '/cars' + "/" + "export_xlsx";
+        // });
+        $('#import_xlsx').on('click', function () {
+            document.getElementById('import_xlsx').href = '/cars' + "/" + "import_xlsx";
+        });
 
-    $('#filter-input').inputmask();
-    $(document).ready(function () {
+        $('#deleteDialog').on('show.bs.modal', function (event) {
+            var target = $(event.relatedTarget);
+
+            var URLh = window.location.href;
+            // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+            $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
+            document.getElementById('deleteUrl').href = URLh + "/" + target.data('id') + '/delete';
+        });
+
+        $('#hiddenForm').on('show.bs.modal', function (event) {
+            var target = $(event.relatedTarget);
+            $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
+            $('#submitOrder').on('click', function () {
+                document.getElementById('orderForm' + target.data('id')).submit();
+            });
+        });
+
+        function changeShowAction() {
+            var currActionValue = document.getElementById('filter-button').href;
+            var currentUrl = new URL(currActionValue);
+            var filterValue = document.getElementById('filter-input').value;
+            currentUrl.searchParams.set("filter", filterValue);
+            document.getElementById('filter-button').href = currentUrl.href;
+        }
+
         $('#filter-input').inputmask();
-    });
-</script>
+        $(document).ready(function () {
+            $('#filter-input').inputmask();
+        });
+    </script>
 </body>
 </html>
