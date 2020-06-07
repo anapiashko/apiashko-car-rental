@@ -13,6 +13,7 @@
           href="../static/css/style.css"
           th:href="@{/css/style.css}">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <title>Cars</title>
 </head>
 <style>
@@ -22,6 +23,7 @@
             max-width: 1200px;
         }
     }
+
 </style>
 <body>
 
@@ -182,31 +184,10 @@
     </div>
 </div>
 
-
 <footer>
     <hr/>
     <p class="text-center">&copy; 2020</p>
 </footer>
-
-<div id="rejectSave" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--Uploading cars from excel -->
 <div class="modal fade  bd-example-modal-xl" id="uploadDialog" tabindex="-1"
@@ -225,11 +206,18 @@
                     the template and fill it in, or edit your file according to the template </p>
                 <hr>
                 <h5>Browse and Upload file</h5>
-                <form id="uploadForm" method="post"
-                th:action="@{http://localhost:8088/cars/import_xlsx}"
+                <form id="uploadForm" method="post" th:action="@{http://localhost:8088/cars/import_xlsx}"
                       enctype="multipart/form-data">
-                    <input class="form-control"
-                           type="file" name="file">
+                    <div class="uploadInput">  
+                        <div class="form-group">
+                                <input type="file" name="file" id="file" class="input-file">
+                                <label for="file" class="btn btn-tertiary js-labelFile">
+                                  <i class="icon fa fa-check"></i>
+                                  <span class="js-fileName">Загрузить файл</span>
+                                </label>  
+                        </div>
+                    </div>
+<!--                    <input class="form-control" type="file" name="file">-->
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -292,7 +280,6 @@
             </div>
         </div>
     </div>
-
     <script src="../static/js/jquery-3.4.1.slim.min.js"
             th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
     <script src="../static/js/popper.min.js"
@@ -306,13 +293,28 @@
             $('[data-toggle="tooltip"]').tooltip()
         });
 
+        (function() {
+            'use strict';
+            $('.input-file').each(function() {
+                var $input = $(this),
+                    $label = $input.next('.js-labelFile'),
+                    labelVal = $label.html();
+                $input.on('change', function(element) {
+                    var fileName = '';
+                    if (element.target.value) fileName = element.target.value.split('\\').pop();
+                    fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+                });
+            });
+
+        })();
+
         $('#deleteDialog').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
 
             var URLh = window.location.href;
             // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
             $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-            document.getElementById('deleteUrl').href =  "/cars/" + target.data('id') + '/delete';
+            document.getElementById('deleteUrl').href = "/cars/" + target.data('id') + '/delete';
         });
 
         $('#hiddenForm').on('show.bs.modal', function (event) {

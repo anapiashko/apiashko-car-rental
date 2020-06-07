@@ -1,3 +1,10 @@
 body {
     background-color: lightgray;
 }
+
+.uploadInput .btn-tertiary{color:#555;padding:0;line-height:40px;width:500px;margin:auto;display:block;border:2px solid #555}
+.uploadInput .btn-tertiary:hover,.example-2 .btn-tertiary:focus{color:#888;border-color:#888}
+.uploadInput .input-file{width:.1px;height:.1px;opacity:0;overflow:hidden;position:absolute;z-index:-1}
+.uploadInput .input-file + .js-labelFile{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 10px;cursor:pointer}
+.uploadInput .input-file + .js-labelFile .icon:before{content:"\f093"}
+.uploadInput .input-file + .js-labelFile.has-file .icon:before{content:"\f00c";color:#5AAC7B}
