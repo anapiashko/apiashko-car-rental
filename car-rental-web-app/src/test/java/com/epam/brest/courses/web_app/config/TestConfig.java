@@ -49,12 +49,12 @@ public class TestConfig {
 
     @Bean
     public CarController carController() {
-        return new CarController(carService(), carDtoService(), excelService());
+        return new CarController(carService(), carDtoService());
     }
 
     @Bean
     public ExcelService excelService() {
-        return new ExcelServiceImpl(carRepository, carService());
+        return new ExcelServiceImpl(carService());
     }
 
     @Bean

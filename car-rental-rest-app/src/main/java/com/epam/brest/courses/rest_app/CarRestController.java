@@ -99,7 +99,7 @@ public class CarRestController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=result.xlsx");
-        headers.add("Content-Type", "multipart/form-data");
+
         return ResponseEntity
                 .ok()
                 .headers(headers)

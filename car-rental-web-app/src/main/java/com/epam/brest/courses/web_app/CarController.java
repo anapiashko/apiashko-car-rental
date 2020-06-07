@@ -3,12 +3,10 @@ package com.epam.brest.courses.web_app;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
-import com.epam.brest.courses.service_api.ExcelService;
 import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,18 +28,15 @@ import java.util.Optional;
 public class CarController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
+
     private final CarService carService;
     private final CarDtoService carDtoService;
-    private final ExcelService excelService;
-    @Value("${upload.path}")
-    private String uploadPath;
     private CarValidator carValidator = new CarValidator();
 
     @Autowired
-    public CarController(CarService carService, CarDtoService carDtoService, ExcelService excelService) {
+    public CarController(CarService carService, CarDtoService carDtoService) {
         this.carService = carService;
         this.carDtoService = carDtoService;
-        this.excelService = excelService;
     }
 
     /**
@@ -189,27 +181,5 @@ public class CarController {
         model.addAttribute("cars", carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo));
         return "statistics";
     }
-
-    @PostMapping(value = "/cars/import_xlsx")
-    public String uploadFromXlsx(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-        LOGGER.debug("import excel sheet to car table)");
-
-        if (file.isEmpty()) {
-            return "redirect:/cars";
-        }
-
-        ByteArrayInputStream res = excelService.excelToCars(file);
-
-//        try{
-//            excelService.excelToCars(uploadPath + "/" + resultFilename);
-//        }catch (HttpStatusCodeException e){
-//            if (HttpStatus.UNPROCESSABLE_ENTITY == e.getStatusCode()) {
-//                model.addAttribute("message", "WebController Car Exception");
-//            }
-//        }
-
-        return "redirect:/cars";
-    }
-
 }
 

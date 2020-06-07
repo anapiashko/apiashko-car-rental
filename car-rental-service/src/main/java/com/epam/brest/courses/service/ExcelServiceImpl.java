@@ -1,6 +1,5 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.ExcelService;
@@ -24,13 +23,11 @@ import java.util.List;
 @Service
 public class ExcelServiceImpl implements ExcelService {
 
-    private final CarRepository carRepository;
     private final CarService carService;
     private Object[][] data = null;
 
     @Autowired
-    public ExcelServiceImpl(CarRepository carRepository, CarService carService) {
-        this.carRepository = carRepository;
+    public ExcelServiceImpl(CarService carService) {
         this.carService = carService;
     }
 
@@ -85,131 +82,8 @@ public class ExcelServiceImpl implements ExcelService {
         }
 
     }
-//
-//    @Override
-//    public List<Car> excelToCars(MultipartFile file) throws IOException {
-//
-//        List<Car> cars = new LinkedList<>();
-//
-//        Integer carId = null;
-//        Integer carBrand = null;
-//        Integer carRegisterNum = null;
-//        Integer carPrice = null;
-//
-//        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-//        XSSFSheet worksheet = workbook.getSheetAt(0);
-//        XSSFRow header = worksheet.getRow(0);
-//        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-//
-//            if ("Id".equals(header.getCell(i).getStringCellValue())) {
-//                carId = i;
-//            } else if ("Brand".equals(header.getCell(i).getStringCellValue())) {
-//                carBrand = i;
-//            } else if ("RegisterNumber".equals(header.getCell(i).getStringCellValue())) {
-//                carRegisterNum = i;
-//            } else if ("Price".equals(header.getCell(i).getStringCellValue())) {
-//                carPrice = i;
-//            }
-//
-//        }
-//
-//        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-//            Car car = new Car();
-//            XSSFRow row = worksheet.getRow(i);
-//            XSSFCell idCell = row.getCell(carId);
-//            XSSFCell brandCell = row.getCell(carBrand);
-//            XSSFCell registerNumCell = row.getCell(carRegisterNum);
-//            XSSFCell priceCell = row.getCell(carPrice);
-//
-//            Object idCellValue = getCellValue(idCell);
-//            Object brandCellValue = getCellValue(brandCell);
-//            Object registerNumCellValue = getCellValue(registerNumCell);
-//            Object priceCellValue = getCellValue(priceCell);
-//
-//
-//            if (idCellValue != null) {
-//
-//                car.setId((int) row.getCell(carId).getNumericCellValue());
-//
-//                if (brandCellValue != null) {
-//                    car.setBrand(new Double(row.getCell(empAge).getNumericCellValue()).intValue());
-//                } else {
-//                    if (row.getCell(empAge).getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-//                        throw new IllegalArgumentException(
-//                                "EmployeeAge only allowed Number and not more than Three digit but you are providing : " + new Double(row.getCell(empAge).getNumericCellValue()).longValue());
-//                    } else {
-//                        throw new IllegalArgumentException(
-//                                "EmployeeAge only allowed Number and not more than Three digit but you are providing : " + row.getCell(empAge).getStringCellValue());
-//                    }
-//                }
-//
-//                objectContruct(row, car, carBrand, empDept, empAdd);
-//
-//                carRepository.save(car);
-//                cars.add(car);
-//            } else {
-//                if (row.getCell(carId).getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-//                    throw new IllegalArgumentException(
-//                            "EmployeeId only allowed Number and not more than Five digit but you are providing : " + new Double(row.getCell(empId).getNumericCellValue()).longValue());
-//                } else {
-//                    throw new IllegalArgumentException(
-//                            "EmployeeId only allowed Number and not more than Five digit but you are providing : " + row.getCell(empId).getStringCellValue());
-//                }
-//            }
-//
-//        }
-//        return cars;
-//    }
-//
-//    private void objectContruct(XSSFRow row, Car car, Integer carBrand, Integer empDept, Integer empAdd) {
-//
-//        if (row.getCell(carBrand).getStringCellValue().matches(NAME_REGEX)) {
-//            car.setEmployeeName(row.getCell(carBrand).getStringCellValue());
-//        } else {
-//            throw new IllegalArgumentException(
-//                    "EmployeeName only allowed character and not more than Ten character  : ");
-//
-//        }
-//
-//
-//        if (row.getCell(empDept).getStringCellValue().matches(NAME_REGEX)) {
-//
-//            car.setEmployeeDepartment(row.getCell(empDept).getStringCellValue());
-//
-//        } else {
-//            throw new EmployeeIdNotFoundException(
-//                    "Department only allowed character and not more than Ten character : ");
-//
-//        }
-//        if (row.getCell(empAdd).getStringCellValue().matches(ADDRESS_REGEX)) {
-//
-//            car.setEmployeeAddress(row.getCell(empAdd).getStringCellValue());
-//
-//        } else {
-//            throw new EmployeeIdNotFoundException(
-//                    "Employee Address  allowed only  not more than Ten character : ");
-//
-//        }
-//    }
-//
-//    private Object getCellValue(XSSFCell cell) {
-//        if (cell != null) {
-//            switch (cell.getCellType()) {
-//                case BLANK:
-//                    return null;
-//                case BOOLEAN:
-//                    return cell.getBooleanCellValue();
-//                case NUMERIC:
-//                    return cell.getNumericCellValue();
-//                case STRING:
-//                    return cell.getRichStringCellValue().toString();
-//            }
-//        }
-//        return null;
-//    }
 
     @Override
-//    @Transactional(noRollbackFor = Exception.class)
     public ByteArrayInputStream excelToCars(MultipartFile file) throws IOException {
 
         List<Car> cars = new LinkedList<>();
@@ -265,10 +139,6 @@ public class ExcelServiceImpl implements ExcelService {
                 try {
                     carService.create(car);
                 } catch (Exception e) {
-//                    XSSFCellStyle style = workbook.createCellStyle();
-//                    style.setFillForegroundColor(IndexedColors.CORAL.index);
-//                    style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-//                    row.setRowStyle(style);
                     System.out.println(e.getMessage());
                     cellIterator = row.cellIterator();
                     while (cellIterator.hasNext()) {
@@ -294,69 +164,4 @@ public class ExcelServiceImpl implements ExcelService {
         workbook.write(out);
         return new ByteArrayInputStream(out.toByteArray());
     }
-
-
-//    @Override
-//    public List<Car> excelToCars(String fileName) {
-//
-//        List<Car> cars = new LinkedList<>();
-//        final DataFormatter df = new DataFormatter();
-//
-//        try {
-//
-//            FileInputStream file = new FileInputStream(fileName);
-//            //Create Workbook instance holding reference to .xlsx file
-//            XSSFWorkbook workbook = new XSSFWorkbook(file);
-//
-//            //Get first/desired sheet from the workbook
-//            XSSFSheet sheet = workbook.getSheetAt(0);
-//
-//            //Iterate through each rows one by one
-//            Iterator<Row> rowIterator = sheet.iterator();
-//
-//            int rownum = 0;
-//            int colnum = 0;
-//            Row r = rowIterator.next();
-//
-//            int rowcount = sheet.getLastRowNum();
-//            int colcount = r.getPhysicalNumberOfCells();
-//            data = new Object[rowcount][colcount];
-//
-//            while (rowIterator.hasNext()) {
-//                Row row = rowIterator.next();
-//
-//                //For each row, iterate through all the columns
-//                Iterator<Cell> cellIterator = row.cellIterator();
-//                colnum = 0;
-//                while (cellIterator.hasNext()) {
-//
-//                    Cell cell = cellIterator.next();
-//                    if(cell.getCellType() == CellType.BLANK){
-//                        break;
-//                    }
-//
-//                    //Check the cell type and format accordingly
-//                    data[rownum][colnum] = df.formatCellValue(cell);
-//                    System.out.print(df.formatCellValue(cell));
-//                    colnum++;
-//                    System.out.println("-");
-//                }
-//                if(colnum < 4){
-//                    break;
-//                }
-//                Car car = new Car();
-//                car.setBrand((String)data[rownum][1]);
-//                car.setRegisterNumber((String)data[rownum][2]);
-//                car.setPrice(new BigDecimal((String)data[rownum][3]));
-//                cars.add(car);
-//                rownum++;
-//                System.out.println();
-//            }
-//            file.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return cars;
-// }
 }

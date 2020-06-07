@@ -226,8 +226,7 @@
                 <hr>
                 <h5>Browse and Upload file</h5>
                 <form id="uploadForm" method="post"
-
-                th:action="@{/cars/import_xlsx}"
+                th:action="@{http://localhost:8088/cars/import_xlsx}"
                       enctype="multipart/form-data">
                     <input class="form-control"
                            type="file" name="file">
@@ -235,14 +234,13 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <a id="saveFileBtn"
-
                        tabindex="1"
-
                        th:onclick="@{document.forms['uploadForm'].submit(); return false;}"
                        class="btn btn-primary"
                        title="Upload cars"
                        data-toggle="tooltip"
-                       data-placement="top">
+                       data-placement="top"
+                       data-dismiss="modal">
                         <i class="d-none d-sm-inline fa fa-save"></i> Save</a>
                 </div>
             </div>

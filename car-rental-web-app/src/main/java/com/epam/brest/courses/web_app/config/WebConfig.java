@@ -1,6 +1,9 @@
 package com.epam.brest.courses.web_app.config;
 
-import com.epam.brest.courses.service_rest.*;
+import com.epam.brest.courses.service_rest.CarDtoServiceRest;
+import com.epam.brest.courses.service_rest.CarServiceRest;
+import com.epam.brest.courses.service_rest.OrderDtoServiceRest;
+import com.epam.brest.courses.service_rest.OrderServiceRest;
 import com.epam.brest.courses.web_app.CarController;
 import com.epam.brest.courses.web_app.OrderController;
 import lombok.RequiredArgsConstructor;
@@ -29,17 +32,12 @@ public class WebConfig {
 
     @Bean
     public CarController carController() {
-        return new CarController(carServiceRest(), carDtoServiceRest(), excelServiceRest());
+        return new CarController(carServiceRest(), carDtoServiceRest());
     }
 
     @Bean
     public OrderServiceRest orderServiceRest() {
         return new OrderServiceRest(props.getBaseUrl() + "/" + props.getOrderUrl(), restTemplate());
-    }
-
-    @Bean
-    public ExcelServiceRest excelServiceRest() {
-        return new ExcelServiceRest(props.getBaseUrl() + "/" + props.getCarUrl() + "/" + props.getImportExcelUrl(), restTemplate());
     }
 
     @Bean
