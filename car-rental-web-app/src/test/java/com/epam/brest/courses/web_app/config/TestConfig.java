@@ -54,7 +54,7 @@ public class TestConfig {
 
     @Bean
     public ExcelService excelService() {
-        return new ExcelServiceImpl(carRepository);
+        return new ExcelServiceImpl(carRepository, carService());
     }
 
     @Bean

@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -90,15 +91,19 @@ public class CarRestController {
                 .body(new InputStreamResource(in));
     }
 
-    @GetMapping(value = "/cars/import_xlsx")
-    public ResponseEntity<List<Car>> uploadFromExcel(@RequestParam(value = "filename", required = false) String filename) {
+    @PostMapping(value = "/cars/import_xlsx")
+    public ResponseEntity<InputStreamResource> uploadFromExcel(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         LOGGER.debug("import excel sheet to car table)");
 
-        List<Car> cars = excelService.excelToCars(filename);
+        ByteArrayInputStream cars = excelService.excelToCars(file);
 
-        List<Car> savedCars = carService.saveAll(cars);
-
-        return new ResponseEntity<>(savedCars, HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=result.xlsx");
+        headers.add("Content-Type", "multipart/form-data");
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(cars));
     }
 
     /**

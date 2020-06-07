@@ -1,6 +1,7 @@
 package com.epam.brest.courses.service_api;
 
 import com.epam.brest.courses.model.Car;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,5 +11,5 @@ public interface ExcelService {
 
     ByteArrayInputStream carsToExcel(List<Car> cars) throws IOException;
 
-    List<Car> excelToCars(String fileName);
+    ByteArrayInputStream excelToCars(MultipartFile file) throws IOException;
 }

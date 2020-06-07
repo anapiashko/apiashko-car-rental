@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,16 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Car web controller.
@@ -201,26 +198,15 @@ public class CarController {
             return "redirect:/cars";
         }
 
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
+        ByteArrayInputStream res = excelService.excelToCars(file);
 
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-        file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-//        excelService.excelToCars(uploadPath + "/" + resultFilename);
-
-        try{
-            excelService.excelToCars(uploadPath + "/" + resultFilename);
-        }catch (HttpStatusCodeException e){
-            if (HttpStatus.UNPROCESSABLE_ENTITY == e.getStatusCode()) {
-                model.addAttribute("message", "WebController Car Exception");
-            }
-//            return "cars";
-        }
+//        try{
+//            excelService.excelToCars(uploadPath + "/" + resultFilename);
+//        }catch (HttpStatusCodeException e){
+//            if (HttpStatus.UNPROCESSABLE_ENTITY == e.getStatusCode()) {
+//                model.addAttribute("message", "WebController Car Exception");
+//            }
+//        }
 
         return "redirect:/cars";
     }

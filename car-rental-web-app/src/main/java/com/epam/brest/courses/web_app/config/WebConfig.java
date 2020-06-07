@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -58,6 +61,11 @@ public class WebConfig {
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter()));
+        FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
+        formHttpMessageConverter.addSupportedMediaTypes(MediaType.ALL);
+        ResourceHttpMessageConverter resourceHttpMessageConverter = new ResourceHttpMessageConverter();
+        restTemplate.getMessageConverters().add(formHttpMessageConverter);
+        restTemplate.getMessageConverters().add(resourceHttpMessageConverter);
         return restTemplate;
     }
 }

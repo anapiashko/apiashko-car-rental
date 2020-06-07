@@ -225,17 +225,19 @@
                     the template and fill it in, or edit your file according to the template </p>
                 <hr>
                 <h5>Browse and Upload file</h5>
-                <form id="uploadForm" method="post" th:action="@{/cars/import_xlsx}" enctype="multipart/form-data">
+                <form id="uploadForm" method="post"
+
+                th:action="@{/cars/import_xlsx}"
+                      enctype="multipart/form-data">
                     <input class="form-control"
                            type="file" name="file">
-                    <div th:if="${message}"
-                         class="invalid-feedback"
-                         th:errors="${message}">[errors]</div>
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <a href="cars.html"
-                       th:href="@{/cars}"
+                    <a id="saveFileBtn"
+
+                       tabindex="1"
+
                        th:onclick="@{document.forms['uploadForm'].submit(); return false;}"
                        class="btn btn-primary"
                        title="Upload cars"
@@ -243,10 +245,6 @@
                        data-placement="top">
                         <i class="d-none d-sm-inline fa fa-save"></i> Save</a>
                 </div>
-
-<!--                <div th:if="${message}">-->
-<!--                    <h2 th:text="${message}"/>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
@@ -310,20 +308,13 @@
             $('[data-toggle="tooltip"]').tooltip()
         });
 
-        // $('#export_xlsx').on('click', function () {
-        //     document.getElementById('export_xlsx').href = '/cars' + "/" + "export_xlsx";
-        // });
-        $('#import_xlsx').on('click', function () {
-            document.getElementById('import_xlsx').href = '/cars' + "/" + "import_xlsx";
-        });
-
         $('#deleteDialog').on('show.bs.modal', function (event) {
             var target = $(event.relatedTarget);
 
             var URLh = window.location.href;
             // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
             $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-            document.getElementById('deleteUrl').href = URLh + "/" + target.data('id') + '/delete';
+            document.getElementById('deleteUrl').href =  "/cars/" + target.data('id') + '/delete';
         });
 
         $('#hiddenForm').on('show.bs.modal', function (event) {
