@@ -3,14 +3,20 @@ package com.epam.brest.courses.rest_app;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.rest_app.exception.ErrorResponse;
 import com.epam.brest.courses.service_api.CarService;
+import com.epam.brest.courses.service_api.XmlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -25,9 +31,30 @@ public class CarRestController {
 
     private final CarService carService;
 
+    private final XmlService xmlService;
+
     @Autowired
-    public CarRestController(CarService carServices) {
+    public CarRestController(CarService carServices, XmlService xmlService) {
         this.carService = carServices;
+        this.xmlService = xmlService;
+    }
+
+    @GetMapping(value = "/cars/download/cars.xml")
+    public ResponseEntity<InputStreamResource> excelCarsReport() throws IOException {
+        LOGGER.debug("export car table to excel sheet ()");
+
+        List<Car> cars = carService.findAll();
+
+        ByteArrayInputStream in = xmlService.carsToXml(cars);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=cars.xml");
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(in));
     }
 
     /**
