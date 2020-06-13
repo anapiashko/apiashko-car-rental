@@ -13,6 +13,7 @@
           href="../static/css/style.css"
           th:href="@{/css/style.css}">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <title>Cars</title>
 </head>
 <body>
@@ -75,6 +76,21 @@
      class="py-1 mb-3 navbar navbar-expand-sm navbar-light bg-light text-dark">
     <span class="navbar-brand text-uppercase mr-auto">List of free cars</span>
     <ul class="navbar-nav float-right">
+        <li class="nav-item" >
+            <div class="dropdown">
+                <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Excel" style="width: 150px" >
+                    <i class="fa fa-file-zip-o"></i>
+                    XML
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a id="export_xml" class="dropdown-item" href="http://localhost:8088/cars/download/cars.xml" >Save
+                        in xml archive</a>
+                    <a id="import_xml" class="dropdown-item" href="#" data-toggle="modal" data-target="#uploadDialog">Upload
+                        from xml archive</a>
+                </div>
+            </div>
+        </li>
         <li class="nav-item">
             <a href="#"
                th:href="@{|/car|}"
@@ -163,6 +179,47 @@
     <p class="text-center">&copy; 2020</p>
 </footer>
 
+<!--Uploading cars from .xml archive -->
+<div class="modal fade  bd-example-modal-xl" id="uploadDialog" tabindex="-1"
+     role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Uploading .xml archive file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">Anastasiya</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Browse and Upload archive</h5>
+                <form id="uploadForm" method="post" th:action="@{http://localhost:8088/cars/import_xml}"
+                      enctype="multipart/form-data">
+                    <div class="uploadInput">
+                        <div class="form-group">
+                            <input type="file" name="file" id="file" class="input-file">
+                            <label for="file" class="btn btn-tertiary js-labelFile">
+                                <i class="icon fa fa-check"></i>
+                                <span class="js-fileName">Загрузить файл</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a id="saveFileBtn"
+                       tabindex="1"
+                       th:onclick="@{document.forms['uploadForm'].submit(); return false;}"
+                       class="btn btn-primary"
+                       title="Upload cars"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       data-dismiss="modal">
+                        <i class="d-none d-sm-inline fa fa-save"></i> Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <!-- Confirm delete Modal -->
 <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -221,6 +278,21 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
+
+    (function() {
+        'use strict';
+        $('.input-file').each(function() {
+            var $input = $(this),
+                $label = $input.next('.js-labelFile'),
+                labelVal = $label.html();
+            $input.on('change', function(element) {
+                var fileName = '';
+                if (element.target.value) fileName = element.target.value.split('\\').pop();
+                fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+            });
+        });
+
+    })();
 
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
