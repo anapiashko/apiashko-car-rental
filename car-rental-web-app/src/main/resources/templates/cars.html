@@ -16,6 +16,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <title>Cars</title>
 </head>
+<style>
+    @media (min-width: 768px) {
+        .modal-xl {
+            width: 90%;
+            max-width: 1200px;
+        }
+    }
+</style>
 <body>
 
 <header>
@@ -192,7 +200,7 @@
             </div>
             <div class="modal-body">
                 <h5>Browse and Upload archive</h5>
-                <form id="uploadForm" method="post" th:action="@{http://localhost:8088/cars/import_xml}"
+                <form id="uploadForm" method="post" th:action="@{/cars/import_xml}"
                       enctype="multipart/form-data">
                     <div class="uploadInput">
                         <div class="form-group">

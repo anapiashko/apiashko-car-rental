@@ -4,13 +4,11 @@ import com.epam.brest.courses.dao.CarDtoRepository;
 import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.dao.OrderDtoRepository;
 import com.epam.brest.courses.dao.OrderRepository;
-import com.epam.brest.courses.service.CarDtoServiceImpl;
-import com.epam.brest.courses.service.CarServiceImpl;
-import com.epam.brest.courses.service.OrderDtoServiceImpl;
-import com.epam.brest.courses.service.OrderServiceImpl;
+import com.epam.brest.courses.service.*;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.OrderService;
+import com.epam.brest.courses.service_api.XmlService;
 import com.epam.brest.courses.web_app.CarController;
 import com.epam.brest.courses.web_app.OrderController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +49,13 @@ public class TestConfig {
 
     @Bean
     public CarController carController() {
-        return new CarController(carService(), carDtoService());
+        return new CarController(carService(), carDtoService(), xmlService());
     }
 
+    @Bean
+    public XmlService xmlService() {
+        return new XmlServiceImpl(carService(), carRepository);
+    }
 
     @Bean
     public OrderService orderService(){

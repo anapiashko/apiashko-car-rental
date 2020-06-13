@@ -16,4 +16,5 @@ public class ServiceProperties {
     private String carUrl;
     private String carDtoUrl;
     private String orderDtoUrl;
+    private String xmlUrl;
 }

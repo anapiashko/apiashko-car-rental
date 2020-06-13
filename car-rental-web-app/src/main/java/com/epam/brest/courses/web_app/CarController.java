@@ -3,6 +3,7 @@ package com.epam.brest.courses.web_app;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
+import com.epam.brest.courses.service_api.XmlService;
 import com.epam.brest.courses.web_app.validators.CarValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -35,10 +37,13 @@ public class CarController {
 
     private final CarDtoService carDtoService;
 
+    private final XmlService xmlService;
+
     @Autowired
-    public CarController(CarService carService, CarDtoService carDtoService) {
+    public CarController(CarService carService, CarDtoService carDtoService, XmlService xmlService) {
         this.carService = carService;
         this.carDtoService = carDtoService;
+        this.xmlService = xmlService;
     }
 
     /**
@@ -182,6 +187,15 @@ public class CarController {
 
         model.addAttribute("cars", carDtoService.findAllWithNumberOfOrders(dateFrom, dateTo));
         return "statistics";
+    }
+
+    @PostMapping(value = "/cars/import_xml")
+    public String uploadFromExcel(@RequestParam(value = "file", required = false) MultipartFile file) {
+        LOGGER.debug("import xml archive to car table)");
+
+        xmlService.xmlToCars(file);
+
+        return "redirect:/cars";
     }
 
 }
