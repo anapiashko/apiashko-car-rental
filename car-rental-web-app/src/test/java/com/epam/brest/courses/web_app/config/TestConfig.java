@@ -54,7 +54,7 @@ public class TestConfig {
 
     @Bean
     public XmlService xmlService() {
-        return new XmlServiceImpl(carService(), carRepository);
+        return new XmlServiceImpl(carService());
     }
 
     @Bean

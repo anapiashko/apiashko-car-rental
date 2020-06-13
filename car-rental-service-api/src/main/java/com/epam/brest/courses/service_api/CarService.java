@@ -54,4 +54,9 @@ public interface CarService {
      * @param carId car id.
      */
     void delete(Integer carId);
+
+    /**
+     * Delete all cars in db.
+     */
+    void deleteAll();
 }

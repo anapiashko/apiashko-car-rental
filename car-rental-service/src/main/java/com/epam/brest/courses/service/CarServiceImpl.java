@@ -79,4 +79,11 @@ public class CarServiceImpl implements CarService {
 
         carRepository.deleteById(carId);
     }
+
+    @Override
+    public void deleteAll() {
+        LOGGER.debug("delete all cars ()");
+
+        carRepository.deleteAll();
+    }
 }

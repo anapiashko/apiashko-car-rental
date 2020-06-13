@@ -110,4 +110,9 @@ public class CarServiceRest implements CarService {
         ResponseEntity<Integer> result = restTemplate.exchange(url+"/"+carId, HttpMethod.DELETE, entity, Integer.class);
         //return result.getBody();
     }
+
+    @Override
+    public void deleteAll() {
+
+    }
 }

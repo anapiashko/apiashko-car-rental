@@ -1,6 +1,5 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.XmlService;
@@ -31,11 +30,9 @@ import java.util.zip.ZipOutputStream;
 public class XmlServiceImpl implements XmlService {
 
     private final CarService carService;
-    private final CarRepository carRepository;
 
-    public XmlServiceImpl(CarService carService, CarRepository carRepository) {
+    public XmlServiceImpl(CarService carService) {
         this.carService = carService;
-        this.carRepository = carRepository;
     }
 
     @Override
@@ -54,7 +51,7 @@ public class XmlServiceImpl implements XmlService {
 
     @Override
     public void xmlToCars(MultipartFile file) {
-        carRepository.deleteAll();
+        carService.deleteAll();
         try {
 
             byte[] bytes = unzipFile(file);
