@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -56,6 +57,15 @@ public class CarRestController {
                 .headers(headers)
                 .body(new InputStreamResource(in));
 
+    }
+
+    @PostMapping(value = "/cars/import_xml")
+    public ResponseEntity<Void> uploadFromExcel(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        LOGGER.debug("import excel sheet to car table)");
+
+        xmlService.xmlToCars(file);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

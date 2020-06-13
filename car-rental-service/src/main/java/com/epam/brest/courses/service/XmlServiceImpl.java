@@ -1,26 +1,42 @@
 package com.epam.brest.courses.service;
 
+import com.epam.brest.courses.dao.CarRepository;
 import com.epam.brest.courses.model.Car;
+import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.XmlService;
 import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
 public class XmlServiceImpl implements XmlService {
+
+    private final CarService carService;
+    private final CarRepository carRepository;
+
+    public XmlServiceImpl(CarService carService, CarRepository carRepository) {
+        this.carService = carService;
+        this.carRepository = carRepository;
+    }
 
     @Override
     public ByteArrayInputStream carsToXml(List<Car> cars) throws IOException {
@@ -34,6 +50,78 @@ public class XmlServiceImpl implements XmlService {
 
             return new ByteArrayInputStream(archiveFile(xmlInBytes));
         }
+    }
+
+    @Override
+    public void xmlToCars(MultipartFile file) {
+        carRepository.deleteAll();
+        try {
+
+            byte[] bytes = unzipFile(file);
+
+            // Создается построитель документа
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            // Создается дерево DOM документа из файла
+            Document document = documentBuilder.parse(new ByteArrayInputStream(bytes));
+
+            // Получаем корневой элемент
+            Node root = document.getDocumentElement();
+
+            System.out.println("List of cars:");
+            System.out.println();
+            // Просматриваем все подэлементы корневого - т.е. cars
+
+            NodeList cars = root.getChildNodes();
+            for (int i = 0; i < cars.getLength(); i++) {
+                Node car = cars.item(i);
+                // Если нода не текст, то это car - заходим внутрь
+                if (car.getNodeType() != Node.TEXT_NODE) {
+
+                    Car newCar = new Car();
+                    NamedNodeMap attributes = car.getAttributes();
+
+                    newCar.setBrand(attributes.item(0).getTextContent());
+                    newCar.setPrice(new BigDecimal(attributes.item(2).getTextContent()));
+                    newCar.setRegisterNumber(attributes.item(3).getTextContent());
+
+                    carService.create(newCar);
+                    System.out.println(newCar);
+                }
+            }
+
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+
+    private byte[] unzipFile(MultipartFile file) {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try {
+            ZipInputStream zin = new ZipInputStream(file.getInputStream());
+            ZipEntry entry;
+
+            String name;
+            long size;
+            while ((entry = zin.getNextEntry()) != null) {
+
+                name = entry.getName(); // получим название файла
+                size = entry.getSize();  // получим его размер в байтах
+                System.out.printf("File name: %s \t File size: %d \n", name, size);
+
+                // распаковка
+                for (int c = zin.read(); c != -1; c = zin.read()) {
+                    byteArrayOutputStream.write(c);
+                }
+
+                IOUtils.closeQuietly(byteArrayOutputStream);
+                zin.closeEntry();
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return byteArrayOutputStream.toByteArray();
     }
 
     private byte[] archiveFile(ByteArrayInputStream in) throws IOException {
