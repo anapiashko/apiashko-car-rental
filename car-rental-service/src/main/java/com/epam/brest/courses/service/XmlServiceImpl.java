@@ -3,7 +3,9 @@ package com.epam.brest.courses.service;
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.XmlService;
 import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -13,31 +15,55 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
+@Transactional
 public class XmlServiceImpl implements XmlService {
 
     @Override
-   public ByteArrayInputStream carsToXml(List<Car> cars) throws IOException {
+    public ByteArrayInputStream carsToXml(List<Car> cars) throws IOException {
 
-       try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-           /** Step 3 : Build customer XML DOM **/
-           Document xmlDoc = buildEmployeeXML(cars);
+            /** Build customer XML DOM **/
+            Document xmlDoc = buildEmployeeXML(cars);
 
-           //XMLUtils.outputDOM(xmlDoc, out, true);
+            ByteArrayInputStream xmlInBytes = new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
 
-           //return new ByteArrayInputStream(out.toByteArray());
+            return new ByteArrayInputStream(archiveFile(xmlInBytes));
+        }
+    }
 
-           return new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
-       }
-   }
+    private byte[] archiveFile(ByteArrayInputStream in) throws IOException {
 
-    public static byte[] doc2bytes(Document node) {
+        //creating byteArray stream, make it bufferable and passing this buffer to ZipOutputStream
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
+
+        //packing files
+        zipOutputStream.putNextEntry(new ZipEntry("cars.xml"));
+
+        IOUtils.copy(in, zipOutputStream);
+
+        in.close();
+        zipOutputStream.closeEntry();
+
+        zipOutputStream.finish();
+        zipOutputStream.flush();
+        IOUtils.closeQuietly(zipOutputStream);
+        IOUtils.closeQuietly(bufferedOutputStream);
+        IOUtils.closeQuietly(byteArrayOutputStream);
+
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private static byte[] doc2bytes(Document node) {
         try {
             Source source = new DOMSource(node);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            StringWriter stringWriter = new StringWriter();
             Result result = new StreamResult(out);
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
@@ -65,14 +91,14 @@ public class XmlServiceImpl implements XmlService {
     }
 
 
-    private  Document buildEmployeeXML(List<Car> cars) {
+    private Document buildEmployeeXML(List<Car> cars) {
         Document xmlDoc = new DocumentImpl();
 
         /* Creating the root element */
         Element rootElement = xmlDoc.createElement("cars");
         xmlDoc.appendChild(rootElement);
 
-        for(Car car : cars) {
+        for (Car car : cars) {
 
             Element carElement = xmlDoc.createElement("car");
 
@@ -92,7 +118,7 @@ public class XmlServiceImpl implements XmlService {
             /* Appending emp to the Root Class*/
             rootElement.appendChild(carElement);
         }
-        writeDocument(xmlDoc);
+        //writeDocument(xmlDoc);
         return xmlDoc;
     }
 

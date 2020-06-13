@@ -4,7 +4,6 @@ import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.rest_app.exception.ErrorResponse;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.XmlService;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import static com.epam.brest.courses.rest_app.exception.CustomExceptionHandler.CAR_NOT_FOUND;
 
@@ -52,9 +47,6 @@ public class CarRestController {
 
         ByteArrayInputStream in = xmlService.carsToXml(cars);
 
-        byte[] zip = exportDocument(in);
-
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=cars.zip");
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -62,55 +54,9 @@ public class CarRestController {
         return ResponseEntity
                 .ok()
                 .headers(headers)
-                .body(new InputStreamResource(new ByteArrayInputStream(zip)));
+                .body(new InputStreamResource(in));
 
     }
-
-    public byte[] exportDocument(ByteArrayInputStream in) throws IOException {
-        LOGGER.info("Zipping of File Started");
-
-        //creating byteArray stream, make it bufferable and passing this buffer to ZipOutputStream
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream);
-        ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
-
-        //packing files
-        zipOutputStream.putNextEntry(new ZipEntry("cars.xml"));
-        //ByteArrayInputStream fileInputStream = new ByteArrayInputStream(in);
-
-        IOUtils.copy(in, zipOutputStream);
-
-        in.close();
-        zipOutputStream.closeEntry();
-
-        zipOutputStream.finish();
-        zipOutputStream.flush();
-        IOUtils.closeQuietly(zipOutputStream);
-        IOUtils.closeQuietly(bufferedOutputStream);
-        IOUtils.closeQuietly(byteArrayOutputStream);
-
-        return byteArrayOutputStream.toByteArray();
-    }
-
-//    @GetMapping(value = "/cars/download/cars.xml", produces="application/zip")
-//    public ResponseEntity<InputStreamResource> excelCarsReport() throws IOException {
-//        LOGGER.debug("export car table to excel sheet ()");
-//
-//        List<Car> cars = carService.findAll();
-//
-//        ByteArrayInputStream in = xmlService.carsToXml(cars);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Content-Disposition", "attachment; filename=cars.xml.zip");
-////        headers.add("Content-Type", "application/xml");
-//        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//
-//        return ResponseEntity
-//                .ok()
-//                .headers(headers)
-////                .body(new InputStreamResource(in));
-//        .body(new InputStreamResource(in));
-//    }
 
     /**
      * Find all free cars on date.
