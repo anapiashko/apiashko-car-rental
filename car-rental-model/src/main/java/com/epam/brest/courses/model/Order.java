@@ -28,6 +28,15 @@ public class Order {
     @Column(name = "order_date")
     private LocalDate date;
 
+    public Order() {
+    }
+
+    public Order(Integer id, LocalDate date, Integer carId) {
+        this.id = id;
+        this.carId = carId;
+        this.date = date;
+    }
+
     public final Integer getId() {
         return id;
     }
