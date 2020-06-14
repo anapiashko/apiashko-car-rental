@@ -175,13 +175,22 @@ public class ExcelServiceImpl implements ExcelService {
     @Transactional
     public ByteArrayInputStream ordersToExcel(List<Order> orders) throws IOException {
         String[] COLUMNs = {"Id", "Date", "CarId"};
+        Workbook workbook;
         try (
-                Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()
         ) {
-            CreationHelper createHelper = workbook.getCreationHelper();
 
+            //saving car sheet to orders workbook
+            List<Car> cars = carService.findAll();
+            ByteArrayInputStream byteArrayInputStream = carsToExcel(cars);
+            Workbook carWorkBook =  new XSSFWorkbook(byteArrayInputStream);
+
+            workbook = carWorkBook;
+
+            //create orders sheet
             Sheet sheet = workbook.createSheet("orders");
+            workbook.setSheetOrder("orders", 0);
+            workbook.setActiveSheet(0);
 
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
@@ -193,21 +202,33 @@ public class ExcelServiceImpl implements ExcelService {
             // Row for Header
             Row headerRow = sheet.createRow(0);
 
-            // Header
+            // Headers
             for (int col = 0; col < COLUMNs.length; col++) {
                 Cell cell = headerRow.createCell(col);
                 cell.setCellValue(COLUMNs[col]);
                 cell.setCellStyle(headerCellStyle);
             }
 
+            // CellStyle for Date
+            CreationHelper createHelper = workbook.getCreationHelper();
+            CellStyle dateCellStyle = workbook.createCellStyle();
+            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+
             int rowIdx = 1;
             for (Order customer : orders) {
                 Row row = sheet.createRow(rowIdx++);
 
                 row.createCell(0).setCellValue(customer.getId());
-                row.createCell(1).setCellValue(customer.getDate().toString());
+
+                Cell dateCell = row.createCell(1);
+                dateCell.setCellValue(customer.getDate().toString());
+                dateCell.setCellStyle(dateCellStyle);
+
                 row.createCell(2).setCellValue(customer.getCarId());
             }
+
+            //protect car sheet
+            workbook.getSheetAt(1).protectSheet("password");
 
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());
