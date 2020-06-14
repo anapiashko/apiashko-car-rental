@@ -37,10 +37,10 @@ public class CarController {
 
     private final CarDtoService carDtoService;
 
-    private final XmlService xmlService;
+    private final XmlService<Car> xmlService;
 
     @Autowired
-    public CarController(CarService carService, CarDtoService carDtoService, XmlService xmlService) {
+    public CarController(CarService carService, CarDtoService carDtoService, XmlService<Car> xmlService) {
         this.carService = carService;
         this.carDtoService = carDtoService;
         this.xmlService = xmlService;
@@ -193,7 +193,7 @@ public class CarController {
     public String uploadFromExcel(@RequestParam(value = "file", required = false) MultipartFile file) {
         LOGGER.debug("import xml archive to car table)");
 
-        xmlService.xmlToCars(file);
+        xmlService.xmlToEntities(file);
 
         return "redirect:/cars";
     }

@@ -44,17 +44,22 @@ public class TestConfig {
 
     @Bean
     public OrderController orderController(){
-        return new OrderController(orderService(), orderDtoService());
+        return new OrderController(orderService(), orderDtoService(), xmlOrderService());
     }
 
     @Bean
     public CarController carController() {
-        return new CarController(carService(), carDtoService(), xmlService());
+        return new CarController(carService(), carDtoService(), xmlCarService());
     }
 
     @Bean
-    public XmlService xmlService() {
-        return new XmlServiceImpl(carService());
+    public XmlService xmlCarService() {
+        return new XmlCarServiceImpl(carService());
+    }
+
+    @Bean
+    public XmlService xmlOrderService() {
+        return new XmlOrderServiceImpl(orderService());
     }
 
     @Bean

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface XmlService <T> {
     ByteArrayInputStream entitiesToXml(List<T> objects) throws IOException;
-    void xmlToCars(MultipartFile file);
+    void xmlToEntities(MultipartFile file);
 }

@@ -1,6 +1,6 @@
 package com.epam.brest.courses.service_rest;
 
-import com.epam.brest.courses.model.Car;
+import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service_api.XmlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,29 +13,30 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
-public class XmlServiceRest implements XmlService {
+public class XmlOrderServiceRest implements XmlService <Order> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(XmlServiceRest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlCarServiceRest.class);
 
     private String url;
 
     private RestTemplate restTemplate;
 
-    public XmlServiceRest(String url, RestTemplate restTemplate) {
+    public XmlOrderServiceRest(String url, RestTemplate restTemplate) {
         this.url = url;
         this.restTemplate = restTemplate;
     }
 
     @Override
-    public ByteArrayInputStream carsToXml(List<Car> cars) {
+    public ByteArrayInputStream entitiesToXml(List<Order> objects) throws IOException {
         return null;
     }
 
     @Override
-    public void xmlToCars(MultipartFile file) {
-        LOGGER.debug("proxy multipartFile()");
+    public void xmlToEntities(MultipartFile file) {
+        LOGGER.debug("proxy multipartFile order()");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);

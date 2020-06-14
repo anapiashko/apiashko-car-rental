@@ -1,8 +1,6 @@
 package com.epam.brest.courses.web_app.config;
 
 import com.epam.brest.courses.service_rest.*;
-import com.epam.brest.courses.web_app.CarController;
-import com.epam.brest.courses.web_app.OrderController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,15 +19,15 @@ public class WebConfig {
 
     private final ServiceProperties props;
 
-    @Bean
-    public OrderController orderController() {
-        return new OrderController(orderServiceRest(), orderDtoServiceRest());
-    }
+//    @Bean
+//    public OrderController orderController() {
+//        return new OrderController(orderServiceRest(), orderDtoServiceRest(), xmlOrderServiceRest());
+//    }
 
-    @Bean
-    public CarController carController() {
-        return new CarController(carServiceRest(), carDtoServiceRest(), xmlServiceRest());
-    }
+//    @Bean
+//    public CarController carController() {
+//        return new CarController(carServiceRest(), carDtoServiceRest(), xmlCarServiceRest());
+//    }
 
     @Bean
     public OrderServiceRest orderServiceRest() {
@@ -37,8 +35,13 @@ public class WebConfig {
     }
 
     @Bean
-    public XmlServiceRest xmlServiceRest() {
-        return new XmlServiceRest(props.getBaseUrl() + "/" + props.getCarUrl() + "/" + props.getXmlUrl(), restTemplate());
+    public XmlCarServiceRest xmlCarServiceRest() {
+        return new XmlCarServiceRest(props.getBaseUrl() + "/" + props.getCarUrl() + "/" + props.getXmlUrl(), restTemplate());
+    }
+
+    @Bean
+    public XmlOrderServiceRest xmlOrderServiceRest() {
+        return new XmlOrderServiceRest(props.getBaseUrl() + "/" + props.getOrderUrl() + "/" + props.getXmlUrl(), restTemplate());
     }
 
     @Bean

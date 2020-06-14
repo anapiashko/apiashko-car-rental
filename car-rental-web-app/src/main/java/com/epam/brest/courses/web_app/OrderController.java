@@ -4,6 +4,7 @@ import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.model.dto.OrderDto;
 import com.epam.brest.courses.service_api.OrderDtoService;
 import com.epam.brest.courses.service_api.OrderService;
+import com.epam.brest.courses.service_api.XmlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,9 +30,12 @@ public class OrderController {
 
     private final OrderDtoService orderDtoService;
 
-    public OrderController(final OrderService orderService, OrderDtoService orderDtoService) {
+    private final XmlService<Order> xmlService;
+
+    public OrderController(final OrderService orderService, OrderDtoService orderDtoService, XmlService<Order> xmlService) {
         this.orderService = orderService;
         this.orderDtoService = orderDtoService;
+        this.xmlService = xmlService;
     }
 
     /**
@@ -67,5 +72,14 @@ public class OrderController {
 
         orderService.create(order);
         return "redirect:/cars";
+    }
+
+    @PostMapping(value = "/orders/import_xml")
+    public String uploadFromXml(@RequestParam(value = "file", required = false) MultipartFile file) {
+        LOGGER.debug("import xml archive to order table)");
+
+        xmlService.xmlToEntities(file);
+
+        return "redirect:/orders";
     }
 }

@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 /**
  * Order REST service.
  */
@@ -23,6 +25,11 @@ public class OrderServiceRest implements OrderService {
         this.restTemplate = restTemplate;
     }
 
+    @Override
+    public List<Order> findAll() {
+        return null;
+    }
+
     /**
      * Create order.
      *
@@ -34,5 +41,10 @@ public class OrderServiceRest implements OrderService {
 
         ResponseEntity responseEntity = restTemplate.postForEntity(url,order,Order.class);
         return (Order) responseEntity.getBody();
+    }
+
+    @Override
+    public void deleteAll() {
+
     }
 }
