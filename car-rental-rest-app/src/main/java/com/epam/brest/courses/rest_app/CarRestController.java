@@ -32,21 +32,21 @@ public class CarRestController {
 
     private final CarService carService;
 
-    private final XmlService xmlService;
+    private final XmlService<Car> xmlService;
 
     @Autowired
-    public CarRestController(CarService carServices, XmlService xmlService) {
+    public CarRestController(CarService carServices, XmlService<Car> xmlService) {
         this.carService = carServices;
         this.xmlService = xmlService;
     }
 
     @GetMapping(value = "/cars/download/cars.xml", produces = "application/zip")
-    public ResponseEntity<InputStreamResource> excelCarsReport() throws IOException {
-        LOGGER.debug("export car table to excel sheet ()");
+    public ResponseEntity<InputStreamResource> xmlCarsReport() throws IOException {
+        LOGGER.debug("export car table to xml archive ()");
 
         List<Car> cars = carService.findAll();
 
-        ByteArrayInputStream in = xmlService.carsToXml(cars);
+        ByteArrayInputStream in = xmlService.entitiesToXml(cars);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=cars.zip");
@@ -60,7 +60,7 @@ public class CarRestController {
     }
 
     @PostMapping(value = "/cars/import_xml")
-    public ResponseEntity<Void> uploadFromExcel(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<Void> uploadFromXml(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         LOGGER.debug("import excel sheet to car table)");
 
         xmlService.xmlToCars(file);

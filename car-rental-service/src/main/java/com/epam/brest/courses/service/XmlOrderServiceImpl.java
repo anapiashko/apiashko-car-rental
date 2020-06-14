@@ -1,10 +1,11 @@
 package com.epam.brest.courses.service;
 
-import com.epam.brest.courses.model.Car;
-import com.epam.brest.courses.service_api.CarService;
+import com.epam.brest.courses.model.Order;
+import com.epam.brest.courses.service_api.OrderService;
 import com.epam.brest.courses.service_api.XmlService;
 import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,8 +18,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
-import java.math.BigDecimal;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
@@ -27,21 +31,22 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
-public class XmlServiceImpl implements XmlService {
+public class XmlOrderServiceImpl implements XmlService <Order> {
 
-    private final CarService carService;
+    private final OrderService orderService;
 
-    public XmlServiceImpl(CarService carService) {
-        this.carService = carService;
+    @Autowired
+    public XmlOrderServiceImpl(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @Override
-    public ByteArrayInputStream carsToXml(List<Car> cars) throws IOException {
+    public ByteArrayInputStream entitiesToXml(List<Order> orders) throws IOException {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
             /** Build customer XML DOM **/
-            Document xmlDoc = buildEmployeeXML(cars);
+            Document xmlDoc = buildEmployeeXML(orders);
 
             ByteArrayInputStream xmlInBytes = new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
 
@@ -51,7 +56,7 @@ public class XmlServiceImpl implements XmlService {
 
     @Override
     public void xmlToCars(MultipartFile file) {
-        carService.deleteAll();
+        orderService.deleteAll();
         try {
 
             byte[] bytes = unzipFile(file);
@@ -68,21 +73,20 @@ public class XmlServiceImpl implements XmlService {
             System.out.println();
             // Просматриваем все подэлементы корневого - т.е. cars
 
-            NodeList cars = root.getChildNodes();
-            for (int i = 0; i < cars.getLength(); i++) {
-                Node car = cars.item(i);
+            NodeList orders = root.getChildNodes();
+            for (int i = 0; i < orders.getLength(); i++) {
+                Node order = orders.item(i);
                 // Если нода не текст, то это car - заходим внутрь
-                if (car.getNodeType() != Node.TEXT_NODE) {
+                if (order.getNodeType() != Node.TEXT_NODE) {
 
-                    Car newCar = new Car();
-                    NamedNodeMap attributes = car.getAttributes();
+                    Order newOrder = new Order();
+                    NamedNodeMap attributes = order.getAttributes();
 
-                    newCar.setBrand(attributes.item(0).getTextContent());
-                    newCar.setPrice(new BigDecimal(attributes.item(2).getTextContent()));
-                    newCar.setRegisterNumber(attributes.item(3).getTextContent());
+                    newOrder.setCarId(new Integer(attributes.item(0).getTextContent()));
+                    newOrder.setDate(LocalDate.parse(attributes.item(1).getTextContent()));
 
-                    carService.create(newCar);
-                    System.out.println(newCar);
+                    orderService.create(newOrder);
+                    System.out.println(newOrder);
                 }
             }
 
@@ -129,7 +133,7 @@ public class XmlServiceImpl implements XmlService {
         ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedOutputStream);
 
         //packing files
-        zipOutputStream.putNextEntry(new ZipEntry("cars.xml"));
+        zipOutputStream.putNextEntry(new ZipEntry("order.xml"));
 
         IOUtils.copy(in, zipOutputStream);
 
@@ -162,49 +166,30 @@ public class XmlServiceImpl implements XmlService {
         return null;
     }
 
-    // Функция для сохранения DOM в файл
-    private static void writeDocument(Document document) throws TransformerFactoryConfigurationError {
-        try {
-            Transformer tr = TransformerFactory.newInstance().newTransformer();
-            DOMSource source = new DOMSource(document);
-            FileOutputStream fos = new FileOutputStream("other.xml");
-            StreamResult result = new StreamResult(fos);
-            tr.transform(source, result);
-        } catch (TransformerException | IOException e) {
-            e.printStackTrace(System.out);
-        }
-    }
-
-
-    private Document buildEmployeeXML(List<Car> cars) {
+    private Document buildEmployeeXML(List<Order> orders) {
         Document xmlDoc = new DocumentImpl();
 
         /* Creating the root element */
-        Element rootElement = xmlDoc.createElement("cars");
+        Element rootElement = xmlDoc.createElement("orders");
         xmlDoc.appendChild(rootElement);
 
-        for (Car car : cars) {
+        for (Order order : orders) {
 
-            Element carElement = xmlDoc.createElement("car");
+            Element orderElement = xmlDoc.createElement("order");
 
             /* Build the CarId as a Attribute*/
-            carElement.setAttribute("id", car.getId().toString());
+            orderElement.setAttribute("id", order.getId().toString());
 
             /* Build the CarBrand as a Attribute*/
-            carElement.setAttribute("brand", car.getBrand());
+            orderElement.setAttribute("date", order.getDate().toString());
 
             /* Build the CarRegisterNumber as a Attribute*/
-            carElement.setAttribute("register_number", car.getRegisterNumber());
-
-            /* Build the CarPrice as a Attribute*/
-            carElement.setAttribute("price", car.getPrice().toString());
-
+            orderElement.setAttribute("car_id", order.getCarId().toString());
 
             /* Appending emp to the Root Class*/
-            rootElement.appendChild(carElement);
+            rootElement.appendChild(orderElement);
         }
         //writeDocument(xmlDoc);
         return xmlDoc;
     }
-
 }

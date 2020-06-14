@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Implementation of order service interface.
  */
@@ -26,9 +28,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findAll() {
+        LOGGER.debug("find all orders()");
+
+        return orderRepository.findAll();
+    }
+
+    @Override
     public Order create(Order order) {
         LOGGER.debug("create (order:{})", order);
 
         return orderRepository.save(order);
+    }
+
+    @Override
+    public void deleteAll() {
+        LOGGER.debug("delete all orders ()");
+
+        orderRepository.deleteAll();
     }
 }
