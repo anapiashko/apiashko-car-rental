@@ -11,10 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -53,6 +51,16 @@ public class OrderRestController {
                 .body(new InputStreamResource(in));
 
     }
+
+    @PostMapping(value = "/orders/import_xml")
+    public ResponseEntity<Void> uploadFromXml(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        LOGGER.debug("import xml archive to car table)");
+
+        xmlService.xmlToEntities(file);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     /**
      * Create order.

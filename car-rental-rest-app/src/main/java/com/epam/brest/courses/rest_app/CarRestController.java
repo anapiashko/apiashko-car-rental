@@ -61,9 +61,9 @@ public class CarRestController {
 
     @PostMapping(value = "/cars/import_xml")
     public ResponseEntity<Void> uploadFromXml(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        LOGGER.debug("import excel sheet to car table)");
+        LOGGER.debug("import xml archive to car table)");
 
-        xmlService.xmlToCars(file);
+        xmlService.xmlToEntities(file);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

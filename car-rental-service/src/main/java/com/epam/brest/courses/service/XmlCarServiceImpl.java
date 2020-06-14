@@ -50,7 +50,7 @@ public class XmlCarServiceImpl implements XmlService <Car> {
     }
 
     @Override
-    public void xmlToCars(MultipartFile file) {
+    public void xmlToEntities(MultipartFile file) {
         carService.deleteAll();
         try {
 

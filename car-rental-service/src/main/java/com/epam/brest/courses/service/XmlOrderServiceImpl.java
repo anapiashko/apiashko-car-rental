@@ -55,7 +55,7 @@ public class XmlOrderServiceImpl implements XmlService <Order> {
     }
 
     @Override
-    public void xmlToCars(MultipartFile file) {
+    public void xmlToEntities(MultipartFile file) {
         orderService.deleteAll();
         try {
 
