@@ -67,8 +67,8 @@ public class ExcelServiceImpl implements ExcelService {
             }
 
             // CellStyle for Price
-            CellStyle ageCellStyle = workbook.createCellStyle();
-            ageCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("#"));
+            CellStyle priceCellStyle = workbook.createCellStyle();
+            priceCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("#"));
 
             int rowIdx = 1;
             for (Car customer : cars) {
@@ -78,9 +78,9 @@ public class ExcelServiceImpl implements ExcelService {
                 row.createCell(1).setCellValue(customer.getBrand());
                 row.createCell(2).setCellValue(customer.getRegisterNumber());
 
-                Cell ageCell = row.createCell(3);
-                ageCell.setCellValue(customer.getPrice().toString());
-                ageCell.setCellStyle(ageCellStyle);
+                Cell priceCell = row.createCell(3);
+                priceCell.setCellValue(customer.getPrice().toString());
+                priceCell.setCellStyle(priceCellStyle);
             }
 
             workbook.write(out);
@@ -98,7 +98,6 @@ public class ExcelServiceImpl implements ExcelService {
         XSSFWorkbook workbook = null;
         try {
 
-            // FileInputStream file = new FileInputStream(file);
             //Create Workbook instance holding reference to .xlsx file
             workbook = new XSSFWorkbook(file.getInputStream());
 
@@ -239,13 +238,11 @@ public class ExcelServiceImpl implements ExcelService {
     @Override
     public ByteArrayInputStream excelToOrders(MultipartFile file) throws IOException {
 
-        List<Order> orders = new LinkedList<>();
         final DataFormatter df = new DataFormatter();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         XSSFWorkbook workbook = null;
         try {
 
-            // FileInputStream file = new FileInputStream(file);
             //Create Workbook instance holding reference to .xlsx file
             workbook = new XSSFWorkbook(file.getInputStream());
 
@@ -282,7 +279,7 @@ public class ExcelServiceImpl implements ExcelService {
                     colnum++;
                     System.out.println("-");
                 }
-                if (colnum < 4) {
+                if (colnum < 3) {
                     break;
                 }
                 Order order = new Order();
@@ -305,7 +302,6 @@ public class ExcelServiceImpl implements ExcelService {
                         cell.setCellStyle(style);
                     }
                 }
-                orders.add(order);
                 rownum++;
                 System.out.println();
             }
