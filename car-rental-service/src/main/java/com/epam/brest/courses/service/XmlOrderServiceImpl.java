@@ -31,7 +31,7 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
-public class XmlOrderServiceImpl implements XmlService <Order> {
+public class XmlOrderServiceImpl implements XmlService<Order> {
 
     private final OrderService orderService;
 
@@ -43,15 +43,12 @@ public class XmlOrderServiceImpl implements XmlService <Order> {
     @Override
     public ByteArrayInputStream entitiesToXml(List<Order> orders) throws IOException {
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        /** Build order XML DOM **/
+        Document xmlDoc = buildEmployeeXML(orders);
 
-            /** Build customer XML DOM **/
-            Document xmlDoc = buildEmployeeXML(orders);
+        ByteArrayInputStream xmlInBytes = new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
 
-            ByteArrayInputStream xmlInBytes = new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
-
-            return new ByteArrayInputStream(archiveFile(xmlInBytes));
-        }
+        return new ByteArrayInputStream(archiveFile(xmlInBytes));
     }
 
     @Override
@@ -59,7 +56,7 @@ public class XmlOrderServiceImpl implements XmlService <Order> {
         orderService.deleteAll();
         try {
 
-            byte[] bytes = unzipFile(file);
+            byte[] bytes = unarchiveFile(file);
 
             // Создается построитель документа
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -69,14 +66,14 @@ public class XmlOrderServiceImpl implements XmlService <Order> {
             // Получаем корневой элемент
             Node root = document.getDocumentElement();
 
-            System.out.println("List of cars:");
+            System.out.println("List of orders:");
             System.out.println();
-            // Просматриваем все подэлементы корневого - т.е. cars
+            // Просматриваем все подэлементы корневого - т.е. orders
 
             NodeList orders = root.getChildNodes();
             for (int i = 0; i < orders.getLength(); i++) {
                 Node order = orders.item(i);
-                // Если нода не текст, то это car - заходим внутрь
+                // Если нода не текст, то это order - заходим внутрь
                 if (order.getNodeType() != Node.TEXT_NODE) {
 
                     Order newOrder = new Order();
@@ -95,7 +92,7 @@ public class XmlOrderServiceImpl implements XmlService <Order> {
         }
     }
 
-    private byte[] unzipFile(MultipartFile file) {
+    private byte[] unarchiveFile(MultipartFile file) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

@@ -27,7 +27,7 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
-public class XmlCarServiceImpl implements XmlService <Car> {
+public class XmlCarServiceImpl implements XmlService<Car> {
 
     private final CarService carService;
 
@@ -38,15 +38,12 @@ public class XmlCarServiceImpl implements XmlService <Car> {
     @Override
     public ByteArrayInputStream entitiesToXml(List<Car> cars) throws IOException {
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        /** Build car XML DOM **/
+        Document xmlDoc = buildEmployeeXML(cars);
 
-            /** Build customer XML DOM **/
-            Document xmlDoc = buildEmployeeXML(cars);
+        ByteArrayInputStream xmlInBytes = new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
 
-            ByteArrayInputStream xmlInBytes = new ByteArrayInputStream(Objects.requireNonNull(doc2bytes(xmlDoc)));
-
-            return new ByteArrayInputStream(archiveFile(xmlInBytes));
-        }
+        return new ByteArrayInputStream(archiveFile(xmlInBytes));
     }
 
     @Override
@@ -54,7 +51,7 @@ public class XmlCarServiceImpl implements XmlService <Car> {
         carService.deleteAll();
         try {
 
-            byte[] bytes = unzipFile(file);
+            byte[] bytes = unarchiveFile(file);
 
             // Создается построитель документа
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -91,7 +88,7 @@ public class XmlCarServiceImpl implements XmlService <Car> {
         }
     }
 
-    private byte[] unzipFile(MultipartFile file) {
+    private byte[] unarchiveFile(MultipartFile file) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

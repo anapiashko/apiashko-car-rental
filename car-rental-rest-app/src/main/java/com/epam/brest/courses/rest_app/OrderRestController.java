@@ -54,7 +54,7 @@ public class OrderRestController {
 
     @PostMapping(value = "/orders/import_xml")
     public ResponseEntity<Void> uploadFromXml(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        LOGGER.debug("import xml archive to car table)");
+        LOGGER.debug("import xml archive to order table)");
 
         xmlService.xmlToEntities(file);
 
