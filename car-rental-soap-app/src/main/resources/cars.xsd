@@ -1,0 +1,31 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.epam.com/brest/courses/soap_app/generated"
+           elementFormDefault="qualified">
+
+    <xs:element name="getCarsRequest">
+    </xs:element>
+
+    <xs:element name="getCarsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="car">
+                    <xs:complexType >
+                        <xs:sequence>
+                            <xs:element name="brand" type="xs:string"/>
+                            <xs:element name="registerNumber" type="xs:string"/>
+                            <xs:element name="price" type="xs:decimal"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+<!--    <xs:complexType name="car">-->
+<!--        <xs:sequence>-->
+<!--            <xs:element name="brand" type="xs:string"/>-->
+<!--            <xs:element name="registerNumber" type="xs:string"/>-->
+<!--            <xs:element name="price" type="xs:decimal"/>-->
+<!--        </xs:sequence>-->
+<!--    </xs:complexType>-->
+</xs:schema>
