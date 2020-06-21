@@ -23,18 +23,18 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
 
-	@Bean(name = "countries")
-	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema countriesSchema) {
+	@Bean(name = "cars")
+	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema carsSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("CountriesPort");
+		wsdl11Definition.setPortTypeName("CarsPort");
 		wsdl11Definition.setLocationUri("/ws");
 		wsdl11Definition.setTargetNamespace("http://epam.com/brest/courses/soap_app");
-		wsdl11Definition.setSchema(countriesSchema);
+		wsdl11Definition.setSchema(carsSchema);
 		return wsdl11Definition;
 	}
 
 	@Bean
 	public XsdSchema countriesSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("countries.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("cars.xsd"));
 	}
 }
