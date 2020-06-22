@@ -1,4 +1,4 @@
-package com.epam.brest.courses.soap_app;
+package com.epam.brest.courses.soap_app.config;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -23,18 +23,18 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
 
-	@Bean(name = "cars")
-	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema carsSchema) {
+	@Bean(name = "car-rental")
+	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema carRentalSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("CarsPort");
+		wsdl11Definition.setPortTypeName("CarRentalPort");
 		wsdl11Definition.setLocationUri("/ws");
 		wsdl11Definition.setTargetNamespace("http://epam.com/brest/courses/soap_app");
-		wsdl11Definition.setSchema(carsSchema);
+		wsdl11Definition.setSchema(carRentalSchema);
 		return wsdl11Definition;
 	}
 
 	@Bean
-	public XsdSchema carsSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("cars.xsd"));
+	public XsdSchema carRentalSchema() {
+		return new SimpleXsdSchema(new ClassPathResource("car-rental.xsd"));
 	}
 }
