@@ -21,6 +21,7 @@
         <module>car-rental-test-db</module>
         <module>car-rental-soap-app</module>
         <module>spring-boot-soap-app</module>
+        <module>spring-boot-soap-rest</module>
     </modules>
 
     <properties>
