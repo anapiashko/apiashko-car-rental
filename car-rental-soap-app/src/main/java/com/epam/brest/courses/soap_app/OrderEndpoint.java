@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 @Endpoint
 public class OrderEndpoint {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderEndpoint.class);
 
     private static final String NAMESPACE_URI = "http://epam.com/brest/courses/soap_app";
@@ -28,6 +29,8 @@ public class OrderEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addOrderRequest")
     @ResponsePayload
     public AddOrderResponse create(@RequestPayload AddOrderRequest request) {
+        LOGGER.debug("create order({})", request.getOrderInfo());
+
         AddOrderResponse response = new AddOrderResponse();
         ServiceStatus serviceStatus = new ServiceStatus();
         OrderInfo orderInfo = request.getOrderInfo();

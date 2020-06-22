@@ -24,8 +24,24 @@
     <xs:element name="getAllCarsRequest">
         <xs:complexType/>
     </xs:element>
-
     <xs:element name="getAllCarsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="carInfo" maxOccurs="unbounded"
+                            minOccurs="0" type="tns:carInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="getCarsByDateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="filter" type="xs:date"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getCarsByDateResponse">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="carInfo" maxOccurs="unbounded"

@@ -11,6 +11,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,9 +48,35 @@ public class CarEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCarsByDateRequest")
+    @ResponsePayload
+    public GetCarsByDateResponse getByDate(@RequestPayload GetCarsByDateRequest request) {
+        LOGGER.debug("find cars by date ()");
+
+        GetCarsByDateResponse response = new GetCarsByDateResponse();
+        List<CarInfo> carInfoList = new ArrayList<>();
+
+        LocalDate date = LocalDate.of(
+                request.getFilter().getYear(),
+                request.getFilter().getMonth(),
+                request.getFilter().getDay());
+
+        List<Car> carList = carService.findAllByDate(date);
+        for (int i = 0; i < carList.size(); i++) {
+            CarInfo carInfo = new CarInfo();
+            BeanUtils.copyProperties(carList.get(i), carInfo);
+            carInfoList.add(carInfo);
+        }
+        response.getCarInfo().addAll(carInfoList);
+
+        return response;
+    }
+
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCarByIdRequest")
     @ResponsePayload
     public GetCarByIdResponse getById(@RequestPayload GetCarByIdRequest request) {
+        LOGGER.debug("find car by id (id = {})", request.getId());
+
         GetCarByIdResponse response = new GetCarByIdResponse();
         CarInfo carInfo = new CarInfo();
         Optional<Car> car = carService.findById(request.getId());
@@ -61,6 +88,8 @@ public class CarEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addCarRequest")
     @ResponsePayload
     public AddCarResponse create(@RequestPayload AddCarRequest request) {
+        LOGGER.debug("create car ({})", request.getCarInfo());
+
         AddCarResponse response = new AddCarResponse();
         ServiceStatus serviceStatus = new ServiceStatus();
         CarInfo carInfo = request.getCarInfo();
@@ -88,6 +117,8 @@ public class CarEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateCarRequest")
     @ResponsePayload
     public UpdateCarResponse update(@RequestPayload UpdateCarRequest request) {
+        LOGGER.debug("update car ({})", request.getCarInfo());
+
         Car article = new Car();
         BeanUtils.copyProperties(request.getCarInfo(), article);
         int updatedCars = carService.update(article);
@@ -105,6 +136,8 @@ public class CarEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteCarRequest")
     @ResponsePayload
     public DeleteCarResponse delete(@RequestPayload DeleteCarRequest request) {
+        LOGGER.debug("delete car (id = {})", request.getId());
+
         Optional<Car> article = carService.findById(request.getId());
         ServiceStatus serviceStatus = new ServiceStatus();
         if (article == null ) {

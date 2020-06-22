@@ -18,6 +18,7 @@ import java.util.List;
 
 @Endpoint
 public class OrderDtoEndpoint {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderDtoEndpoint.class);
 
     private static final String NAMESPACE_URI = "http://epam.com/brest/courses/soap_app";
@@ -35,7 +36,7 @@ public class OrderDtoEndpoint {
         LOGGER.debug("find all order_dtos ()");
 
         GetAllOrderDtosResponse response = new GetAllOrderDtosResponse();
-        List<OrderDtoInfo> carInfoList = new ArrayList<>();
+        List<OrderDtoInfo> orderDtoInfoList = new ArrayList<>();
         List<OrderDto> orderDtoList = orderDtoService.findAllOrdersWithCar();
         for (int i = 0; i < orderDtoList.size(); i++) {
             OrderDtoInfo orderDtoInfo = new OrderDtoInfo();
@@ -45,9 +46,9 @@ public class OrderDtoEndpoint {
                             orderDtoList.get(i).getDate().toString()
                     );
             orderDtoInfo.setDate(xmlGregorianCalendar);
-            carInfoList.add(orderDtoInfo);
+            orderDtoInfoList.add(orderDtoInfo);
         }
-        response.getOrderDtoInfo().addAll(carInfoList);
+        response.getOrderDtoInfo().addAll(orderDtoInfoList);
 
         return response;
     }
