@@ -71,21 +71,50 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
 
     @Override
     public Optional<Car> findById(Integer carId) {
-        return Optional.empty();
+        GetCarByIdRequest request = new GetCarByIdRequest();
+        request.setId(carId);
+        GetCarByIdResponse response = (GetCarByIdResponse) getWebServiceTemplate()
+                .marshalSendAndReceive(
+                request, new SoapActionCallback(URL + "/ws/getCarByIdRequest"));
+        Car car = new Car();
+        BeanUtils.copyProperties(response.getCarInfo(), car);
+        return Optional.of(car);
     }
 
     @Override
     public Car create(Car car) {
-        return null;
+        AddCarRequest request = new AddCarRequest();
+
+        CarInfo carInfo = new CarInfo();
+        BeanUtils.copyProperties(car, carInfo);
+        request.setCarInfo(carInfo);
+
+        AddCarResponse response = (AddCarResponse) getWebServiceTemplate()
+                .marshalSendAndReceive(
+                request, new SoapActionCallback("/ws/addCarRequest"));
+
+        BeanUtils.copyProperties(response.getCarInfo(), car);
+        return car;
     }
 
     @Override
     public int update(Car car) {
-        return 0;
+        UpdateCarRequest request = new UpdateCarRequest();
+
+        CarInfo carInfo = new CarInfo();
+        BeanUtils.copyProperties(car, carInfo);
+        request.setCarInfo(carInfo);
+        UpdateCarResponse response = (UpdateCarResponse) getWebServiceTemplate()
+                .marshalSendAndReceive(
+                request, new SoapActionCallback(URL + "/ws/updateCarRequest"));
+        return response.getUpdatedCars();
     }
 
     @Override
     public void delete(Integer carId) {
-
+        DeleteCarRequest request = new DeleteCarRequest();
+        request.setId(carId);
+        getWebServiceTemplate().marshalSendAndReceive(
+                request, new SoapActionCallback(URL + "/ws/deleteCarRequest"));
     }
 }
