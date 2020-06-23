@@ -22,6 +22,8 @@
         <module>car-rental-soap-app</module>
         <module>spring-boot-soap-app</module>
         <module>spring-boot-soap-rest</module>
+        <module>car-rental-service-soap</module>
+        <module>car-rental-web-app-soap</module>
     </modules>
 
     <properties>
@@ -55,6 +57,11 @@
             <dependency>
                 <groupId>com.epam.brest.courses</groupId>
                 <artifactId>car-rental-service-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest.courses</groupId>
+                <artifactId>car-rental-service-soap</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
