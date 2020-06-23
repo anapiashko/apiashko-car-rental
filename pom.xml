@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>spring-boot-rest-app</module>
         <module>car-rental-rest-app</module>
         <module>car-rental-service</module>
         <module>car-rental-service-api</module>
@@ -20,10 +19,8 @@
         <module>car-rental-service-rest</module>
         <module>car-rental-test-db</module>
         <module>car-rental-soap-app</module>
-        <module>spring-boot-soap-app</module>
         <module>spring-boot-soap-rest</module>
         <module>car-rental-service-soap</module>
-        <module>car-rental-web-app-soap</module>
     </modules>
 
     <properties>
