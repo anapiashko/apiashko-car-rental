@@ -78,7 +78,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="serviceStatus" type="tns:serviceStatus"/>
-                <xs:element name="id" type="xs:int"/>
+                <xs:element name="carInfo" type="tns:carInfo"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

@@ -105,8 +105,8 @@ public class CarEndpoint {
             serviceStatus.setMessage("Conflict during saving");
             response.setServiceStatus(serviceStatus);
         } else {
-            Integer id = savedCar.getId();
-            response.setId(id);
+            BeanUtils.copyProperties(car, carInfo);
+            response.setCarInfo(carInfo);
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content Added Successfully");
             response.setServiceStatus(serviceStatus);
