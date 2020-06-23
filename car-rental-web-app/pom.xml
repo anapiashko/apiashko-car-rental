@@ -26,6 +26,10 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest.courses</groupId>
+            <artifactId>car-rental-service-soap</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest.courses</groupId>
             <artifactId>car-rental-service</artifactId>
             <scope>test</scope>
         </dependency>
@@ -74,7 +78,6 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -87,8 +90,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
-
 
         <dependency>
             <groupId>javax.validation</groupId>
