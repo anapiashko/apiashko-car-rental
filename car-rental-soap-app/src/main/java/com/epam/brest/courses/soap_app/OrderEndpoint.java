@@ -4,6 +4,7 @@ import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service_api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -48,8 +49,8 @@ public class OrderEndpoint {
             serviceStatus.setMessage("Conflict during saving");
             response.setServiceStatus(serviceStatus);
         } else {
-            Integer id = savedOrder.getId();
-            response.setId(id);
+            BeanUtils.copyProperties(order, orderInfo);
+            response.setOrderInfo(orderInfo);
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content Added Successfully");
             response.setServiceStatus(serviceStatus);
