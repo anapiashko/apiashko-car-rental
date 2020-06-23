@@ -5,6 +5,8 @@ import com.epam.brest.courses.service_api.OrderDtoService;
 import com.epam.brest.courses.service_soap.wsdl.GetAllOrderDtosRequest;
 import com.epam.brest.courses.service_soap.wsdl.GetAllOrderDtosResponse;
 import com.epam.brest.courses.service_soap.wsdl.OrderDtoInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
@@ -14,10 +16,14 @@ import java.util.List;
 
 public class OrderDtoClient extends WebServiceGatewaySupport implements OrderDtoService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderDtoClient.class);
+
     private final String URL = "http://localhost:8088/ws";
 
     @Override
     public List<OrderDto> findAllOrdersWithCar() {
+        LOGGER.debug("find orders with their cars ()");
+
         GetAllOrderDtosRequest request = new GetAllOrderDtosRequest();
 
         GetAllOrderDtosResponse response = (GetAllOrderDtosResponse) getWebServiceTemplate()

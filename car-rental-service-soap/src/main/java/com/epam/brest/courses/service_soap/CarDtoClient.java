@@ -5,6 +5,8 @@ import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_soap.wsdl.CarDtoInfo;
 import com.epam.brest.courses.service_soap.wsdl.GetAllCarDtosRequest;
 import com.epam.brest.courses.service_soap.wsdl.GetAllCarDtosResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
@@ -18,10 +20,14 @@ import java.util.List;
 
 public class CarDtoClient extends WebServiceGatewaySupport implements CarDtoService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoClient.class);
+
     private final String URL = "http://localhost:8088/ws";
 
     @Override
     public List<CarDto> findAllWithNumberOfOrders(LocalDate dateFrom, LocalDate dateTo) {
+        LOGGER.debug("find cars with numbers of orders (dateFrom = {}, dateTo = {})", dateFrom, dateTo);
+
         GetAllCarDtosRequest request = new GetAllCarDtosRequest();
         try {
             XMLGregorianCalendar xmlDateFrom =
@@ -30,7 +36,7 @@ public class CarDtoClient extends WebServiceGatewaySupport implements CarDtoServ
                     );
             XMLGregorianCalendar xmlDateTo =
                     DatatypeFactory.newInstance().newXMLGregorianCalendar(
-                            dateFrom.toString()
+                            dateTo.toString()
                     );
             request.setDateFrom(xmlDateFrom);
             request.setDateTo(xmlDateTo);
