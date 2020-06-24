@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
-import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -22,14 +21,11 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarClient.class);
 
-    private final String URL = "http://localhost:8088/ws";
-
     public List<Car> findAll() {
         LOGGER.debug("find all cars ()");
 
         GetAllCarsRequest request = new GetAllCarsRequest();
-        GetAllCarsResponse response = (GetAllCarsResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/getAllCarsRequest"));
+        GetAllCarsResponse response = (GetAllCarsResponse) getWebServiceTemplate().marshalSendAndReceive(request);
 
         List<Car> carList = new ArrayList<>();
         List<CarInfo> carInfoList = response.getCarInfo();
@@ -58,7 +54,7 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
         }
 
         GetCarsByDateResponse response = (GetCarsByDateResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback("/getCarsByDateRequest"));
+                request);
 
         List<Car> carList = new ArrayList<>();
         List<CarInfo> carInfoList = response.getCarInfo();
@@ -84,8 +80,7 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
         GetCarByIdRequest request = new GetCarByIdRequest();
         request.setId(carId);
         GetCarByIdResponse response = (GetCarByIdResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/getCarByIdRequest"));
+                .marshalSendAndReceive(request);
         Car car = new Car();
         BeanUtils.copyProperties(response.getCarInfo(), car);
         return Optional.of(car);
@@ -98,7 +93,6 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
         AddCarRequest request = new AddCarRequest();
 
         CarInfo carInfo = new CarInfo();
-       // BeanUtils.copyProperties(car, carInfo);
         carInfo.setBrand(car.getBrand());
         carInfo.setRegisterNumber(car.getRegisterNumber());
         carInfo.setPrice(car.getPrice());
@@ -106,7 +100,7 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
 
         AddCarResponse response = (AddCarResponse) getWebServiceTemplate()
                 .marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/addCarRequest"));
+                request);
 
         BeanUtils.copyProperties(response.getCarInfo(), car);
         return car;
@@ -122,8 +116,7 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
         BeanUtils.copyProperties(car, carInfo);
         request.setCarInfo(carInfo);
         UpdateCarResponse response = (UpdateCarResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/updateCarRequest"));
+                .marshalSendAndReceive(request);
         return response.getUpdatedCars();
     }
 
@@ -133,7 +126,6 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
 
         DeleteCarRequest request = new DeleteCarRequest();
         request.setId(carId);
-        getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/deleteCarRequest"));
+        getWebServiceTemplate().marshalSendAndReceive(request);
     }
 }

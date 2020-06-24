@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
-import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -21,8 +20,6 @@ import java.util.List;
 public class CarDtoClient extends WebServiceGatewaySupport implements CarDtoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoClient.class);
-
-    private final String URL = "http://localhost:8088/ws";
 
     @Override
     public List<CarDto> findAllWithNumberOfOrders(LocalDate dateFrom, LocalDate dateTo) {
@@ -45,8 +42,7 @@ public class CarDtoClient extends WebServiceGatewaySupport implements CarDtoServ
         }
 
         GetAllCarDtosResponse response = (GetAllCarDtosResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/getAllCarDtosRequest"));
+                .marshalSendAndReceive(request);
 
         List<CarDto> carDtoList = new ArrayList<>();
         List<CarDtoInfo> carDtoInfoList = response.getCarDtoInfo();

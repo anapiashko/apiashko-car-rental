@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
-import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -18,8 +17,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class OrderClient extends WebServiceGatewaySupport implements OrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderClient.class);
-
-    private final String URL = "http://localhost:8088/ws";
 
     @Override
     public Order create(Order order) {
@@ -41,8 +38,7 @@ public class OrderClient extends WebServiceGatewaySupport implements OrderServic
         request.setOrderInfo(orderInfo);
 
         AddOrderResponse response = (AddOrderResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(
-                        request, new SoapActionCallback(URL + "/addOrderRequest"));
+                .marshalSendAndReceive(request);
 
         BeanUtils.copyProperties(response.getOrderInfo(), order);
         return order;

@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
-import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ public class OrderDtoClient extends WebServiceGatewaySupport implements OrderDto
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderDtoClient.class);
 
-    private final String URL = "http://localhost:8088/ws";
-
     @Override
     public List<OrderDto> findAllOrdersWithCar() {
         LOGGER.debug("find orders with their cars ()");
@@ -28,8 +25,7 @@ public class OrderDtoClient extends WebServiceGatewaySupport implements OrderDto
         GetAllOrderDtosRequest request = new GetAllOrderDtosRequest();
 
         GetAllOrderDtosResponse response = (GetAllOrderDtosResponse) getWebServiceTemplate()
-                .marshalSendAndReceive(
-                request, new SoapActionCallback("/getAllOrderDtosRequest"));
+                .marshalSendAndReceive(request);
 
         List<OrderDto> orderDtoList = new ArrayList<>();
         List<OrderDtoInfo> orderDtoInfoList = response.getOrderDtoInfo();
