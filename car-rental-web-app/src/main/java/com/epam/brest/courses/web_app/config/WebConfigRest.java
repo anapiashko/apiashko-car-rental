@@ -20,7 +20,7 @@ import java.util.Collections;
 @Configuration
 @ComponentScan(basePackages = {"com.epam.brest.courses.*"})
 @RequiredArgsConstructor
-public class WebConfig {
+public class WebConfigRest {
 
     private final ServiceProperties props;
 
