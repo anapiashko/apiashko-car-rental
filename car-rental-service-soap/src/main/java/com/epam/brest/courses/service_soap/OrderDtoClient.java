@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class OrderDtoClient extends WebServiceGatewaySupport implements OrderDto
 
         GetAllOrderDtosResponse response = (GetAllOrderDtosResponse) getWebServiceTemplate()
                 .marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/getAllOrderDtosRequest"));
+                request, new SoapActionCallback("/getAllOrderDtosRequest"));
 
         List<OrderDto> orderDtoList = new ArrayList<>();
         List<OrderDtoInfo> orderDtoInfoList = response.getOrderDtoInfo();
@@ -36,6 +37,10 @@ public class OrderDtoClient extends WebServiceGatewaySupport implements OrderDto
         for (int i = 0; i < orderDtoInfoList.size(); i++) {
             OrderDto orderDto = new OrderDto();
             BeanUtils.copyProperties(orderDtoInfoList.get(i), orderDto);
+            orderDto.setDate(LocalDate.of(
+                    orderDtoInfoList.get(i).getDate().getYear(),
+                    orderDtoInfoList.get(i).getDate().getMonth(),
+                    orderDtoInfoList.get(i).getDate().getDay()));
             orderDtoList.add(orderDto);
         }
         return orderDtoList;

@@ -11,6 +11,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 public class OrderClient extends WebServiceGatewaySupport implements OrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderClient.class);
@@ -24,7 +28,16 @@ public class OrderClient extends WebServiceGatewaySupport implements OrderServic
         AddOrderRequest request = new AddOrderRequest();
 
         OrderInfo orderInfo = new OrderInfo();
-        BeanUtils.copyProperties(order, orderInfo);
+        try {
+            XMLGregorianCalendar xmlDate =
+                    DatatypeFactory.newInstance().newXMLGregorianCalendar(
+                            order.getDate().toString()
+                    );
+            orderInfo.setDate(xmlDate);
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+        orderInfo.setCarId(order.getCarId());
         request.setOrderInfo(orderInfo);
 
         AddOrderResponse response = (AddOrderResponse) getWebServiceTemplate()

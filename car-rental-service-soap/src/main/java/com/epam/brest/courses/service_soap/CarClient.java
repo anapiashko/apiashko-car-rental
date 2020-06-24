@@ -58,7 +58,7 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
         }
 
         GetCarsByDateResponse response = (GetCarsByDateResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(URL + "/getCarsByDateRequest"));
+                request, new SoapActionCallback("/getCarsByDateRequest"));
 
         List<Car> carList = new ArrayList<>();
         List<CarInfo> carInfoList = response.getCarInfo();
@@ -98,7 +98,10 @@ public class CarClient extends WebServiceGatewaySupport implements CarService {
         AddCarRequest request = new AddCarRequest();
 
         CarInfo carInfo = new CarInfo();
-        BeanUtils.copyProperties(car, carInfo);
+       // BeanUtils.copyProperties(car, carInfo);
+        carInfo.setBrand(car.getBrand());
+        carInfo.setRegisterNumber(car.getRegisterNumber());
+        carInfo.setPrice(car.getPrice());
         request.setCarInfo(carInfo);
 
         AddCarResponse response = (AddCarResponse) getWebServiceTemplate()
