@@ -2,29 +2,29 @@ package com.epam.brest.courses.service_soap;
 
 import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_soap.config.WSConfigClient;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ComponentScan("com.epam.brest.courses.service_soap.*")
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = WSConfigClient.class)
-public class CarClientIT {
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {WSConfigClient.class, DataSourceTransactionManagerAutoConfiguration.class})
+public class CarClientIT extends AbstractTestExecutionListener {
 
     @Autowired
-    private CarClient carClient;
+    private  CarClient carClient;
 
     @Test
     public void shouldFindAllCars() {
