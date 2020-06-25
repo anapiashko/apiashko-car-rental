@@ -80,7 +80,7 @@ public class CarEndpoint {
         GetCarByIdResponse response = new GetCarByIdResponse();
         CarInfo carInfo = new CarInfo();
         Optional<Car> car = carService.findById(request.getId());
-        BeanUtils.copyProperties(car.get(), carInfo);
+        car.ifPresent(value -> BeanUtils.copyProperties(value, carInfo));
         response.setCarInfo(carInfo);
         return response;
     }
