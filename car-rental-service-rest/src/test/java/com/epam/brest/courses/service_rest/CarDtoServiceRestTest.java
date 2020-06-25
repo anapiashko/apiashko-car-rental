@@ -37,11 +37,10 @@ class CarDtoServiceRestTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoServiceRestTest.class);
 
-
-    public static final String CARS_URL = "http://localhost:8088/car_dtos";
+    private static final String CAR_DTOS_URL = "http://localhost:8088/car_dtos";
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     private MockRestServiceServer mockServer;
 
@@ -50,9 +49,9 @@ class CarDtoServiceRestTest {
     private CarDtoServiceRest carDtoServiceRest;
 
     @BeforeEach
-    public void before() {
+    void before() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
-        carDtoServiceRest = new CarDtoServiceRest(CARS_URL, restTemplate);
+        carDtoServiceRest = new CarDtoServiceRest(CAR_DTOS_URL, restTemplate);
     }
 
 
@@ -63,7 +62,7 @@ class CarDtoServiceRestTest {
         // given
         LocalDate dateFrom = LocalDate.of(2020,2,2);
         LocalDate dateTo = LocalDate.of(2020,3,3);
-        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CARS_URL+"?dateFrom="+dateFrom
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CAR_DTOS_URL+"?dateFrom="+dateFrom
                 +"&dateTo="+dateTo)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)

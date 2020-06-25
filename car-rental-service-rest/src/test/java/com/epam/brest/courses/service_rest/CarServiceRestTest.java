@@ -38,10 +38,10 @@ class CarServiceRestTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarServiceRestTest.class);
 
-    public static final String CARS_URL = "http://localhost:8088/cars";
+    private static final String CARS_URL = "http://localhost:8088/cars";
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     private MockRestServiceServer mockServer;
 
@@ -51,7 +51,7 @@ class CarServiceRestTest {
 
 
     @BeforeEach
-    public void before() {
+    void before() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
         carServiceRest = new CarServiceRest(CARS_URL, restTemplate);
     }

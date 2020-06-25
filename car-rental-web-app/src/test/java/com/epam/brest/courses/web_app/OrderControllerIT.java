@@ -14,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -29,12 +30,23 @@ class OrderControllerIT {
     private OrderController orderController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         mockMvc =  MockMvcBuilders.standaloneSetup(orderController)
                 .setViewResolvers(new ThymeleafConfig().viewResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .alwaysDo(MockMvcResultHandlers.print())
                 .build();
+    }
+
+    @Test
+    void shouldReturnAllOrderDtos() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/orders")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(view().name("orders"))
+        ;
     }
 
     @Test

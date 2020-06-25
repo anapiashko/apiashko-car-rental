@@ -36,7 +36,7 @@ class CarControllerIT {
     private CarController carController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         mockMvc =  MockMvcBuilders.standaloneSetup(carController)
                 .setViewResolvers(new ThymeleafConfig().viewResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
@@ -45,7 +45,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldReturnListOfFreeCars() throws Exception {
+    void shouldReturnListOfFreeCars() throws Exception {
         LocalDate filter = LocalDate.of(2020,1,2);
 //        String filter = "2020-01-10";
         mockMvc.perform(
@@ -57,7 +57,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldOpenEditCarPage() throws Exception {
+    void shouldOpenEditCarPage() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/cars/2"))
                 .andDo(MockMvcResultHandlers.print())
@@ -73,7 +73,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldReturnToCarsPageIfCarNotFoundById() throws Exception {
+    void shouldReturnToCarsPageIfCarNotFoundById() throws Exception {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/cars/99999")
@@ -83,7 +83,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldUpdateCarAfterEdit() throws Exception {
+    void shouldUpdateCarAfterEdit() throws Exception {
 
         Car car = new Car();
         car.setId(1);
@@ -106,7 +106,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldOpenNewCarPage() throws Exception {
+    void shouldOpenNewCarPage() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/car")
         ).andDo(MockMvcResultHandlers.print())
@@ -118,7 +118,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldAddNewCar() throws Exception {
+    void shouldAddNewCar() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/car")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -131,7 +131,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldDeleteCar() throws Exception {
+    void shouldDeleteCar() throws Exception {
 
 //        mockMvc.perform(
 //                MockMvcRequestBuilders.get("/cars/1/delete")
@@ -141,7 +141,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldReturnListCarsWithNumberOfOrders() throws Exception {
+    void shouldReturnListCarsWithNumberOfOrders() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/car-statistics")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)

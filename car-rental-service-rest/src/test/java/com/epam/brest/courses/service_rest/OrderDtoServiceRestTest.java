@@ -1,10 +1,9 @@
 package com.epam.brest.courses.service_rest;
 
-import com.epam.brest.courses.model.Order;
+import com.epam.brest.courses.model.dto.OrderDto;
 import com.epam.brest.courses.service_rest.config.TestConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,60 +22,65 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-class OrderServiceRestTest {
+class OrderDtoServiceRestTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceRestTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderDtoServiceRestTest.class);
 
-    private static final String ORDERS_URL = "http://localhost:8088/orders";
+    private static final String ORDER_DTOS_URL = "http://localhost:8088/order_dtos";
 
     @Autowired
     private RestTemplate restTemplate;
 
     private MockRestServiceServer mockServer;
 
-    private ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());;
+    private ObjectMapper mapper = new ObjectMapper();
 
-    private OrderServiceRest orderServiceRest;
+    private OrderDtoServiceRest orderDtoServiceRest;
 
     @BeforeEach
     void before() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
-        orderServiceRest = new OrderServiceRest(ORDERS_URL, restTemplate);
+        orderDtoServiceRest = new OrderDtoServiceRest(ORDER_DTOS_URL, restTemplate);
     }
 
     @Test
-    void create() throws JsonProcessingException, URISyntaxException {
-        LOGGER.debug("shouldCreateDepartment()");
-        // given
-        Order order = create(0);
+    void findAllOrdersWithCar() throws URISyntaxException, JsonProcessingException {
+        LOGGER.debug("findAllOrdersWithCar ()");
 
-        mockServer.expect(ExpectedCount.once(), requestTo(new URI(ORDERS_URL)))
-                .andExpect(method(HttpMethod.POST))
-                .andRespond(withStatus(HttpStatus.CREATED)
+        // given
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(ORDER_DTOS_URL)))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString(order))
+                        .body(mapper.writeValueAsString(Arrays.asList(create(0), create(1))))
                 );
+
         // when
-        Order savedOrder = orderServiceRest.create(order);
+        List<OrderDto> orderDtos = orderDtoServiceRest.findAllOrdersWithCar();
 
         // then
         mockServer.verify();
-        assertNotNull(savedOrder);
+        assertNotNull(orderDtos);
+        assertTrue(orderDtos.size() > 0);
     }
 
-    private Order create(int index) {
-        Order order = new Order();
-        order.setId(index);
-        order.setDate(LocalDate.of(2020+index,3,4));
-        order.setCarId(100+index);
-        return order;
+    private OrderDto create(int index) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(index);
+        orderDto.setBrand("b" + index);
+        orderDto.setRegisterNumber("rn" + index);
+        orderDto.setDate(LocalDate.of(2020, 11, 1 + index));
+        return orderDto;
     }
 }
