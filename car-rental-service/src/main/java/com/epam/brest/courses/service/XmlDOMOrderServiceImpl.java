@@ -31,12 +31,12 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
-public class XmlOrderServiceImpl implements XmlService<Order> {
+public class XmlDOMOrderServiceImpl implements XmlService<Order> {
 
     private final OrderService orderService;
 
     @Autowired
-    public XmlOrderServiceImpl(OrderService orderService) {
+    public XmlDOMOrderServiceImpl(OrderService orderService) {
         this.orderService = orderService;
     }
 

@@ -54,12 +54,12 @@ public class TestConfig {
 
     @Bean
     public XmlService xmlCarService() {
-        return new XmlCarServiceImpl(carService());
+        return new XmlDOMCarServiceImpl(carService());
     }
 
     @Bean
     public XmlService xmlOrderService() {
-        return new XmlOrderServiceImpl(orderService());
+        return new XmlDOMOrderServiceImpl(orderService());
     }
 
     @Bean

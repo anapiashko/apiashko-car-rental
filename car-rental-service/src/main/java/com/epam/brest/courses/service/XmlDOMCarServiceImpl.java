@@ -27,11 +27,11 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @Transactional
-public class XmlCarServiceImpl implements XmlService<Car> {
+public class XmlDOMCarServiceImpl implements XmlService<Car> {
 
     private final CarService carService;
 
-    public XmlCarServiceImpl(CarService carService) {
+    public XmlDOMCarServiceImpl(CarService carService) {
         this.carService = carService;
     }
 
