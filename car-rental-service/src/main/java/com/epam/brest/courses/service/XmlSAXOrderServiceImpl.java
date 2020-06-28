@@ -6,6 +6,7 @@ import com.epam.brest.courses.service_api.OrderService;
 import com.epam.brest.courses.service_api.XmlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Profile("sax")
 @Service
 @Transactional
 public class XmlSAXOrderServiceImpl implements XmlService<Order> {
