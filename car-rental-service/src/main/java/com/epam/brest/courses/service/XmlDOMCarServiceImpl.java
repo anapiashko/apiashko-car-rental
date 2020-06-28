@@ -5,6 +5,8 @@ import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.service_api.XmlService;
 import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +31,8 @@ import java.util.zip.ZipOutputStream;
 @Transactional
 public class XmlDOMCarServiceImpl implements XmlService<Car> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlDOMCarServiceImpl.class);
+
     private final CarService carService;
 
     public XmlDOMCarServiceImpl(CarService carService) {
@@ -37,6 +41,7 @@ public class XmlDOMCarServiceImpl implements XmlService<Car> {
 
     @Override
     public ByteArrayInputStream entitiesToXml(List<Car> cars) throws IOException {
+        LOGGER.debug("write entities from db in xml ()");
 
         /** Build car XML DOM **/
         Document xmlDoc = buildEmployeeXML(cars);
@@ -48,6 +53,8 @@ public class XmlDOMCarServiceImpl implements XmlService<Car> {
 
     @Override
     public void xmlToEntities(MultipartFile file) {
+        LOGGER.debug("save entities in db from xml ()");
+
         carService.deleteAll();
         try {
 
@@ -89,6 +96,7 @@ public class XmlDOMCarServiceImpl implements XmlService<Car> {
     }
 
     private byte[] unarchiveFile(MultipartFile file) {
+        LOGGER.debug("unarchive xml file ()");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -119,6 +127,7 @@ public class XmlDOMCarServiceImpl implements XmlService<Car> {
     }
 
     private byte[] archiveFile(ByteArrayInputStream in) throws IOException {
+        LOGGER.debug("archive xml file ()");
 
         //creating byteArray stream, make it bufferable and passing this buffer to ZipOutputStream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

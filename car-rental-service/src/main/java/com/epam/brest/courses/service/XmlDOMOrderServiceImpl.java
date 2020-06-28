@@ -5,6 +5,8 @@ import com.epam.brest.courses.service_api.OrderService;
 import com.epam.brest.courses.service_api.XmlService;
 import com.sun.org.apache.xerces.internal.dom.DocumentImpl;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,8 @@ import java.util.zip.ZipOutputStream;
 @Transactional
 public class XmlDOMOrderServiceImpl implements XmlService<Order> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlDOMOrderServiceImpl.class);
+
     private final OrderService orderService;
 
     @Autowired
@@ -42,6 +46,7 @@ public class XmlDOMOrderServiceImpl implements XmlService<Order> {
 
     @Override
     public ByteArrayInputStream entitiesToXml(List<Order> orders) throws IOException {
+        LOGGER.debug("write entities from db in xml ()");
 
         /** Build order XML DOM **/
         Document xmlDoc = buildEmployeeXML(orders);
@@ -53,6 +58,8 @@ public class XmlDOMOrderServiceImpl implements XmlService<Order> {
 
     @Override
     public void xmlToEntities(MultipartFile file) {
+        LOGGER.debug("save entities in db from xml ()");
+
         orderService.deleteAll();
         try {
 
@@ -93,6 +100,7 @@ public class XmlDOMOrderServiceImpl implements XmlService<Order> {
     }
 
     private byte[] unarchiveFile(MultipartFile file) {
+        LOGGER.debug("unarchive xml file ()");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -123,6 +131,7 @@ public class XmlDOMOrderServiceImpl implements XmlService<Order> {
     }
 
     private byte[] archiveFile(ByteArrayInputStream in) throws IOException {
+        LOGGER.debug("archive xml file ()");
 
         //creating byteArray stream, make it bufferable and passing this buffer to ZipOutputStream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
