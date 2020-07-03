@@ -112,7 +112,7 @@ class CarServiceImplIT {
         //then
         assertTrue(1 == result);
         Optional<Car> updatedOptionalCar = carService.findById(savedCar.getId());
-        assertTrue(optionalCar.isPresent());
+        assertTrue(updatedOptionalCar.isPresent());
         assertEquals(savedCar.getId(),updatedOptionalCar.get().getId());
         assertEquals("HONDA", updatedOptionalCar.get().getBrand());
         assertEquals("7350 AB-1", updatedOptionalCar.get().getRegisterNumber());

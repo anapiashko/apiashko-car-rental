@@ -97,7 +97,6 @@ public class CarRestControllerIT {
         assertEquals(0 ,BigDecimal.valueOf(150).compareTo(optionalCar.get().getPrice()));
     }
 
-
     @Test
     void update() throws Exception {
         //given
@@ -106,7 +105,6 @@ public class CarRestControllerIT {
         car.setRegisterNumber("7302 AB-1");
         car.setPrice(BigDecimal.valueOf(150));
 
-        //Integer id = carDao.save(car);
         Car savedCar = carService.create(car);
         Optional<Car> optionalCar = carService.findById(savedCar.getId());
 
@@ -121,11 +119,11 @@ public class CarRestControllerIT {
         //then
         assertTrue(1 == result);
         Optional<Car> updatedOptionalCar = carService.findById(optionalCar.get().getId());
-        assertTrue(optionalCar.isPresent());
+        assertTrue(updatedOptionalCar.isPresent());
         assertEquals(savedCar.getId(),updatedOptionalCar.get().getId());
-//        assertEquals("HONDA", updatedOptionalCar.get().getBrand());
-//        assertEquals("7350 AB-1", updatedOptionalCar.get().getRegisterNumber());
-//        assertEquals(0, BigDecimal.valueOf(200).compareTo(updatedOptionalCar.get().getPrice()));
+        assertEquals("HONDA", updatedOptionalCar.get().getBrand());
+        assertEquals("7350 AB-1", updatedOptionalCar.get().getRegisterNumber());
+        assertEquals(0, BigDecimal.valueOf(200).compareTo(updatedOptionalCar.get().getPrice()));
     }
 
     @Test

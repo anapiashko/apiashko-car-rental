@@ -1,9 +1,6 @@
 package com.epam.brest.courses.model.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Car Dto.
@@ -26,11 +23,13 @@ public class CarDto {
     /**
      * Car registration number.
      */
+    @Column(name = "register_number")
     private String registerNumber;
 
     /**
      * Number of orders.
      */
+    @Column(name = "number_orders")
     private Integer numberOrders;
 
     public Integer getId() {
