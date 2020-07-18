@@ -96,7 +96,7 @@
         <div class="col">
             <div class="card">
 
-                <table class="table table-striped">
+                <table id="cars_table" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
                         <th>Brand</th>
@@ -106,10 +106,10 @@
                     </tr>
                     </thead>
                     <tbody id="cars">
-                    <tr th:each="car : ${cars}">
-                        <td th:text="${car.brand}">BMW</td>
-                        <td th:text="${car.registerNumber}">3909 AB-1</td>
-                        <td th:text="${car.price} + '   $'">140 $</td>
+                    <tr th:each="car : ${cars}" th:id="'rowId__${car.id}__'" >
+                        <td id="brand" th:text="${car.brand}">BMW</td>
+                        <td id="registerNumber" th:text="${car.registerNumber}">3909 AB-1</td>
+                        <td id="price" th:text="${car.price} + '   $'">140 $</td>
                         <td class="text-right">
                              <span data-toggle="modal"
                                    data-target="#hiddenForm"
@@ -280,17 +280,35 @@
         });
     }
 
-    function appendCar(car) {
-        console.log("CONNECT RABBIT showGreeting ");
+    // function cloneRow() {
+    //     //var row = document.getElementById("rowId"); // find row to copy
+    //     var row = document.querySelector('.new_tr'); // find row to copy
+    //     var table = document.getElementById("cars_table"); // find table to append to
+    //     var clone = row.cloneNode(true); // copy children too
+    //     clone.id = "newID"; // change id or other attributes/contents
+    //     table.appendChild(clone); // add new row to end of table
+    // }
 
-        $("#cars").append("<tr>"
-            + "<td>" + car.id + "</td>"
-            + "<td>" + car.brand + "</td>"
-            + "<td>" + car.registerNumber + "</td>"
-            + "<td>" + car.price + "</td>"
-            + "<td><a href=\"/product/edit/" + car.id + "\">Edit</a></td>"
-            + "<td><a id=\"delete_product\"  href=\"/product/delete/" + car.id + "\">Delete</a></td>"
-            + "</tr>");
+    function appendCar(car) {
+        console.log("CONNECT RABBIT showGreeting " + car);
+
+        const table = document.getElementById("cars_table"); // find table to append to
+        const row = table.rows[1]; // find row to copy
+        let clone = row.cloneNode(true); // copy children too
+
+        clone.id = car.id; // change id or other attributes/contents
+        clone.brand = car.brand;
+        clone.registerNumber = car.registerNumber;
+        clone.price = car.price;
+
+       // clone.cells[0].innerHTML = car.id;
+        clone.cells[0].innerHTML = car.brand;
+        clone.cells[1].innerHTML =  car.registerNumber;
+        clone.cells[2].innerHTML = car.price;
+
+        table.appendChild(clone); // add new row to end of table
+
+
     }
 </script>
 </body>
