@@ -2,11 +2,12 @@ package com.epam.brest.courses.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "car")
-public class Car {
+public class Car implements Serializable {
     /**
      * Car id.
      */

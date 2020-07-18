@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet"
           href="../static/css/font-awesome.min.css"
           th:href="@{/css/font-awesome.min.css}">
@@ -59,7 +62,8 @@
                           th:object="${car}"
                           action="cars.html"
                           th:action="@{${#httpServletRequest.servletPath}}"
-                          th:method="@{post}">
+                          th:method="@{post}"
+                    >
 
                         <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                             <p>Please fix errors below:</p>
@@ -117,7 +121,8 @@
                                data-toggle="tooltip"
                                data-placement="top">
                                 Cancel</a>
-                            <a href="cars.html"
+                            <a id="send"
+                               href="cars.html"
                                th:href="@{/cars}"
                                th:onclick="@{document.forms['carForm'].submit(); return false;}"
                                class="btn btn-primary"
@@ -139,10 +144,55 @@
         th:src="@{/js/popper.min.js}"></script>
 <script src="../static/js/bootstrap.min.js"
         th:src="@{/js/bootstrap.min.js}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
+
+    // let stompClient = null;
+    //
+    // $(function connect() {
+    //     console.log("CONNECT RABBIT CONNECT ");
+    //
+    //     const socket = new SockJS('/ws');
+    //     stompClient = Stomp.over(socket);
+    // });
+    //
+    // function sendCar() {
+    //     console.log("CONNECT RABBIT sendCar ");
+    //
+    //     stompClient.send("/app/create", {},JSON.stringify(
+    //         {'id': $("#field_carId").val(),
+    //             'brand': $("#field_carBrand").val(),
+    //             'registerNumber': $("#field_carRegisterNumber").val(),
+    //             'price': $("#field_carPrice").val()
+    //         }));
+    //
+    //     console.log("CONNECT RABBIT sendCar END");
+    // }
+    //
+    // $(function () {
+    //     console.log("CONNECT RABBIT function ");
+    //
+    //     $("form").on('submit', function (e) {
+    //         e.preventDefault();
+    //     });
+    //
+    //     $( "#send" ).click(function() {
+    //         console.log("CLICK SEND");
+    //         sendCar();
+    //        // location.replace("http://localhost:8080/product")
+    //         console.log("CLICK SEND END");
+    //     });
+    // });
+
 </script>
 </body>
 </html>

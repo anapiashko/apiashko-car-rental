@@ -4,10 +4,15 @@ import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.service_api.CarDtoService;
 import com.epam.brest.courses.service_api.CarService;
 import com.epam.brest.courses.web_app.validators.CarValidator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +39,11 @@ public class CarController {
     private final CarService carService;
 
     private final CarDtoService carDtoService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     public CarController(CarService carService, CarDtoService carDtoService) {
@@ -130,16 +140,30 @@ public class CarController {
      * @return view name
      */
     @PostMapping(value = "car")
-    public final String createCar(@Valid Car car, BindingResult result) {
+    public final String createCar(@Valid Car car, BindingResult result) throws JsonProcessingException {
         LOGGER.debug("createCar({}, {})", car, result);
 
         carValidator.validate(car, result);
         if (result.hasErrors()) {
             return "car";
         } else {
-            carService.create(car);
+            LOGGER.debug("createCar 1({}, {})", car, result);
+            Car savedCar =  carService.create(car);
+
+            String jsonInString = mapper.writeValueAsString(savedCar);
+
+            rabbitTemplate.convertAndSend("car-rental-exchange","add", jsonInString);
+
             return "redirect:/cars";
         }
+    }
+
+    @MessageMapping("/create")
+    @SendTo("/topic/add")
+    public Car changeCreate(Car car) {
+        LOGGER.info("change controller");
+
+        return carService.create(car);
     }
 
     /**
