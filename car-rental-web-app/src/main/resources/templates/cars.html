@@ -106,7 +106,7 @@
                     </tr>
                     </thead>
                     <tbody id="cars">
-                    <tr th:each="car : ${cars}" th:id="'rowId__${car.id}__'" >
+                    <tr th:each="car : ${cars}" th:id="'rowId__${car.id}__'">
                         <td id="brand" th:text="${car.brand}">BMW</td>
                         <td id="registerNumber" th:text="${car.registerNumber}">3909 AB-1</td>
                         <td id="price" th:text="${car.price} + '   $'">140 $</td>
@@ -114,7 +114,7 @@
                              <span data-toggle="modal"
                                    data-target="#hiddenForm"
                                    th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber} +' on date ' +  ${filter}">
-                            <form th:id="'orderForm__${car.id}__'"  th:action="@{/orders}"
+                            <form th:id="'orderForm__${car.id}__'" th:action="@{/orders}"
                                   th:method="@{post}"
 
                                   class="d-none d-md-inline">
@@ -234,17 +234,17 @@
 
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
-       // var URLh = window.location.href;
-       // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+        // var URLh = window.location.href;
+        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href ="/cars/"+ target.data('id') + '/delete';
+        document.getElementById('deleteUrl').href = "/cars/" + target.data('id') + '/delete';
     });
 
     $('#hiddenForm').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
         $('#submitOrder').on('click', function () {
-            document.getElementById('orderForm'+target.data('id')).submit();
+            document.getElementById('orderForm' + target.data('id')).submit();
         });
     });
 
@@ -262,20 +262,32 @@
     });
 </script>
 <script>
-    const socket = new SockJS('/ws');
-    let stompClientCreate = Stomp.over(socket);
+    const socket1 = new SockJS('/ws');
+    const socket2 = new SockJS('/ws');
+    let stompClientCreate = Stomp.over(socket1);
+    let stompClientUpdate = Stomp.over(socket2);
 
     $(function () {
-        connect();
+        connect1();
+        connect2();
     });
 
-    function connect() {
+    function connect1() {
         console.log("CONNECT RABBIT CONNECT ");
 
         stompClientCreate.connect({}, function (frame) {
             console.log('Connected CREATE CLIENT: ' + frame);
             stompClientCreate.subscribe('/exchange/car-rental-exchange/add', function (car) {
                 appendCar(JSON.parse(car.body));
+            });
+        });
+    }
+
+    function connect2() {
+        stompClientUpdate.connect({}, function (frame) {
+            console.log('Connected UPDATE CLIENT: ' + frame);
+            stompClientUpdate.subscribe('/exchange/car-rental-exchange/update', function (car) {
+                updateCar(JSON.parse(car.body));
             });
         });
     }
@@ -290,8 +302,8 @@
     // }
 
     function appendCar(car) {
-        console.log("CONNECT RABBIT showGreeting " + car);
-
+        console.log("CONNECT RABBIT appendCar :  " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
+        let filter = '2020-07-19';
         const table = document.getElementById("cars_table"); // find table to append to
         const row = table.rows[1]; // find row to copy
         let clone = row.cloneNode(true); // copy children too
@@ -301,14 +313,50 @@
         clone.registerNumber = car.registerNumber;
         clone.price = car.price;
 
-       // clone.cells[0].innerHTML = car.id;
+        // clone.cells[0].innerHTML = car.id;
         clone.cells[0].innerHTML = car.brand;
-        clone.cells[1].innerHTML =  car.registerNumber;
+        clone.cells[1].innerHTML = car.registerNumber;
         clone.cells[2].innerHTML = car.price;
 
         table.appendChild(clone); // add new row to end of table
 
+        // $("#cars_table").find('tbody').append("<tr>" +
+        //     " <td id=\"brand\">" + car.brand + "</td>" +
+        //     " <td id=\"registerNumber\">" + car.registerNumber + "</td>" +
+        //     "<td id=\"price\">" + car.price + "</td>" +
+        //     "<td class=\"text-right\">" +
+        //     "<span data-toggle=\"modal\" data-target=\"#hiddenForm\"" +
+        //     "th:attr=\"data-id=" + car.id + ", data-name=" + car.brand + " + ' '+ " + car.registerNumber + " + ' on date ' +  " + filter + ">" +
+        //     " <form id=\"orderForm" + car.id + "\"  th:action=\"/orders\"" +
+        //     " method=\"post\"" +
+        //
+        //     " class=\"d-none d-md-inline\">" +
+        //     "<label>" +
+        //     "<input size=\"2\" type=\"hidden\" name=\"carId\" value=" + car.id + "/>" +
+        //     "</label>" +
+        //     "<label>" +
+        //     "<input size=\"2\" type=\"hidden\" name=\"date\" value=" + filter + "/>" +
+        //     "</label>" +
+        //     "</form>" +
+        //     "<a href=\"#\" class=\"btn  btn-secondary\" title=\"Order this car\" data-toggle=\"tooltip\"" +
+        //     " data-placement=\"top\">" +
+        //     " <i class=\"fa fa-book\"></i><span class=\"d-none d-md-inline\">  Order</span></a>" +
+        //     "</span> <a href=\"car.html\" href=\"/cars/" + car.id + "\"" +
+        //     " class=\"btn-sm btn-outline-secondary\" title=\"Edit car\" data-toggle=\"tooltip\"" +
+        //     " data-placement=\"top\"> <i class=\"fa fa-pencil\"></i> " +
+        //     "<span class=\"d-none d-md-inline\">Edit</span></a> " +
+        //     "<span data-toggle=\"modal\" data-target=\"#deleteDialog\"" +
+        //     " th:attr=\"data-id=" + car.id + ", data-name=" + car.brand + ' ' + car.registerNumber + "\">" +
+        //     "<a href=\"#\" class=\"btn-sm btn-outline-secondary\" title=\"delete car\" " +
+        //     " data-toggle=\"tooltip\" data-placement=\"top\"> " +
+        //     "<i class=\"fa fa-remove\"></i> <span class=\"d-none d-md-inline\">Delete</span></a> " +
+        //     "</span> " +
+        //     "</td> " +
+        //     "</tr>");
+    }
 
+    function updateCar(car) {
+        alert("You update car : " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
     }
 </script>
 </body>

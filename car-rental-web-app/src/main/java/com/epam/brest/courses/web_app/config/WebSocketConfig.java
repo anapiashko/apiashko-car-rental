@@ -16,19 +16,30 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     public static final String topicExchangeName = "car-rental-exchange";
-    public static final String queueName = "car-rental-queue";
+    public static final String queueNameCreate = "car-rental-queue";
+    public static final String queueNameUpdate = "car-rental-queue-update";
     @Bean
     TopicExchange exchange() {
         return new TopicExchange(topicExchangeName);
     }
     @Bean
-    Queue queue() {
-        return new Queue(queueName, true);
+    Queue queueCreate() {
+        return new Queue(queueNameCreate, true);
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("#.add.#");
+    Queue queueUpdate() {
+        return new Queue(queueNameUpdate, true);
+    }
+
+    @Bean
+    Binding bindingCreate(Queue queueCreate, TopicExchange exchange) {
+        return BindingBuilder.bind(queueCreate).to(exchange).with("#.add.#");
+    }
+
+    @Bean
+    Binding bindingUpdate(Queue queueUpdate, TopicExchange exchange) {
+        return BindingBuilder.bind(queueUpdate).to(exchange).with("#.update.#");
     }
 
     @Override

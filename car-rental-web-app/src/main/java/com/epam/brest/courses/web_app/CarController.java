@@ -105,7 +105,7 @@ public class CarController {
      * @return view name
      */
     @PostMapping(value = "/cars/{id}")
-    public final String updateCar(@Valid Car car, BindingResult result) {
+    public final String updateCar(@Valid Car car, BindingResult result) throws JsonProcessingException {
         LOGGER.debug("updateCar({}, {})", car, result);
 
         carValidator.validate(car, result);
@@ -113,6 +113,13 @@ public class CarController {
             return "car";
         } else {
             carService.update(car);
+
+            Car updatedCar = carService.findById(car.getId()).get();
+
+            String jsonInString = mapper.writeValueAsString(updatedCar);
+
+            rabbitTemplate.convertAndSend("car-rental-exchange","update", jsonInString);
+
             return "redirect:/cars";
         }
     }
