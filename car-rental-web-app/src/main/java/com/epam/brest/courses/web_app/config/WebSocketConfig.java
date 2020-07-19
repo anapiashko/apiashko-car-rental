@@ -15,9 +15,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    public static final String topicExchangeName = "car-rental-exchange";
-    public static final String queueNameCreate = "car-rental-queue";
-    public static final String queueNameUpdate = "car-rental-queue-update";
+    private static final String topicExchangeName = "car-rental-exchange";
+    private static final String queueNameCreate = "car-rental-queue";
+    private static final String queueNameUpdate = "car-rental-queue-update";
+    private static final String queueNameDelete = "car-rental-queue-delete";
+
     @Bean
     TopicExchange exchange() {
         return new TopicExchange(topicExchangeName);
@@ -33,6 +35,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Bean
+    Queue queueDelete() {
+        return new Queue(queueNameDelete, true);
+    }
+
+    @Bean
     Binding bindingCreate(Queue queueCreate, TopicExchange exchange) {
         return BindingBuilder.bind(queueCreate).to(exchange).with("#.add.#");
     }
@@ -40,6 +47,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     Binding bindingUpdate(Queue queueUpdate, TopicExchange exchange) {
         return BindingBuilder.bind(queueUpdate).to(exchange).with("#.update.#");
+    }
+
+    @Bean
+    Binding bindingDelete(Queue queueDelete, TopicExchange exchange) {
+        return BindingBuilder.bind(queueDelete).to(exchange).with("#.delete.#");
     }
 
     @Override

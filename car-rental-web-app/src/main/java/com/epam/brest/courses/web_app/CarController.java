@@ -184,6 +184,9 @@ public class CarController {
         LOGGER.debug("deleteCar({})", id);
 
         carService.delete(id);
+
+        rabbitTemplate.convertAndSend("car-rental-exchange","delete", id.toString());
+
         return "redirect:/cars";
     }
 

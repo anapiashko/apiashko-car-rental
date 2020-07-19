@@ -99,6 +99,7 @@
                 <table id="cars_table" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
+                        <th>Id</th>
                         <th>Brand</th>
                         <th>Number</th>
                         <th>Price a day</th>
@@ -107,6 +108,7 @@
                     </thead>
                     <tbody id="cars">
                     <tr th:each="car : ${cars}" th:id="'rowId__${car.id}__'">
+                        <td id="id" th:text="${car.id}">1</td>
                         <td id="brand" th:text="${car.brand}">BMW</td>
                         <td id="registerNumber" th:text="${car.registerNumber}">3909 AB-1</td>
                         <td id="price" th:text="${car.price} + '   $'">140 $</td>
@@ -264,12 +266,15 @@
 <script>
     const socket1 = new SockJS('/ws');
     const socket2 = new SockJS('/ws');
+    const socket3 = new SockJS('/ws');
     let stompClientCreate = Stomp.over(socket1);
     let stompClientUpdate = Stomp.over(socket2);
+    let stompClientDelete = Stomp.over(socket3);
 
     $(function () {
         connect1();
         connect2();
+        connect3();
     });
 
     function connect1() {
@@ -288,6 +293,15 @@
             console.log('Connected UPDATE CLIENT: ' + frame);
             stompClientUpdate.subscribe('/exchange/car-rental-exchange/update', function (car) {
                 updateCar(JSON.parse(car.body));
+            });
+        });
+    }
+
+    function connect3() {
+        stompClientDelete.connect({}, function (frame) {
+            console.log('Connected DELETE CLIENT: ' + frame);
+            stompClientDelete.subscribe('/exchange/car-rental-exchange/delete', function (car_id) {
+                deleteCar(car_id.body);
             });
         });
     }
@@ -313,10 +327,10 @@
         clone.registerNumber = car.registerNumber;
         clone.price = car.price;
 
-        // clone.cells[0].innerHTML = car.id;
-        clone.cells[0].innerHTML = car.brand;
-        clone.cells[1].innerHTML = car.registerNumber;
-        clone.cells[2].innerHTML = car.price;
+        clone.cells[0].innerHTML = car.id;
+        clone.cells[1].innerHTML = car.brand;
+        clone.cells[2].innerHTML = car.registerNumber;
+        clone.cells[3].innerHTML = car.price;
 
         table.appendChild(clone); // add new row to end of table
 
@@ -356,7 +370,29 @@
     }
 
     function updateCar(car) {
+        console.log("CONNECT RABBIT updateCar :  " + car.id + ", "
+            + car.brand + ", " + car.registerNumber + ", " + car.price);
+
         alert("You update car : " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
+    }
+
+    function deleteCar(car_id) {
+        console.log("CONNECT RABBIT deleteCar :  " + car_id);
+
+        let id = parseInt(car_id);
+
+        const table = document.getElementById('cars_table');
+
+        const length = table.rows.length - 1;
+
+        for (let i = 1; i <= length; i++) {
+            let table_id = parseInt(table.rows[i].cells[0].innerHTML);
+
+            if(id === table_id){
+                document.getElementById("cars_table").deleteRow(i);
+                break;
+            }
+        }
     }
 </script>
 </body>
