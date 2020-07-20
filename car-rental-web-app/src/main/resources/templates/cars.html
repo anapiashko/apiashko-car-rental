@@ -315,9 +315,14 @@
     //     table.appendChild(clone); // add new row to end of table
     // }
 
+//вынести html код в отдеодьный div, потом:
+    // var div = document.getElementById('divID');
+    // div.innerHTML += 'Extra stuff';
+    // clone.cells[4].innerHTML = div
+
     function appendCar(car) {
         console.log("CONNECT RABBIT appendCar :  " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
-        let filter = '2020-07-19';
+        let filter = '2020-07-20';
         const table = document.getElementById("cars_table"); // find table to append to
         const row = table.rows[1]; // find row to copy
         let clone = row.cloneNode(true); // copy children too
@@ -373,7 +378,29 @@
         console.log("CONNECT RABBIT updateCar :  " + car.id + ", "
             + car.brand + ", " + car.registerNumber + ", " + car.price);
 
-        alert("You update car : " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
+        let id = parseInt(car.id);
+
+        const table = document.getElementById('cars_table');
+
+        const length = table.rows.length - 1;
+
+        for (let i = 1; i <= length; i++) {
+            let table_id = parseInt(table.rows[i].cells[0].innerHTML);
+
+            if(id === table_id){
+                const row = table.rows[i]; // find row to copy
+                let clone = row.cloneNode(true); // copy children too
+
+                // clone.cells[0].innerHTML = car.id;
+                clone.cells[1].innerHTML = car.brand;
+                clone.cells[2].innerHTML = car.registerNumber;
+                clone.cells[3].innerHTML = car.price;
+
+                table.rows[i].replaceWith(clone);
+                break;
+            }
+        }
+       // alert("You update car : " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
     }
 
     function deleteCar(car_id) {
