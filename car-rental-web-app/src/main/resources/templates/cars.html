@@ -272,12 +272,12 @@
     let stompClientDelete = Stomp.over(socket3);
 
     $(function () {
-        connect1();
-        connect2();
-        connect3();
+        connectCreate();
+        connectUpdate();
+        connectDelete();
     });
 
-    function connect1() {
+    function connectCreate() {
         console.log("CONNECT RABBIT CONNECT ");
 
         stompClientCreate.connect({}, function (frame) {
@@ -288,7 +288,7 @@
         });
     }
 
-    function connect2() {
+    function connectUpdate() {
         stompClientUpdate.connect({}, function (frame) {
             console.log('Connected UPDATE CLIENT: ' + frame);
             stompClientUpdate.subscribe('/exchange/car-rental-exchange/update', function (car) {
@@ -297,7 +297,7 @@
         });
     }
 
-    function connect3() {
+    function connectDelete() {
         stompClientDelete.connect({}, function (frame) {
             console.log('Connected DELETE CLIENT: ' + frame);
             stompClientDelete.subscribe('/exchange/car-rental-exchange/delete', function (car_id) {
@@ -306,72 +306,44 @@
         });
     }
 
-    // function cloneRow() {
-    //     //var row = document.getElementById("rowId"); // find row to copy
-    //     var row = document.querySelector('.new_tr'); // find row to copy
-    //     var table = document.getElementById("cars_table"); // find table to append to
-    //     var clone = row.cloneNode(true); // copy children too
-    //     clone.id = "newID"; // change id or other attributes/contents
-    //     table.appendChild(clone); // add new row to end of table
-    // }
-
-//вынести html код в отдеодьный div, потом:
-    // var div = document.getElementById('divID');
-    // div.innerHTML += 'Extra stuff';
-    // clone.cells[4].innerHTML = div
-
     function appendCar(car) {
         console.log("CONNECT RABBIT appendCar :  " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
-        let filter = '2020-07-20';
-        const table = document.getElementById("cars_table"); // find table to append to
-        const row = table.rows[1]; // find row to copy
-        let clone = row.cloneNode(true); // copy children too
 
-        clone.id = car.id; // change id or other attributes/contents
-        clone.brand = car.brand;
-        clone.registerNumber = car.registerNumber;
-        clone.price = car.price;
+        let filter = document.getElementById("filter-input").value;
 
-        clone.cells[0].innerHTML = car.id;
-        clone.cells[1].innerHTML = car.brand;
-        clone.cells[2].innerHTML = car.registerNumber;
-        clone.cells[3].innerHTML = car.price;
-
-        table.appendChild(clone); // add new row to end of table
-
-        // $("#cars_table").find('tbody').append("<tr>" +
-        //     " <td id=\"brand\">" + car.brand + "</td>" +
-        //     " <td id=\"registerNumber\">" + car.registerNumber + "</td>" +
-        //     "<td id=\"price\">" + car.price + "</td>" +
-        //     "<td class=\"text-right\">" +
-        //     "<span data-toggle=\"modal\" data-target=\"#hiddenForm\"" +
-        //     "th:attr=\"data-id=" + car.id + ", data-name=" + car.brand + " + ' '+ " + car.registerNumber + " + ' on date ' +  " + filter + ">" +
-        //     " <form id=\"orderForm" + car.id + "\"  th:action=\"/orders\"" +
-        //     " method=\"post\"" +
-        //
-        //     " class=\"d-none d-md-inline\">" +
-        //     "<label>" +
-        //     "<input size=\"2\" type=\"hidden\" name=\"carId\" value=" + car.id + "/>" +
-        //     "</label>" +
-        //     "<label>" +
-        //     "<input size=\"2\" type=\"hidden\" name=\"date\" value=" + filter + "/>" +
-        //     "</label>" +
-        //     "</form>" +
-        //     "<a href=\"#\" class=\"btn  btn-secondary\" title=\"Order this car\" data-toggle=\"tooltip\"" +
-        //     " data-placement=\"top\">" +
-        //     " <i class=\"fa fa-book\"></i><span class=\"d-none d-md-inline\">  Order</span></a>" +
-        //     "</span> <a href=\"car.html\" href=\"/cars/" + car.id + "\"" +
-        //     " class=\"btn-sm btn-outline-secondary\" title=\"Edit car\" data-toggle=\"tooltip\"" +
-        //     " data-placement=\"top\"> <i class=\"fa fa-pencil\"></i> " +
-        //     "<span class=\"d-none d-md-inline\">Edit</span></a> " +
-        //     "<span data-toggle=\"modal\" data-target=\"#deleteDialog\"" +
-        //     " th:attr=\"data-id=" + car.id + ", data-name=" + car.brand + ' ' + car.registerNumber + "\">" +
-        //     "<a href=\"#\" class=\"btn-sm btn-outline-secondary\" title=\"delete car\" " +
-        //     " data-toggle=\"tooltip\" data-placement=\"top\"> " +
-        //     "<i class=\"fa fa-remove\"></i> <span class=\"d-none d-md-inline\">Delete</span></a> " +
-        //     "</span> " +
-        //     "</td> " +
-        //     "</tr>");
+        $("#cars_table").find('tbody').append("<tr>" +
+            " <td id=\"id\">" + car.id + "</td>" +
+            " <td id=\"brand\">" + car.brand + "</td>" +
+            " <td id=\"registerNumber\">" + car.registerNumber + "</td>" +
+            "<td id=\"price\">" + car.price + "</td>" +
+            "<td class=\"text-right\">" +
+            "<span data-toggle=\"modal\" data-target=\"#hiddenForm\"" +
+            " data-id=\"" + car.id + "\" data-name=\"" + car.brand + " " + car.registerNumber + " on date " + filter + "\">" +
+            " <form id=\"orderForm" + car.id + "\"  action=\"/orders\"" +
+            " method=\"post\"" +
+            " class=\"d-none d-md-inline\">" +
+            "<label>" +
+            "<input size=\"2\" type=\"hidden\" name=\"carId\" value=" + car.id + "/>" +
+            "</label>" +
+            "<label>" +
+            "<input size=\"2\" type=\"hidden\" name=\"date\" value=" + filter + "/>" +
+            "</label>" +
+            "</form>" +
+            "<a href=\"#\" class=\"btn  btn-secondary\" title=\"Order this car\" data-toggle=\"tooltip\"" +
+            " data-placement=\"top\">" +
+            " <i class=\"fa fa-book\"></i><span class=\"d-none d-md-inline\">  Order</span></a>" +
+            "</span> <a href=\"/cars/" + car.id + "\"" +
+            " class=\"btn-sm btn-outline-secondary\" title=\"Edit car\" data-toggle=\"tooltip\"" +
+            " data-placement=\"top\"> <i class=\"fa fa-pencil\"></i> " +
+            "<span class=\"d-none d-md-inline\">Edit</span></a> " +
+            "<span data-toggle=\"modal\" data-target=\"#deleteDialog\"" +
+            " data-id=\"" + car.id + "\" data-name=\"" + car.brand+ " " + car.registerNumber + "\">" +
+            "<a href=\"#\" class=\"btn-sm btn-outline-secondary\" title=\"delete car\" " +
+            " data-toggle=\"tooltip\" data-placement=\"top\"> " +
+            "<i class=\"fa fa-remove\"></i> <span class=\"d-none d-md-inline\">Delete</span></a> " +
+            "</span> " +
+            "</td> " +
+            "</tr>");
     }
 
     function updateCar(car) {
@@ -400,7 +372,6 @@
                 break;
             }
         }
-       // alert("You update car : " + car.id + ", " + car.brand + ", " + car.registerNumber + ", " + car.price);
     }
 
     function deleteCar(car_id) {
