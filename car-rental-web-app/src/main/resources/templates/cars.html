@@ -264,12 +264,12 @@
     });
 </script>
 <script>
-    const socket1 = new SockJS('/ws');
-    const socket2 = new SockJS('/ws');
-    const socket3 = new SockJS('/ws');
-    let stompClientCreate = Stomp.over(socket1);
-    let stompClientUpdate = Stomp.over(socket2);
-    let stompClientDelete = Stomp.over(socket3);
+    const socketCreate = new SockJS('/ws');
+    const socketUpdate = new SockJS('/ws');
+    const socketDelete = new SockJS('/ws');
+    let stompClientCreate = Stomp.over(socketCreate);
+    let stompClientUpdate = Stomp.over(socketUpdate);
+    let stompClientDelete = Stomp.over(socketDelete);
 
     $(function () {
         connectCreate();
@@ -320,8 +320,7 @@
             "<span data-toggle=\"modal\" data-target=\"#hiddenForm\"" +
             " data-id=\"" + car.id + "\" data-name=\"" + car.brand + " " + car.registerNumber + " on date " + filter + "\">" +
             " <form id=\"orderForm" + car.id + "\"  action=\"/orders\"" +
-            " method=\"post\"" +
-            " class=\"d-none d-md-inline\">" +
+            " method=\"post\" class=\"d-none d-md-inline\">" +
             "<label>" +
             "<input size=\"2\" type=\"hidden\" name=\"carId\" value=" + car.id + "/>" +
             "</label>" +
