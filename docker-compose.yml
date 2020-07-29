@@ -1,25 +1,44 @@
 version: '3.3'
+
+volumes:
+    mysql-db:
+
 services:
-  db:
+  mysql-app:
     image: mysql:8.0.20
     restart: always
     environment:
       MYSQL_DATABASE: car_rental
-      # So you don't have to use root, but you can if you like
       MYSQL_USER: anastasiya
-      # You can use whatever password you like
       MYSQL_PASSWORD: password
-      # Password for root access
       MYSQL_ROOT_PASSWORD: Nastya123
+#      MYSQL_ROOT_HOST: '%'
     ports:
-      # <Port exposed> : < MySQL Port running inside container>
       - 3307:3306
     expose:
-      # Opens port 3306 on the container
       - 3306
-      # Where our data will be persisted
     volumes:
-      - my-db:/var/lib/mysql
-# Names our volume
-volumes:
-  my-db:
+      - mysql-db:/var/lib/mysql
+
+  rest-app:
+    build: ./spring-boot-rest-app/
+    restart: always
+    depends_on:
+      - mysql-app
+    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/car_rental?autoReconnect=true
+      - DATABASE_HOST=mysql-app
+      - DATABASE_NAME=car_rental
+      - DATABASE_USER=anastasiya
+      - DATABASE_PASSWORD=password
+      - DATABASE_PORT=3307
+#      MYSQL_ROOT_PASSWORD: Nastya123
+    ports:
+      - 8088:8088
+
+  web-app:
+    build: ./spring-boot-web-app/
+    restart: always
+    ports:
+      - 8080:8080
+
