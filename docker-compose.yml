@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  db:
+  mysql-app:
     image: mysql:8.0.20
     environment:
       MYSQL_ROOT_PASSWORD: Nastya123
@@ -16,15 +16,16 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-rest
+    restart: always
     depends_on:
-      - db
+      - mysql-app
     environment:
 #      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/car_rental?autoReconnect=true
-      - DATABASE_HOST=db
+      - DATABASE_HOST=mysql-app
       - DATABASE_NAME=car_rental
       - DATABASE_USER=anastasiya
       - DATABASE_PASSWORD=password
-      - DATABASE_PORT=3307
+      - DATABASE_PORT=3306
     ports:
       - 8088:8088
 
