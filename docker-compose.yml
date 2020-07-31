@@ -1,32 +1,26 @@
 version: '3.3'
 
-volumes:
-    mysql-db:
-
 services:
-  mysql-app:
+  db:
     image: mysql:8.0.20
-    restart: always
     environment:
-      MYSQL_DATABASE: car_rental
-      MYSQL_USER: anastasiya
-      MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: Nastya123
     ports:
+      # <Port exposed> : < MySQL Port running inside container>
       - 3307:3306
-    expose:
-      - 3306
     volumes:
-      - mysql-db:/var/lib/mysql
+      - ${MYSQL_DATA_DIR}:/var/lib/mysql
+      - ${MYSQL_SCRIPTS_DIR}:/docker-entrypoint-initdb.d/
 
   rest-app:
-    build: ./spring-boot-rest-app/
-    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile-rest
     depends_on:
-      - mysql-app
+      - db
     environment:
 #      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/car_rental?autoReconnect=true
-      - DATABASE_HOST=mysql-app
+      - DATABASE_HOST=db
       - DATABASE_NAME=car_rental
       - DATABASE_USER=anastasiya
       - DATABASE_PASSWORD=password
@@ -35,8 +29,9 @@ services:
       - 8088:8088
 
   web-app:
-    build: ./spring-boot-web-app/
-    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile-web
     ports:
       - 8080:8080
     network_mode: host  # Added this

@@ -1,0 +1,3 @@
+CREATE DATABASE car_rental;
+CREATE USER 'anastasiya' IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, INDEX, DROP, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES ON car_rental.* TO 'anastasiya';
