@@ -8,7 +8,7 @@ COPY . /usr/src/app
 
 WORKDIR /usr/src/app
 
-RUN mvn clean package -DskipTests -pl spring-boot-rest-app -am
+RUN mvn clean package -DskipTests -Dactive.profile=docker -pl spring-boot-rest-app -am
 
 ############################################################################
 
