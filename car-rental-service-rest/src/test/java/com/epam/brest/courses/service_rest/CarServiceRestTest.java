@@ -79,7 +79,7 @@ class CarServiceRestTest {
 
     @Test
     void create() throws URISyntaxException, JsonProcessingException {
-        LOGGER.debug("shouldCreateDepartment()");
+        LOGGER.debug("shouldCreateCar()");
         // given
         Car car = create(2);
 
