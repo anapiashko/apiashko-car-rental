@@ -1,4 +1,4 @@
-package com.epam.brest.courses.rest_app;
+package com.epam.brest.courses.rest_app.steps;
 
 import com.epam.brest.courses.model.dto.CarDto;
 import cucumber.api.java.en.And;
