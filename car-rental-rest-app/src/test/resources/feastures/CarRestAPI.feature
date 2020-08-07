@@ -1,10 +1,10 @@
-Feature: Testing a REST API for cars
+Feature: Testing a REST API for CARS
 
   Scenario Outline: retrieve available cars on given date from a web service
     Given user enter date <date> on which the order will be
     When user send GET request
     Then the requested data is returned
-    And code is "OK"
+    And car code is "OK"
 
     Examples:
       | date         |
@@ -15,7 +15,7 @@ Feature: Testing a REST API for cars
     Given user send car data to be created with brand <brand>, register_number <register_number>, price <price>
     When the car added to list
     Then the car_id not null
-    And code is "CREATED"
+    And car code is "CREATED"
 
     Examples:
       | brand      | register_number | price |
@@ -26,10 +26,10 @@ Feature: Testing a REST API for cars
     Given user send car data to be created with brand <brand>, register_number <register_number>, price <price>
     When the car added to list
     Then the car_id not null
-    And code is "CREATED"
+    And car code is "CREATED"
     When user send GET request with car_id
     Then the requested data is returned
-    And code is "OK"
+    And car code is "OK"
 
     Examples:
       | brand      | register_number | price |
@@ -39,10 +39,10 @@ Feature: Testing a REST API for cars
     Given user send car data to be created with brand <brand>, register_number <register_number>, price <price>
     When the car added to list
     Then the car_id not null
-    And code is "CREATED"
+    And car code is "CREATED"
     When user send PUT request with new car to be updated, with brand "HYUNDAI", register_number "1274 TH-3", price 130
     Then server should return 1 as a result
-    And code is "OK"
+    And car code is "OK"
 
     Examples:
       | brand      | register_number | price |
@@ -52,10 +52,10 @@ Feature: Testing a REST API for cars
     Given user send car data to be created with brand <brand>, register_number <register_number>, price <price>
     When the car added to list
     Then the car_id not null
-    And code is "CREATED"
+    And car code is "CREATED"
     When user send DELETE request with car_id to be deleted
     Then the car is removed
-    And code is "OK"
+    And car code is "OK"
 
     Examples:
       | brand      | register_number | price |

@@ -66,14 +66,13 @@ public class CarRestControllerStepdefs {
 
     @Then("^the car_id not null$")
     public void theCar_idNotNull() {
-        assertSame(responseEntity.getStatusCode(), HttpStatus.CREATED);
         Car savedCar = (Car) responseEntity.getBody();
         assertNotNull(savedCar.getId());
         car.setId(savedCar.getId());
     }
 
-    @And("^code is \"([^\"]*)\"$")
-    public void codeIs(String code) {
+    @And("^car code is \"([^\"]*)\"$")
+    public void carCodeIs(String code) {
         assertSame(responseEntity.getStatusCode(), HttpStatus.valueOf(code));
     }
     /**
