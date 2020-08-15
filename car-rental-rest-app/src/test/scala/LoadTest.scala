@@ -1,6 +1,5 @@
-package com.gatling.git
-
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 class LoadTest extends Simulation {
 
@@ -9,10 +8,10 @@ class LoadTest extends Simulation {
  // val snc = scenario("LoadTest").exec(productsList).exec(productsItem)
 
   val snc = scenario("LoadTest") randomSwitch(
-    (100, carsListByDate)
-//    (45, productsItem),
-//    (5, updateProduct)
+    (50, carsListByDate),
+    (40, carsItem),
+    (10, updateCar)
   )
 
-  setUp(snc.inject(constantUsersPerSec(10) during(5 seconds)).protocols(httpConf))
+  setUp(snc.inject(constantUsersPerSec(6) during(5 seconds)).protocols(httpConf))
 }
