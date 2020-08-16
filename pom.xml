@@ -99,7 +99,7 @@
                 <groupId>io.gatling.highcharts</groupId>
                 <artifactId>gatling-charts-highcharts</artifactId>
                 <scope>test</scope>
-                <version>3.4.0-M1</version>
+                <version>3.3.1</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
