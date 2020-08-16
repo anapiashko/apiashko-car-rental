@@ -39,29 +39,31 @@ object Requests {
     )
 
   val createAndDeleteCar =
-//    exec(session =>
-//      session
-//        .set("brand", UUID.randomUUID().toString)
-//        .set("registerNumber", UUID.randomUUID().toString.substring(1, 10))
-//        .set("price", 100)
-//    )
-//      .exec { session =>
-//        println(session("brand").as[String])
-//        println(session("registerNumber").as[String])
-//        println(session("price").as[Int])
-//        session
-//      }
-      exec(
-        http("CreateCar")
-          .post("/cars")
-          .header("Content-Type", "application/json")
-          .body(ElFileBody("car.json")).asJson
-          .check(status.is(201))
-          .check(jsonPath("$..id").saveAs("id"))
-      )
-      .exec(
-        http("DeleteCar")
-          .delete("/cars/${id}")
-          .check(status.is(200))
-      )
+  //    exec(session =>
+  //      session
+  //        .set("brand", UUID.randomUUID().toString)
+  //        .set("registerNumber", UUID.randomUUID().toString.substring(1, 10))
+  //        .set("price", 100)
+  //    )
+  //      .exec { session =>
+  //        println(session("brand").as[String])
+  //        println(session("registerNumber").as[String])
+  //        println(session("price").as[Int])
+  //        session
+  //      }
+    exec(
+      http("CreateCar")
+        .post("/cars")
+        .header("Content-Type", "application/json")
+        .body(ElFileBody("car.json")).asJson
+        .check(status.is(201))
+        .check(jsonPath("$..id").saveAs("id"))
+    )
+      .doIf(session => session("id").asOption[String].isDefined) {
+        exec(
+          http("DeleteCar")
+            .delete("/cars/${id}")
+            .check(status.is(200))
+        )
+      }
 }

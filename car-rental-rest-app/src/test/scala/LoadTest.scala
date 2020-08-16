@@ -5,8 +5,6 @@ class LoadTest extends Simulation {
 
   val httpConf = http.baseUrl("http://localhost:8088")
 
-  // val snc = scenario("LoadTest").exec(productsList).exec(productsItem)
-
   val snc = scenario("LoadTest") randomSwitch(
     (40, carsListByDate),
     (40, carsItem),
