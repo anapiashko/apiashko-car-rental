@@ -7,6 +7,7 @@ import com.epam.brest.courses.service_rest.OrderServiceRest;
 import com.epam.brest.courses.web_app.CarController;
 import com.epam.brest.courses.web_app.OrderController;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,21 +34,25 @@ public class WebConfig {
     }
 
     @Bean
+    @RefreshScope
     public OrderServiceRest orderServiceRest() {
         return new OrderServiceRest(props.getBaseUrl() + "/" + props.getOrderUrl(), restTemplate());
     }
 
     @Bean
+    @RefreshScope
     public CarServiceRest carServiceRest() {
         return new CarServiceRest(props.getBaseUrl() + "/" + props.getCarUrl(), restTemplate());
     }
 
     @Bean
+    @RefreshScope
     public CarDtoServiceRest carDtoServiceRest() {
         return new CarDtoServiceRest(props.getBaseUrl() + "/" + props.getCarDtoUrl(), restTemplate());
     }
 
     @Bean
+    @RefreshScope
     public OrderDtoServiceRest orderDtoServiceRest() {
         return new OrderDtoServiceRest(props.getBaseUrl() + "/" + props.getOrderDtoUrl(), restTemplate());
     }
