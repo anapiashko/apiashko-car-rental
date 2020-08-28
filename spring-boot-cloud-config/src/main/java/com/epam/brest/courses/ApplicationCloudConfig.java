@@ -2,12 +2,14 @@ package com.epam.brest.courses;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-public class ApplicationRest {
+@EnableConfigServer
+public class ApplicationCloudConfig {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationRest.class);//запуск приложения
+        SpringApplication.run(ApplicationCloudConfig.class);//запуск приложения
 
     }
 }
