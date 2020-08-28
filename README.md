@@ -2,50 +2,40 @@
 # apiashko-car-rental
 car rental app
 
-
+## Profiles
+>  rest
+>
+>  soap (by default)
+>
 ## How build
 Setup java 8, Maven and Environment variable see [environment_setup.md](environment_setup.md)
   
- ## Build project 
+## Build project 
+
+#### Soap profile: 
  Go to Project folder and execute  
-      
+     
+     cd car-rental-soap-app 
      mvn clean install
    
-## Make a report 
-Go to Project folder and execute  
-```
-mvn site
-```
-Open to see the result:
-> /target/site/index.html
-
-Go to see javadocs for the project
-> /target/site/apidocs/index.html
-
-### Start Web using Maven Jetty plugin 
-
-Set up variable CAR_RENTAL_ENV=dev using IntelliJ (see [environment_setup.md](environment_setup.md))
-
-To start Web using Maven Jetty plugin use:
-```
-cd car-rental-web-app
-CAR_RENTAL_ENV=dev mvn jetty:run
-```
-After starting, the app will be available at
-```
-http://localhost:8080
-```
-
-## Rest server
-
-### Start Rest using Maven Jetty plugin 
-    
-To start Rest using Maven Jetty plugin use:
-
-```
-cd car-rental-rest-app
-mvn jetty:run
-```
+ Then we should run application, so
+       
+     cd spring-boot-soap-rest
+     mvn clean install -Psoap 
+     
+ and run spring-boot app : ApplicationSoapRest.java
+ 
+ Run web-app:
+ 
+      cd car-rental-service-soap 
+      mvn clean install
+      
+ Then we should run web application, so
+        
+      cd spring-boot-web-app
+ and run spring-boot app : ApplicationWeb.java
+ 
+#### Rest profile in the same way 
 
 ## Available REST endpoints    
 
