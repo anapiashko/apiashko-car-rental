@@ -19,6 +19,7 @@
         <module>car-rental-web-app</module>
         <module>car-rental-service-rest</module>
         <module>car-rental-test-db</module>
+        <module>spring-boot-cloud-eureka</module>
     </modules>
 
     <properties>
