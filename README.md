@@ -7,6 +7,8 @@ car rental app
 >
 >  soap (by default)
 >
+>  test (h2 database)
+
 ## How build
 Setup java 8, Maven and Environment variable see [environment_setup.md](environment_setup.md)
   
@@ -15,25 +17,15 @@ Setup java 8, Maven and Environment variable see [environment_setup.md](environm
 #### Soap profile: 
  Go to Project folder and execute  
      
-     cd car-rental-soap-app 
-     mvn clean install
+     mvn install -DskipTests -pl spring-boot-soap-rest -am 
+     cd spring-boot-soap-rest/
+     mvn  spring-boot:run -P test,soap
    
- Then we should run application, so
+ Then open second console
        
-     cd spring-boot-soap-rest
-     mvn clean install -Psoap 
-     
- and run spring-boot app : ApplicationSoapRest.java
- 
- Run web-app:
- 
-      cd car-rental-service-soap 
-      mvn clean install
-      
- Then we should run web application, so
-        
-      cd spring-boot-web-app
- and run spring-boot app : ApplicationWeb.java
+     mvn install -DskipTests -pl spring-boot-web-app -am
+     cd spring-boot-web-app/ 
+     mvn spring-boot:run
  
 #### Rest profile in the same way 
 
