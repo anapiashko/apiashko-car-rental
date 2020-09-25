@@ -3,6 +3,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Root controller.
  */
@@ -27,5 +30,18 @@ public class HomeController {
     public String putPeriod(Model model){
         model.addAttribute("incorrectPeriod", false);
         return "period";
+    }
+
+    /**
+     * Logout.
+     *
+     * @param request httpServletRequest
+     * @return redirect to home page
+     * @throws ServletException exception
+     */
+    @GetMapping(value = "/logout")
+    public String logout(HttpServletRequest request) throws ServletException {
+        request.logout();
+        return "redirect:/";
     }
 }
