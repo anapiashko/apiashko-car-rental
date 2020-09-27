@@ -2,50 +2,21 @@
 # apiashko-car-rental
 car rental app
 
+## Make new schema migration
+1. adding dependencies (already added, may skip this step)
+2. create new .sql file into db.migration (specify a version and name of migration)
+3. run the application (in running logs you may see that versions of schema have migrated)
+4. look at the flyway_schema_history table (it will have new line, corresponding new migration)
 
 ## How build
 Setup java 8, Maven and Environment variable see [environment_setup.md](environment_setup.md)
   
- ## Build project 
+## Build project 
  Go to Project folder and execute  
       
      mvn clean install
-   
-## Make a report 
-Go to Project folder and execute  
-```
-mvn site
-```
-Open to see the result:
-> /target/site/index.html
-
-Go to see javadocs for the project
-> /target/site/apidocs/index.html
-
-### Start Web using Maven Jetty plugin 
-
-Set up variable CAR_RENTAL_ENV=dev using IntelliJ (see [environment_setup.md](environment_setup.md))
-
-To start Web using Maven Jetty plugin use:
-```
-cd car-rental-web-app
-CAR_RENTAL_ENV=dev mvn jetty:run
-```
-After starting, the app will be available at
-```
-http://localhost:8080
-```
 
 ## Rest server
-
-### Start Rest using Maven Jetty plugin 
-    
-To start Rest using Maven Jetty plugin use:
-
-```
-cd car-rental-rest-app
-mvn jetty:run
-```
 
 ## Available REST endpoints    
 
@@ -118,38 +89,4 @@ curl --request POST 'http://localhost:8088/orders' \
     "date": "2020-01-02",
     "carId": "3"
 }'
-```
-
-## Deploying on Tomcat
-
-Set up variable CAR_RENTAL_ENV=prod using tomcat (see [environment_setup.md](environment_setup.md))
-
-Briefly:
-
-Create CATALINA_BASE/bin/setenv.sh file and put the following line in it, 
-and then start the Tomcat.
-```
-export CAR_RENTAL_ENV=prod
-```
-
-Go to project
-
-First, you should build the project. Go to project folder and execute  
-```
-mvn clean install
-```
-Then, you can find  war-files in: 
->  /car-rental-web-app/target/car-rental-web.war
->
->  /car-rental-rest-app/target/car-rental-rest.war
-
-Copy them to your tomcat server in webapps folder.
-It's recommended to restart tomcat for normal work.
-If everything is correct you can see the result at:
-```
-http://localhost:8080/car-rental-web/
-```
-For REST service for example:
-```
-http://localhost:8080/car-rental-rest/cars/1
 ```
