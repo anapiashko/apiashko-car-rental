@@ -32,9 +32,23 @@ public class Main implements PanelSwitcher {
 
 					Main window = context.getBean(Main.class);
 
+					JTabbedPane tabbedPane = new JTabbedPane();
+
+					MakeOrderPanel makeOrderPanel = new MakeOrderPanel(window);
+
+					tabbedPane.addTab("Make order", makeOrderPanel);
+					tabbedPane.addTab("Show Orders", new MakeOrderPanel(window));
+					window.panel.add(tabbedPane, JTabbedPane.class.getName());
+//					window.createLayout(tabbedPane);
 //					Main window = new Main();
-					MenuPanel menuPanel = new MenuPanel(window);
-					window.panel.add(menuPanel, MenuPanel.class.getName());
+
+//					MenuPanel menuPanel = new MenuPanel(window);
+//					window.panel.add(menuPanel, MenuPanel.class.getName());
+//					MainPanel mainPanel = new MainPanel(window);
+//					window.panel.add(mainPanel, MainPanel.class.getName());
+
+				//	window.panel.add(makeOrderPanel, MakeOrderPanel.class.getName());
+
 					EditContainer productContainer = new EditContainer(new EditProduct(),
 							window);
 					EditContainer customerContainer = new EditContainer(new EditCustomer(),
@@ -48,6 +62,9 @@ public class Main implements PanelSwitcher {
 					window.addPanel(new ListContentPanel(window,new CustomerDataModel()),CustomerDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window,new ProductDataModel()), ProductDataModel.class.getName());
 //					window.addPanel(new ListContentPanel(window,new SalesOrderDataModel()), SalesOrderDataModel.class.getName());
+
+					window.frame.setTitle("Car-Rental-App");
+					window.frame.setSize(860, 750);
 					window.frame.setVisible(true);
 					
 				} catch (Exception e) {
@@ -86,5 +103,25 @@ public class Main implements PanelSwitcher {
 
 	public HasBusinessPresenter getPanelOfClass(String name) {
 		return containersMap.get(name);
+	}
+
+	private void createLayout(JComponent... arg) {
+
+		Container pane = frame.getContentPane();
+		GroupLayout gl = new GroupLayout(pane);
+		pane.setLayout(gl);
+
+		gl.setAutoCreateContainerGaps(true);
+		gl.setAutoCreateGaps(true);
+
+		gl.setHorizontalGroup(gl.createSequentialGroup()
+				.addComponent(arg[0])
+		);
+
+		gl.setVerticalGroup(gl.createParallelGroup()
+				.addComponent(arg[0])
+		);
+
+		frame.pack();
 	}
 }

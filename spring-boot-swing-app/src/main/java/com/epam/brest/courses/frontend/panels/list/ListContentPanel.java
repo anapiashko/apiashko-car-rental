@@ -2,7 +2,6 @@ package com.epam.brest.courses.frontend.panels.list;
 
 import com.epam.brest.courses.frontend.panels.BusinessPresenter;
 import com.epam.brest.courses.frontend.panels.HasBusinessPresenter;
-import com.epam.brest.courses.frontend.panels.MenuPanel;
 import com.epam.brest.courses.frontend.panels.PanelSwitcher;
 import com.epam.brest.courses.frontend.panels.edit.EditContainer;
 import com.epam.brest.courses.frontend.panels.edit.EditCustomer;
@@ -90,7 +89,7 @@ public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 
 	private void goToHome() 
 	{
-		panelSwitcher.switchTo(MenuPanel.class.getName());
+		panelSwitcher.switchTo(JTabbedPane.class.getName());
 	}
 
 	public BusinessPresenter getBusinessPresenter()

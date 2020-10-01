@@ -1,6 +1,7 @@
 package com.epam.brest.courses.frontend.panels.list;
 
 import com.epam.brest.courses.frontend.panels.BusinessPresenter;
+import com.epam.brest.courses.frontend.panels.MakeOrderPanel;
 import com.epam.brest.courses.frontend.services.Services;
 
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,7 @@ public abstract class ListDataModel extends DefaultTableModel implements
 	public boolean bindToGUI(Object o) 
 	{
 		clear();
-		List<Object> list = Services.listCurrentRecords(getObjectType());
+		List<Object> list = Services.listCurrentRecords(MakeOrderPanel.localDate, getObjectType());
 		List<String[]> modelData = convertRecordsListToTableModel(list);
 		for(String [] row:modelData)
 		{

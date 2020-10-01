@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,7 +94,7 @@ public class Services {
 		}
 	}
 	
-	public static List<Object> listCurrentRecords(int objectType)
+	public static List<Object> listCurrentRecords(LocalDate localDate, int objectType)
 	{
 		//TODO by the candidate
 		/*
@@ -105,7 +106,7 @@ public class Services {
 			case  TYPE_CAR:
 				return restTemplate
 						.getForObject(
-								String.format("%s/cars/filter/2020-01-01", BASE_URI),
+								String.format("%s/cars/filter/" + localDate, BASE_URI),
 								List.class
 						);
 			case TYPE_ORDER:
