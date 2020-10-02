@@ -7,6 +7,7 @@ import com.epam.brest.courses.frontend.panels.edit.EditCustomer;
 import com.epam.brest.courses.frontend.panels.edit.EditProduct;
 import com.epam.brest.courses.frontend.panels.list.CustomerDataModel;
 import com.epam.brest.courses.frontend.panels.list.ListContentPanel;
+import com.epam.brest.courses.frontend.panels.list.OrderDtoDataModel;
 import com.epam.brest.courses.frontend.panels.list.ProductDataModel;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -35,9 +36,10 @@ public class Main implements PanelSwitcher {
 					JTabbedPane tabbedPane = new JTabbedPane();
 
 					MakeOrderPanel makeOrderPanel = new MakeOrderPanel(window);
+					ShowOrdersPanel showOrdersPanel = new ShowOrdersPanel(window);
 
 					tabbedPane.addTab("Make order", makeOrderPanel);
-					tabbedPane.addTab("Show Orders", new MakeOrderPanel(window));
+					tabbedPane.addTab("Show Orders", showOrdersPanel);
 					window.panel.add(tabbedPane, JTabbedPane.class.getName());
 //					window.createLayout(tabbedPane);
 //					Main window = new Main();
@@ -61,6 +63,7 @@ public class Main implements PanelSwitcher {
 //					window.addPanel(salesOrderContainer, EditSalesOrder.class.getName());
 					window.addPanel(new ListContentPanel(window,new CustomerDataModel()),CustomerDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window,new ProductDataModel()), ProductDataModel.class.getName());
+					window.addPanel(new ListContentPanel(window, new OrderDtoDataModel()), OrderDtoDataModel.class.getName());
 //					window.addPanel(new ListContentPanel(window,new SalesOrderDataModel()), SalesOrderDataModel.class.getName());
 
 					window.frame.setTitle("Car-Rental-App");

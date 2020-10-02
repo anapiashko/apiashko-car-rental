@@ -16,7 +16,7 @@ import java.util.List;
 public class Services {
 	public static final int TYPE_CAR = 1;
 	public static final int TYPE_ORDER= 2;
-	public static final int TYPE_SALESORDER = 3;
+	public static final int TYPE_ORDER_DTO = 3;
 	public static final String BASE_URI = "http://localhost:8088";
 	
 	public static Object save(Object object, LocalDate date, int objectType) {
@@ -109,10 +109,10 @@ public class Services {
 								String.format("%s/cars/filter/" + localDate, BASE_URI),
 								List.class
 						);
-			case TYPE_ORDER:
+			case TYPE_ORDER_DTO:
 				return restTemplate
 						.getForObject(
-								String.format("%s/customer/all", BASE_URI),
+								String.format("%s/order_dtos", BASE_URI),
 								List.class
 		     			);
 			default:
