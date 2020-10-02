@@ -102,7 +102,7 @@ public class EditCustomer extends EditContentPanel
 	}
 
 	@Override
-	public String getCurrentCode() 
+	public String getCurrentId()
 	{
 		return txtId.getText();
 	}

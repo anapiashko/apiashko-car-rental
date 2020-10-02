@@ -19,7 +19,7 @@ public class Services {
 	public static final int TYPE_SALESORDER = 3;
 	public static final String BASE_URI = "http://localhost:8088";
 	
-	public static Object save(Object object, int objectType) {
+	public static Object save(Object object, LocalDate date, int objectType) {
 
 		//TODO by the candidate 
 		/*
@@ -38,17 +38,20 @@ public class Services {
 						Car.class
 				);
 			case TYPE_ORDER:
+				Order order = new Order();
+				order.setDate(date);
+				order.setCarId(((Car)object).getId());
 				System.out.println("Order : " + String.format("%s/orders", BASE_URI));
 				return restTemplate.postForObject(
 						String.format("%s/orders", BASE_URI),
-						object,
+						order,
 						Order.class
 				);
 			default:
 				return null;
 		}
 	}
-	public static Object readRecordByCode(String code,int objectType)
+	public static Object readRecordById(String id,int objectType)
 	{
 		//TODO by the candidate
 		/*
@@ -61,15 +64,12 @@ public class Services {
 
 		switch (objectType){
 			case  TYPE_CAR:
-				return restTemplate.getForObject(
-						String.format("%s/cars/?id=%s", BASE_URI, code),
-						Car.class
-				);
+				return restTemplate.getForObject(BASE_URI + "/cars/" + id,  Car.class);
 			default:
 				return null;
 		}
 	}
-	public static boolean deleteRecordByCode(String code,int objectType)
+	public static boolean deleteRecordById(String id,int objectType)
 	{
 		//TODO by the candidate
 		/*
@@ -86,7 +86,7 @@ public class Services {
 				headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 				HttpEntity<Car> entity = new HttpEntity<>(headers);
 				return restTemplate.exchange(
-						BASE_URI + "/" + code, HttpMethod.DELETE, entity, Boolean.class
+						BASE_URI + "/" + id, HttpMethod.DELETE, entity, Boolean.class
 				).getBody();
 			}
 			default:

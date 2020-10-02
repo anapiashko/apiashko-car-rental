@@ -68,11 +68,11 @@ public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 		add(scrollPane, BorderLayout.CENTER);
 	}
 
-	private void goToRecord(String code) {
+	private void goToRecord(String id) {
 		String editViewName = getEditViewName(dataModel.getObjectType());
 		HasBusinessPresenter panelOfClass = panelSwitcher
 				.getPanelOfClass(editViewName);
-		Object retValue = Services.readRecordByCode(code,
+		Object retValue = Services.readRecordById(id,
 				dataModel.getObjectType());
 		panelSwitcher.switchTo(editViewName);
 		panelOfClass.getBusinessPresenter().bindToGUI(retValue);

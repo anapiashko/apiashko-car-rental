@@ -2,7 +2,7 @@ package com.epam.brest.courses.frontend.panels.edit;
 
 import com.epam.brest.courses.frontend.panels.BusinessPresenter;
 import com.epam.brest.courses.frontend.panels.HasBusinessPresenter;
-import com.epam.brest.courses.frontend.panels.MenuPanel;
+import com.epam.brest.courses.frontend.panels.MakeOrderPanel;
 import com.epam.brest.courses.frontend.panels.PanelSwitcher;
 import com.epam.brest.courses.frontend.services.Services;
 
@@ -20,6 +20,7 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 	private String SAVE_ACTION = "save";
 	private String DELETE_ACTION = "delete";
 	private String CLOSE_ACTION = "close";
+	private String ORDER_ACTION = "order";
 	private int objectType;
 	private EditContentPanel editPanel;
 	private PanelSwitcher cardSwitcher;
@@ -33,6 +34,7 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 		addToolBarButton(SAVE_ACTION, "Save");
 		addToolBarButton(DELETE_ACTION, "Delete");
 		addToolBarButton(CLOSE_ACTION, "Close");
+		addToolBarButton(ORDER_ACTION, "Order this car");
 		this.editPanel = editPanel;
 		this.objectType = editPanel.getObjectType();
 		add(editPanel, BorderLayout.CENTER);
@@ -65,7 +67,7 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 			try
 			{
 				if(currentObject != null) {
-					currentObject = Services.save(currentObject, objectType);
+					currentObject = Services.save(currentObject, MakeOrderPanel.localDate, objectType);
 					boolean retValue = editPanel.bindToGUI(currentObject);
 					if (!retValue) {
 						if (Objects.equals(objectType, 3)) {
@@ -84,9 +86,26 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 				JOptionPane.showMessageDialog(this, "Record Not Saved");
 			}
 		}
+		else if (actionCommand.equals(ORDER_ACTION)){
+			Object currentObject = editPanel.guiToObject();
+			try
+			{
+				if(currentObject != null) {
+					// send a request to save an order ( 2 is an objectType - order)
+					Services.save(currentObject, MakeOrderPanel.localDate, 2);
+					JOptionPane.showMessageDialog(this, "Record Saved");
+					goToHome();
+				}
+			}
+			catch(Exception ee)
+			{
+				ee.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Record Not Saved");
+			}
+		}
 		else if(actionCommand.equals(DELETE_ACTION))
 		{
-			boolean retValue = Services.deleteRecordByCode(editPanel.getCurrentCode(), objectType);
+			boolean retValue = Services.deleteRecordById(editPanel.getCurrentId(), objectType);
 			if(retValue)
 			{
 				goToHome();
@@ -104,7 +123,7 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 
 	private void goToHome() 
 	{
-		cardSwitcher.switchTo(MenuPanel.class.getName());
+		cardSwitcher.switchTo(JTabbedPane.class.getName());
 	}
 
 	public BusinessPresenter getBusinessPresenter()
