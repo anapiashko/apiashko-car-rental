@@ -18,6 +18,7 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 	private static final long serialVersionUID = -7388350255798160262L;
 	private JToolBar toolbar;
 	private String SAVE_ACTION = "save";
+	private String UPDATE_ACTION = "update";
 	private String DELETE_ACTION = "delete";
 	private String CLOSE_ACTION = "close";
 	private String ORDER_ACTION = "order";
@@ -32,9 +33,10 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 		toolbar = new JToolBar();
 		add(toolbar, BorderLayout.PAGE_START);
 		addToolBarButton(SAVE_ACTION, "Save");
+		addToolBarButton(UPDATE_ACTION, "Update");
 		addToolBarButton(DELETE_ACTION, "Delete");
-		addToolBarButton(CLOSE_ACTION, "Close");
 		addToolBarButton(ORDER_ACTION, "Order this car");
+		addToolBarButton(CLOSE_ACTION, "Close");
 		this.editPanel = editPanel;
 		this.objectType = editPanel.getObjectType();
 		add(editPanel, BorderLayout.CENTER);
@@ -70,6 +72,31 @@ public class EditContainer extends JPanel implements ActionListener, HasBusiness
 					currentObject = Services.save(currentObject, MakeOrderPanel.localDate, objectType);
 					boolean retValue = editPanel.bindToGUI(currentObject);
 					if (!retValue) {
+						if (Objects.equals(objectType, 3)) {
+							JOptionPane.showMessageDialog(this, "Invalid Order Number, Inventory Level or Customer Credit Limit");
+						} else {
+							JOptionPane.showMessageDialog(this, "Invalid Data Provided.");
+						}
+					} else {
+						JOptionPane.showMessageDialog(this, "Record Saved");
+					}
+				}
+			}
+			catch(Exception ee)
+			{
+				ee.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Record Not Saved");
+			}
+		}
+		if(actionCommand.equals(UPDATE_ACTION))
+		{
+			Object currentObject = editPanel.guiToObject();
+			try
+			{
+				if(currentObject != null) {
+					currentObject = Services.update(currentObject, objectType);
+
+					if ((Integer)currentObject != 1) {
 						if (Objects.equals(objectType, 3)) {
 							JOptionPane.showMessageDialog(this, "Invalid Order Number, Inventory Level or Customer Credit Limit");
 						} else {

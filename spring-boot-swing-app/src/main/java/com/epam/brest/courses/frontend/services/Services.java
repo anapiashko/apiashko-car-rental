@@ -52,7 +52,32 @@ public class Services {
 				return null;
 		}
 	}
-	public static Object readRecordById(String id,int objectType)
+
+	public static Object update(Object object, int objectType) {
+
+		//TODO by the candidate
+		/*
+		 * This method is called eventually after you click save on any edit screen
+		 * object parameter is the return object from calling method guiToObject on edit screen
+		 * and the type is identifier of the object type and may be TYPE_PRODUCT ,
+		 * TYPE_CUSTOMER or TYPE_SALESORDER
+		 */
+
+		final RestTemplate restTemplate = new RestTemplate();
+		System.out.println("Current object update: " + object);
+		switch (objectType){
+			case  TYPE_CAR: {
+				HttpHeaders headers = new HttpHeaders();
+				headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+				HttpEntity<Object> entity = new HttpEntity<>(object, headers);
+				return restTemplate.exchange(BASE_URI + "/cars/"+((Car)object).getId(), HttpMethod.PUT, entity, Integer.class).getBody();
+			}
+			default:
+				return null;
+		}
+	}
+
+	public static Object readRecordById(String id, int objectType)
 	{
 		//TODO by the candidate
 		/*
