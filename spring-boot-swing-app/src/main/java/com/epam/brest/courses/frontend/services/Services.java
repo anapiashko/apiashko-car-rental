@@ -17,6 +17,7 @@ public class Services {
 	public static final int TYPE_CAR = 1;
 	public static final int TYPE_ORDER= 2;
 	public static final int TYPE_ORDER_DTO = 3;
+	public static final int TYPE_CAR_DTO = 4;
 	public static final String BASE_URI = "http://localhost:8088";
 	
 	public static Object save(Object object, LocalDate date, int objectType) {
@@ -119,6 +120,28 @@ public class Services {
 				return new ArrayList<Object>();
 		}
 	}
+
+	public static List<Object> listCurrentRecords(LocalDate dateFrom, LocalDate dateTo, int objectType)
+	{
+		//TODO by the candidate
+		/*
+		 * This method is called when you open any list screen and should return all records of the specified type
+		 */
+		final RestTemplate restTemplate = new RestTemplate();
+
+		switch (objectType){
+			case TYPE_CAR_DTO:
+				return restTemplate
+						.getForObject(
+								String.format("%s/car_dtos"+"?dateFrom="+dateFrom
+										+"&dateTo="+dateTo, BASE_URI),
+								List.class
+						);
+			default:
+				return new ArrayList<Object>();
+		}
+	}
+
 //	public static List<ComboBoxItem> listCurrentRecordRefernces(int objectType)
 //	{
 //		//TODO by the candidate
