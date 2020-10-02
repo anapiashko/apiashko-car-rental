@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+public class ProductDataModel extends ListDataModel {
 
-public class ProductDataModel extends ListDataModel
-{
-	private static final long serialVersionUID = 7526529951747614655L;
-
-	public ProductDataModel() 
-	{
-		super(new String[]{"Id","Brand","Price","RegisterNumber"}, 0);
+	public ProductDataModel() {
+		super(new String[]{"Id","Brand","RegisterNumber", "Price"}, 0);
 	}
 
 	@Override
@@ -46,7 +42,6 @@ public class ProductDataModel extends ListDataModel
 			};
 			sampleData.add(rowData);
 		}
-
 
 		return sampleData;
 	}

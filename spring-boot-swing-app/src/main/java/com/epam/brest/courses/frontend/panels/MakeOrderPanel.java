@@ -18,7 +18,6 @@ import java.util.Date;
 
 public class MakeOrderPanel extends JPanel {
 
-    private static final long serialVersionUID = -2976633621616925350L;
     private PanelSwitcher cardSwitcher;
     public static LocalDate localDate;
 

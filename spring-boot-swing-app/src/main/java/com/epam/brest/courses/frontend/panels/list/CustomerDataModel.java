@@ -6,9 +6,7 @@ import com.epam.brest.courses.model.Order;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDataModel extends ListDataModel
-{
-	private static final long serialVersionUID = 7526529951747613655L;
+public class CustomerDataModel extends ListDataModel {
 
 	public CustomerDataModel()
 	{
@@ -41,7 +39,6 @@ public class CustomerDataModel extends ListDataModel
 			};
 			sampleData.add(rowData);
 		}
-
 
 		return sampleData;
 	}

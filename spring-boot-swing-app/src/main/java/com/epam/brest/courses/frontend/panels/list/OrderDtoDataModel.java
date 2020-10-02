@@ -8,8 +8,6 @@ import java.util.List;
 
 public class OrderDtoDataModel extends ListDataModel {
 
-    private static final long serialVersionUID = 7526529951747614655L;
-
     public OrderDtoDataModel() {
         super(new String[]{"Id","Brand","RegisterNumber", "Date"}, 0);
     }

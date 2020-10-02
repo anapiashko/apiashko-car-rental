@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 public class ShowOrdersPanel extends JPanel {
 
-    private static final long serialVersionUID = -2976633621616925350L;
     private PanelSwitcher cardSwitcher;
 
     public ShowOrdersPanel(PanelSwitcher cardSwitcher1) {

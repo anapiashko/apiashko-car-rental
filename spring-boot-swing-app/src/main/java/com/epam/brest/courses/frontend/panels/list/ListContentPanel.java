@@ -18,7 +18,6 @@ import java.net.URL;
 
 public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 
-	private static final long serialVersionUID = 8776244976111640079L;
 	private JToolBar toolbar;
 	PanelSwitcher panelSwitcher;
 	ListDataModel dataModel;
@@ -69,13 +68,18 @@ public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 	}
 
 	private void goToRecord(String id) {
-		String editViewName = getEditViewName(dataModel.getObjectType());
-		HasBusinessPresenter panelOfClass = panelSwitcher
-				.getPanelOfClass(editViewName);
-		Object retValue = Services.readRecordById(id,
-				dataModel.getObjectType());
-		panelSwitcher.switchTo(editViewName);
-		panelOfClass.getBusinessPresenter().bindToGUI(retValue);
+		// no need to edit existed order (TYPE_ORDER_DTO) && no need to edit statistical data (TYPE_CAR_DTO)
+		if(dataModel.getObjectType() != Services.TYPE_ORDER_DTO &&
+				dataModel.getObjectType() != Services.TYPE_CAR_DTO) {
+
+			String editViewName = getEditViewName(dataModel.getObjectType());
+			HasBusinessPresenter panelOfClass = panelSwitcher
+					.getPanelOfClass(editViewName);
+			Object retValue = Services.readRecordById(id,
+					dataModel.getObjectType());
+			panelSwitcher.switchTo(editViewName);
+			panelOfClass.getBusinessPresenter().bindToGUI(retValue);
+		}
 	}
 
 	private String getEditViewName(int type) {
