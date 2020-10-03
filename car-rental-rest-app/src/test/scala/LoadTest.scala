@@ -1,4 +1,9 @@
 import scala.concurrent.duration._
+
+import Requests._
+import io.gatling.core.Predef._
+import io.gatling.http.Predef._
+import io.gatling.jdbc.Predef._
 import scala.language.postfixOps
 
 class LoadTest extends Simulation {
