@@ -1,20 +1,22 @@
 package com.epam.brest.courses.frontend.panels.list;
 
 import com.epam.brest.courses.frontend.services.Services;
+import com.epam.brest.courses.model.Order;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-public class ProductDataModel extends ListDataModel {
+public class OrderDataModel extends ListDataModel {
 
-	public ProductDataModel() {
-		super(new String[]{"Id","Brand","RegisterNumber", "Price"}, 0);
+	public OrderDataModel()
+	{
+		super(new String[] { "Id", "Date", "CarId" }, 0);
 	}
 
 	@Override
-	public int getObjectType() {
-		return Services.TYPE_CAR;
+	public int getObjectType()
+	{
+		return Services.TYPE_ORDER;
 	}
 
 	@Override
@@ -25,20 +27,15 @@ public class ProductDataModel extends ListDataModel {
 		 * This method use list returned by Services.listCurrentRecords and should convert it to array of rows
 		 * each row is another array of columns of the row
 		 */
-//		String[][] sampleData = new String [][]{
-//				{"01","Product 1","12.5","25"},
-//				{"02","Product 2","10","8"}
-//		};
+//		String[][] sampleData = new String [][]{{"01","Customer 1","+201011121314","23.4"},{"02","Customer 2","+201112131415","1.4"}};
 		List<String []> sampleData = new ArrayList<>();
 
 		for (Object o : list) {
-			LinkedHashMap linkedHashMap = (LinkedHashMap) o;
-
+			Order order = (Order)o;
 			String[] rowData = new String []{
-					String.valueOf(linkedHashMap.get("id")),
-					String.valueOf(linkedHashMap.get("brand")),
-					String.valueOf(linkedHashMap.get("registerNumber")),
-					String.valueOf(linkedHashMap.get("price"))
+					String.valueOf(order.getId()),
+					String.valueOf(order.getDate()),
+					String.valueOf(order.getCarId())
 			};
 			sampleData.add(rowData);
 		}

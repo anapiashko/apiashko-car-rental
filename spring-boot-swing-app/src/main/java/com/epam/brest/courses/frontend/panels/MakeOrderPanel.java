@@ -1,9 +1,9 @@
 package com.epam.brest.courses.frontend.panels;
 
-import com.epam.brest.courses.frontend.panels.edit.EditCustomer;
-import com.epam.brest.courses.frontend.panels.edit.EditProduct;
-import com.epam.brest.courses.frontend.panels.list.CustomerDataModel;
-import com.epam.brest.courses.frontend.panels.list.ProductDataModel;
+import com.epam.brest.courses.frontend.panels.edit.EditOrder;
+import com.epam.brest.courses.frontend.panels.edit.EditCar;
+import com.epam.brest.courses.frontend.panels.list.OrderDataModel;
+import com.epam.brest.courses.frontend.panels.list.CarDataModel;
 
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
@@ -54,14 +54,14 @@ public class MakeOrderPanel extends JPanel {
                 localDate = dateStr.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
-                cardSwitcher.switchTo(ProductDataModel.class.getName());
+                cardSwitcher.switchTo(CarDataModel.class.getName());
             }
         });
 
         JButton btnAddCustomer = new JButton("Add Order");
         btnAddCustomer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardSwitcher.switchTo(EditCustomer.class.getName());
+                cardSwitcher.switchTo(EditOrder.class.getName());
             }
         });
         add(btnAddCustomer);
@@ -71,7 +71,7 @@ public class MakeOrderPanel extends JPanel {
         btnAddProduct.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                cardSwitcher.switchTo(EditProduct.class.getName());
+                cardSwitcher.switchTo(EditCar.class.getName());
             }
         });
 
@@ -81,7 +81,7 @@ public class MakeOrderPanel extends JPanel {
         add(btnListCustomers);
         btnListCustomers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardSwitcher.switchTo(CustomerDataModel.class.getName());
+                cardSwitcher.switchTo(OrderDataModel.class.getName());
             }
         });
 
@@ -91,7 +91,7 @@ public class MakeOrderPanel extends JPanel {
 
         btnListProducts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardSwitcher.switchTo(ProductDataModel.class.getName());
+                cardSwitcher.switchTo(CarDataModel.class.getName());
             }
         });
 

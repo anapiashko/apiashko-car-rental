@@ -1,21 +1,20 @@
 package com.epam.brest.courses.frontend.panels.edit;
 
 import com.epam.brest.courses.frontend.services.Services;
-import com.epam.brest.courses.model.Order;
+import com.epam.brest.courses.model.Car;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.math.BigDecimal;
 
-public class EditCustomer extends EditContentPanel 
-{
-	private static final long serialVersionUID = -8971249970444644844L;
+public class EditCar extends EditContentPanel {
+
 	private JTextField txtId = new JTextField();
-	private JTextField txtDate = new JTextField();
-	private JTextField txtCarId = new JTextField();
+	private JTextField txtBrand = new JTextField();
+	private JTextField txtRegisterNumber = new JTextField();
+	private JTextField txtPrice = new JTextField();
 
-	public EditCustomer() 
+	public EditCar()
 	{
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
@@ -24,7 +23,7 @@ public class EditCustomer extends EditContentPanel
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		add(new JLabel("Code"), gbc);
+		add(new JLabel("Id"), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -38,7 +37,7 @@ public class EditCustomer extends EditContentPanel
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		add(new JLabel("Name"), gbc);
+		add(new JLabel("Brand"), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -46,24 +45,35 @@ public class EditCustomer extends EditContentPanel
 		gbc.gridy = 1;
 		gbc.gridwidth = 3;
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
-		add(txtDate, gbc);
-		txtDate.setColumns(28);
-		
-		
+		add(txtBrand, gbc);
+		txtBrand.setColumns(28);
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		add(new JLabel("Address"), gbc);
+		add(new JLabel("Price"), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 1;
 		gbc.gridy = 2;
-		gbc.gridwidth = 3;
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
-		add(txtCarId, gbc);
-		txtCarId.setColumns(28);
+		add(txtPrice, gbc);
+		txtPrice.setColumns(10);
+
+		gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 2;
+		gbc.gridy = 2;
+		add(new JLabel("RegisterNumber"), gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 15);
+		gbc.gridx = 3;
+		gbc.gridy = 2;
+		gbc.anchor = GridBagConstraints.LAST_LINE_START;
+		add(txtRegisterNumber, gbc);
+		txtRegisterNumber.setColumns(10);
 	}
 
 	public boolean bindToGUI(Object o) 
@@ -72,10 +82,11 @@ public class EditCustomer extends EditContentPanel
 		/*
 		 * This method use the object returned by Services.readRecordByCode and should map it to screen widgets 
 		 */
-		Order customer = (Order)o;
-		txtId.setText(String.valueOf(customer.getId()));
-		txtDate.setText(String.valueOf(customer.getDate()));
-		txtCarId.setText(String.valueOf(customer.getCarId()));
+		Car car = (Car)o;
+		txtId.setText(String.valueOf(car.getId()));
+		txtBrand.setText(car.getBrand());
+		txtPrice.setText(car.getPrice().toString());
+		txtRegisterNumber.setText(car.getRegisterNumber());
 		return true;
 	}
 
@@ -86,19 +97,18 @@ public class EditCustomer extends EditContentPanel
 		 * This method collect values from screen widgets and convert them to object of your type
 		 * This object will be used as a parameter of method Services.save
 		 */
-
-		Order order = new Order();
-		order.setId(Integer.parseInt((txtId.getText())));
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-		order.setDate(LocalDate.parse(txtDate.getText(), formatter));
-		order.setCarId(Integer.parseInt(txtCarId.getText()));
-		return order;
+		System.out.println("id : " + txtId.getText());
+		Car car = new Car();
+		car.setId(Integer.parseInt(txtId.getText()));
+		car.setBrand(txtBrand.getText());
+		car.setRegisterNumber(txtRegisterNumber.getText());
+		car.setPrice(BigDecimal.valueOf(Double.parseDouble(txtPrice.getText())));
+		return car;
 	}
 
-	@Override
-	public int getObjectType() 
+	public int getObjectType()
 	{
-		return Services.TYPE_ORDER;
+		return Services.TYPE_CAR;
 	}
 
 	@Override
@@ -107,15 +117,16 @@ public class EditCustomer extends EditContentPanel
 		return txtId.getText();
 	}
 
-	public void clear() 
+	public void clear()
 	{
 		txtId.setText("");
-		txtDate.setText("");
-		txtCarId.setText("");
+		txtBrand.setText("");
+		txtPrice.setText("");
+		txtRegisterNumber.setText("");
 	}
 
-	public void onInit() 
+	public void onInit()
 	{
-		
+
 	}
 }

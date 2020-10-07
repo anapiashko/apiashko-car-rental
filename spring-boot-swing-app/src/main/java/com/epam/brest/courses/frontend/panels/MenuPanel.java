@@ -1,9 +1,9 @@
 package com.epam.brest.courses.frontend.panels;
 
-import com.epam.brest.courses.frontend.panels.edit.EditCustomer;
-import com.epam.brest.courses.frontend.panels.edit.EditProduct;
-import com.epam.brest.courses.frontend.panels.list.CustomerDataModel;
-import com.epam.brest.courses.frontend.panels.list.ProductDataModel;
+import com.epam.brest.courses.frontend.panels.edit.EditOrder;
+import com.epam.brest.courses.frontend.panels.edit.EditCar;
+import com.epam.brest.courses.frontend.panels.list.OrderDataModel;
+import com.epam.brest.courses.frontend.panels.list.CarDataModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 
 public class MenuPanel extends JPanel {
 
-	private static final long serialVersionUID = -2976633621616925350L;
 	private PanelSwitcher cardSwitcher;
 
 	public MenuPanel(PanelSwitcher cardSwitcher1) {
@@ -20,7 +19,7 @@ public class MenuPanel extends JPanel {
 		JButton btnAddCustomer = new JButton("Add Order");
 		btnAddCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cardSwitcher.switchTo(EditCustomer.class.getName());
+				cardSwitcher.switchTo(EditOrder.class.getName());
 			}
 		});
 		add(btnAddCustomer);
@@ -30,7 +29,7 @@ public class MenuPanel extends JPanel {
 		btnAddProduct.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				cardSwitcher.switchTo(EditProduct.class.getName());
+				cardSwitcher.switchTo(EditCar.class.getName());
 			}
 		});
 
@@ -49,7 +48,7 @@ public class MenuPanel extends JPanel {
 		add(btnListCustomers);
 		btnListCustomers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cardSwitcher.switchTo(CustomerDataModel.class.getName());
+				cardSwitcher.switchTo(OrderDataModel.class.getName());
 			}
 		});
 
@@ -62,7 +61,7 @@ public class MenuPanel extends JPanel {
 
 		btnListProducts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cardSwitcher.switchTo(ProductDataModel.class.getName());
+				cardSwitcher.switchTo(CarDataModel.class.getName());
 			}
 		});
 //		btnListOrders.addActionListener(new ActionListener() {

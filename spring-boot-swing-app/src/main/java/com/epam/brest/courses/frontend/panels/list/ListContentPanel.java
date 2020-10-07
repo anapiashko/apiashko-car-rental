@@ -4,8 +4,8 @@ import com.epam.brest.courses.frontend.panels.BusinessPresenter;
 import com.epam.brest.courses.frontend.panels.HasBusinessPresenter;
 import com.epam.brest.courses.frontend.panels.PanelSwitcher;
 import com.epam.brest.courses.frontend.panels.edit.EditContainer;
-import com.epam.brest.courses.frontend.panels.edit.EditCustomer;
-import com.epam.brest.courses.frontend.panels.edit.EditProduct;
+import com.epam.brest.courses.frontend.panels.edit.EditOrder;
+import com.epam.brest.courses.frontend.panels.edit.EditCar;
 import com.epam.brest.courses.frontend.services.Services;
 
 import javax.swing.*;
@@ -84,9 +84,9 @@ public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 
 	private String getEditViewName(int type) {
 		if (type == Services.TYPE_ORDER)
-			return EditCustomer.class.getName();
+			return EditOrder.class.getName();
 		if (type == Services.TYPE_CAR)
-			return EditProduct.class.getName();
+			return EditCar.class.getName();
 //		return EditSalesOrder.class.getName();
 		return "";
 	}

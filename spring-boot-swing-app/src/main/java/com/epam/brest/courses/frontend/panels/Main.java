@@ -3,8 +3,8 @@ package com.epam.brest.courses.frontend.panels;
 
 import com.epam.brest.courses.Application;
 import com.epam.brest.courses.frontend.panels.edit.EditContainer;
-import com.epam.brest.courses.frontend.panels.edit.EditCustomer;
-import com.epam.brest.courses.frontend.panels.edit.EditProduct;
+import com.epam.brest.courses.frontend.panels.edit.EditOrder;
+import com.epam.brest.courses.frontend.panels.edit.EditCar;
 import com.epam.brest.courses.frontend.panels.list.*;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -50,18 +50,18 @@ public class Main implements PanelSwitcher {
 
 				//	window.panel.add(makeOrderPanel, MakeOrderPanel.class.getName());
 
-					EditContainer productContainer = new EditContainer(new EditProduct(),
+					EditContainer carContainer = new EditContainer(new EditCar(),
 							window);
-					EditContainer customerContainer = new EditContainer(new EditCustomer(),
+					EditContainer orderContainer = new EditContainer(new EditOrder(),
 							window);
 //					EditContainer salesOrderContainer = new EditContainer(new EditSalesOrder(),
 //							window);
 					
-					window.addPanel(productContainer, EditProduct.class.getName());
-					window.addPanel(customerContainer, EditCustomer.class.getName());
+					window.addPanel(carContainer, EditCar.class.getName());
+					window.addPanel(orderContainer, EditOrder.class.getName());
 //					window.addPanel(salesOrderContainer, EditSalesOrder.class.getName());
-					window.addPanel(new ListContentPanel(window,new CustomerDataModel()),CustomerDataModel.class.getName());
-					window.addPanel(new ListContentPanel(window,new ProductDataModel()), ProductDataModel.class.getName());
+					window.addPanel(new ListContentPanel(window,new OrderDataModel()), OrderDataModel.class.getName());
+					window.addPanel(new ListContentPanel(window,new CarDataModel()), CarDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window, new OrderDtoDataModel()), OrderDtoDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window, new CarDtoDataModel()), CarDtoDataModel.class.getName());
 //					window.addPanel(new ListContentPanel(window,new SalesOrderDataModel()), SalesOrderDataModel.class.getName());
@@ -106,25 +106,5 @@ public class Main implements PanelSwitcher {
 
 	public HasBusinessPresenter getPanelOfClass(String name) {
 		return containersMap.get(name);
-	}
-
-	private void createLayout(JComponent... arg) {
-
-		Container pane = frame.getContentPane();
-		GroupLayout gl = new GroupLayout(pane);
-		pane.setLayout(gl);
-
-		gl.setAutoCreateContainerGaps(true);
-		gl.setAutoCreateGaps(true);
-
-		gl.setHorizontalGroup(gl.createSequentialGroup()
-				.addComponent(arg[0])
-		);
-
-		gl.setVerticalGroup(gl.createParallelGroup()
-				.addComponent(arg[0])
-		);
-
-		frame.pack();
 	}
 }
