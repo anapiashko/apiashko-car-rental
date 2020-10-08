@@ -58,37 +58,8 @@ public class MakeOrderPanel extends JPanel {
             }
         });
 
-        JButton btnAddCustomer = new JButton("Add Order");
-        btnAddCustomer.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardSwitcher.switchTo(EditOrder.class.getName());
-            }
-        });
-        add(btnAddCustomer);
-        btnAddCustomer.setBounds(new Rectangle(50, 50, 30, 20));
-
-        JButton btnAddProduct = new JButton("Add Car");
-        btnAddProduct.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                cardSwitcher.switchTo(EditCar.class.getName());
-            }
-        });
-
-        add(btnAddProduct);
-
-        JButton btnListCustomers = new JButton("List Orders");
-        add(btnListCustomers);
-        btnListCustomers.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardSwitcher.switchTo(OrderDataModel.class.getName());
-            }
-        });
-
         JButton btnListProducts = new JButton("List Cars");
-
         add(btnListProducts);
-
         btnListProducts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardSwitcher.switchTo(CarDataModel.class.getName());

@@ -42,10 +42,6 @@ public class Main implements PanelSwitcher {
 
 //					MenuPanel menuPanel = new MenuPanel(window);
 //					window.panel.add(menuPanel, MenuPanel.class.getName());
-//					MainPanel mainPanel = new MainPanel(window);
-//					window.panel.add(mainPanel, MainPanel.class.getName());
-
-				//	window.panel.add(makeOrderPanel, MakeOrderPanel.class.getName());
 
 					EditContainer carContainer = new EditContainer(new EditCar(),
 							window);
@@ -57,7 +53,6 @@ public class Main implements PanelSwitcher {
 
 					window.addPanel(new ListContentPanel(window,new OrderDataModel()), OrderDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window,new CarDataModel()), CarDataModel.class.getName());
-//					window.addPanel(new ListContentPanel(window, new OrderDtoDataModel()), OrderDtoDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window, new CarDtoDataModel()), CarDtoDataModel.class.getName());
 
 					window.frame.setTitle("Car-Rental-App");
@@ -70,8 +65,7 @@ public class Main implements PanelSwitcher {
 			}
 		});
 	}
-	void addPanel(HasBusinessPresenter container,String name)
-	{
+	void addPanel(HasBusinessPresenter container,String name) {
 		containersMap.put(name, container);
 		panel.add((Component) container,name);
 	}

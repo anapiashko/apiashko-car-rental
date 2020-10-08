@@ -23,7 +23,7 @@ public class EditOrder extends EditContentPanel {
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		add(new JLabel("Code"), gbc);
+		add(new JLabel("Id"), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -37,7 +37,7 @@ public class EditOrder extends EditContentPanel {
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		add(new JLabel("Name"), gbc);
+		add(new JLabel("Date"), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -53,7 +53,7 @@ public class EditOrder extends EditContentPanel {
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		add(new JLabel("Address"), gbc);
+		add(new JLabel("RegisterNumber"), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
