@@ -31,23 +31,26 @@ public class ListContentPanel extends JPanel implements HasBusinessPresenter {
 		String imgLocation = "close.png";
 		URL imageURL = EditContainer.class.getResource(imgLocation);
 
-		JButton button = new JButton();
-		button.setActionCommand("close");
-		button.setToolTipText("Close");
-		button.addActionListener(new ActionListener() {
+		//TYPE_CAR and TYPE_CAR_DTO are opened in a separate window, so should be closed
+		if (dataModel.getObjectType() == Services.TYPE_CAR || dataModel.getObjectType() == Services.TYPE_CAR_DTO) {
+			JButton button = new JButton();
+			button.setActionCommand("close");
+			button.setToolTipText("Close");
+			button.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent e) {
-				goToHome();
+				public void actionPerformed(ActionEvent e) {
+					goToHome();
+				}
+			});
+
+			if (imageURL != null) {
+				ImageIcon defaultIcon = new ImageIcon(imageURL, "Close");
+				button.setIcon(defaultIcon);
+			} else {
+				button.setText("Close");
 			}
-		});
-
-		if (imageURL != null) {
-			ImageIcon defaultIcon = new ImageIcon(imageURL, "Close");
-			button.setIcon(defaultIcon);
-		} else {
-			button.setText("Close");
+			toolbar.add(button);
 		}
-		toolbar.add(button);
 		add(toolbar, BorderLayout.PAGE_START);
 		table = new JTable(dataModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

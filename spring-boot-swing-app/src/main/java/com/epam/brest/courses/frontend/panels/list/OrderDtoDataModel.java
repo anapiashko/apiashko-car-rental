@@ -10,6 +10,7 @@ public class OrderDtoDataModel extends ListDataModel {
 
     public OrderDtoDataModel() {
         super(new String[]{"Id","Brand","RegisterNumber", "Date"}, 0);
+        super.bindToGUI(new Object());
     }
 
     @Override

@@ -33,15 +33,12 @@ public class Main implements PanelSwitcher {
 					JTabbedPane tabbedPane = new JTabbedPane();
 
 					MakeOrderPanel makeOrderPanel = new MakeOrderPanel(window);
-					ShowOrdersPanel showOrdersPanel = new ShowOrdersPanel(window);
 					StatisticsPanel statisticsPanel = new StatisticsPanel(window);
 
 					tabbedPane.addTab("Make order", makeOrderPanel);
-					tabbedPane.addTab("Show Orders", showOrdersPanel);
+					tabbedPane.add(new ListContentPanel(window, new OrderDtoDataModel()), "Show Orders");
 					tabbedPane.addTab("Statistics", statisticsPanel);
 					window.panel.add(tabbedPane, JTabbedPane.class.getName());
-//					window.createLayout(tabbedPane);
-//					Main window = new Main();
 
 //					MenuPanel menuPanel = new MenuPanel(window);
 //					window.panel.add(menuPanel, MenuPanel.class.getName());
@@ -54,17 +51,14 @@ public class Main implements PanelSwitcher {
 							window);
 					EditContainer orderContainer = new EditContainer(new EditOrder(),
 							window);
-//					EditContainer salesOrderContainer = new EditContainer(new EditSalesOrder(),
-//							window);
 					
 					window.addPanel(carContainer, EditCar.class.getName());
 					window.addPanel(orderContainer, EditOrder.class.getName());
-//					window.addPanel(salesOrderContainer, EditSalesOrder.class.getName());
+
 					window.addPanel(new ListContentPanel(window,new OrderDataModel()), OrderDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window,new CarDataModel()), CarDataModel.class.getName());
-					window.addPanel(new ListContentPanel(window, new OrderDtoDataModel()), OrderDtoDataModel.class.getName());
+//					window.addPanel(new ListContentPanel(window, new OrderDtoDataModel()), OrderDtoDataModel.class.getName());
 					window.addPanel(new ListContentPanel(window, new CarDtoDataModel()), CarDtoDataModel.class.getName());
-//					window.addPanel(new ListContentPanel(window,new SalesOrderDataModel()), SalesOrderDataModel.class.getName());
 
 					window.frame.setTitle("Car-Rental-App");
 					window.frame.setSize(860, 750);
@@ -96,8 +90,7 @@ public class Main implements PanelSwitcher {
 	public void switchTo(String name) {
 		CardLayout layout = (CardLayout) panel.getLayout();
 		HasBusinessPresenter container = getPanelOfClass(name);
-		if(container!=null)
-		{
+		if(container!=null) {
 			container.getBusinessPresenter().clear();
 			container.getBusinessPresenter().onInit();
 		}
