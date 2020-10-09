@@ -15,8 +15,6 @@
         <module>car-rental-service-api</module>
         <module>car-rental-model</module>
         <module>car-rental-dao</module>
-        <module>spring-boot-web-app</module>
-        <module>car-rental-web-app</module>
         <module>car-rental-service-rest</module>
         <module>car-rental-test-db</module>
         <module>spring-boot-swing-app</module>
@@ -63,11 +61,6 @@
             <dependency>
                 <groupId>com.epam.brest.courses</groupId>
                 <artifactId>car-rental-service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.brest.courses</groupId>
-                <artifactId>car-rental-web-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

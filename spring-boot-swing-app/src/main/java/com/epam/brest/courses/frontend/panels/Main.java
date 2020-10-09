@@ -1,7 +1,7 @@
 package com.epam.brest.courses.frontend.panels;
 
 
-import com.epam.brest.courses.Application;
+import com.epam.brest.courses.ApplicationSwing;
 import com.epam.brest.courses.frontend.panels.edit.EditContainer;
 import com.epam.brest.courses.frontend.panels.edit.EditOrder;
 import com.epam.brest.courses.frontend.panels.edit.EditCar;
@@ -25,7 +25,7 @@ public class Main implements PanelSwitcher {
 
 			public void run() {
 				try {
-					ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class)
+					ConfigurableApplicationContext context = new SpringApplicationBuilder(ApplicationSwing.class)
 							.run(args);
 
 					Main window = context.getBean(Main.class);
