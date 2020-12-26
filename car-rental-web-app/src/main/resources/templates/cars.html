@@ -69,6 +69,13 @@
     </div>
 </div>
 
+<div th:if="${ #error}">
+<span  data-toggle="modal"
+       data-target="#alertDeleteDialog"
+      th:text="${error} ? 'New car' : ''"
+       th:attr="data-message=${error}"></span>
+</div>
+
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 <nav id="main-header"
@@ -209,6 +216,27 @@
     </div>
 </div>
 
+<!-- Alert about deleting -->
+<div class="modal fade" id="alertDeleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="label">Delete car</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please confirm delete
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../static/js/jquery-3.4.1.slim.min.js"
         th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
 <script src="../static/js/popper.min.js"
@@ -236,6 +264,14 @@
         $('#submitOrder').on('click', function () {
             document.getElementById('orderForm'+target.data('id')).submit();
         });
+    });
+
+    $('#alertDeleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget);
+        // var URLh = window.location.href;
+        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+        $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('message') + '"');
+       // document.getElementById('deleteUrl').href ="/cars/"+ target.data('id') + '/delete';
     });
 
     function changeShowAction() {

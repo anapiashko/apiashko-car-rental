@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -149,10 +150,13 @@ public class CarController {
      * @return redirect to view name
      */
     @GetMapping(value = "cars/{id}/delete")
-    public final String deleteCar(@PathVariable Integer id) {
+    public final String deleteCar(@PathVariable Integer id, Model model) {
         LOGGER.debug("deleteCar({})", id);
-
-        carService.delete(id);
+        try {
+            carService.delete(id);
+        } catch (HttpServerErrorException e) {
+            model.addAttribute("error", "Can not delete car");
+        }
         return "redirect:/cars";
     }
 
