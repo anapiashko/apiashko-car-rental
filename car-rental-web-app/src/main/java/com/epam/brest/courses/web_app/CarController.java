@@ -154,12 +154,30 @@ public class CarController {
         LOGGER.debug("deleteCar({})", id);
         try {
             carService.delete(id);
+            return "redirect:/cars";
         } catch (HttpServerErrorException e) {
-            model.addAttribute("error", "Can not delete car");
+            return "redirect:/failcars";
         }
-        return "redirect:/cars";
+//        return "redirect:/cars";
     }
 
+    @GetMapping(value = "/failcars")
+    public final String failFreeCars(@RequestParam(name = "filter", required = false)
+                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
+        LOGGER.debug("fail delete free cars on date: {}", date);
+
+        LocalDate dateNow = LocalDate.now();
+
+        if (date == null || date.isBefore(dateNow)) {
+            date = LocalDate.now();
+        }
+
+        List<Car> cars = carService.findAllByDate(date);
+        model.addAttribute("error", "Can not delete car");
+        model.addAttribute("filter", date);
+        model.addAttribute("cars",cars);
+        return "cars";
+    }
     /**
      * Show cars with number of orders.
      *

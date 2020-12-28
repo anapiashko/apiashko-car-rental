@@ -14,9 +14,21 @@
           th:href="@{/css/style.css}">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <title>Cars</title>
+    <script>
+        // function deleteAlert (error) {
+        //     if (error) {
+        //         $("#myModalBox").modal('show');
+        //     }
+        // }
+        function deleteAlert (error) {
+            $(document).ready(function () {
+                $("#myModalBox").modal('show');
+            });
+        }
+    </script>
 </head>
 <body>
-
+<span th:utext="${error}">default</span>
 <header>
     <nav class="pl-2 navbar navbar-expand-sm navbar-dark bg-dark text-light  p-0">
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
@@ -69,11 +81,16 @@
     </div>
 </div>
 
-<div th:if="${ #error}">
-<span  data-toggle="modal"
-       data-target="#alertDeleteDialog"
-      th:text="${error} ? 'New car' : ''"
-       th:attr="data-message=${error}"></span>
+<!--<span th:if="${error == 'F'}">Female</span>-->
+<!--<div data-toggle="modal"-->
+<!--     data-target="#myModalBox"-->
+<!--      th:attr="data-id=${error}, data-name=${error}"-->
+<!--      th:if="${error == ''}" >-->
+
+<div th:if="${error == 'Can not delete car'}">
+    <script>
+        deleteAlert('error');
+    </script>
 </div>
 
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -170,6 +187,37 @@
     <p class="text-center">&copy; 2020</p>
 </footer>
 
+<span data-toggle="modal"
+      data-target="#myModalBox">
+                               <a href="#"
+                                  class="btn-sm btn-outline-secondary"
+                                  data-toggle="tooltip"
+                                  data-placement="top">
+                                    <i class="fa fa-remove"></i> <span class="d-none d-md-inline">alter</span></a>
+                                </span>
+
+<!-- HTML-код модального окна -->
+<div id="myModalBox" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Заголовок модального окна -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Заголовок модального окна</h4>
+            </div>
+            <!-- Основное содержимое модального окна -->
+            <div class="modal-body">
+                Содержимое модального окна...
+            </div>
+            <!-- Футер модального окна -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Confirm delete Modal -->
 <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -249,20 +297,27 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
-
+    // function deleteAlert (error) {
+    //     if (error) {
+    //         $("#myModalBox").modal('show');
+    //     }
+    // }
+    $('#del').on('show.bs.modal', function (event) {
+        $("#myModalBox").modal('show');
+    });
     $('#deleteDialog').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
-       // var URLh = window.location.href;
-       // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+        // var URLh = window.location.href;
+        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('name') + '"');
-        document.getElementById('deleteUrl').href ="/cars/"+ target.data('id') + '/delete';
+        document.getElementById('deleteUrl').href = "/cars/" + target.data('id') + '/delete';
     });
 
     $('#hiddenForm').on('show.bs.modal', function (event) {
         var target = $(event.relatedTarget);
         $(this).find('.modal-body').text('Please confirm booking car: "' + target.data('name') + '"');
         $('#submitOrder').on('click', function () {
-            document.getElementById('orderForm'+target.data('id')).submit();
+            document.getElementById('orderForm' + target.data('id')).submit();
         });
     });
 
@@ -271,7 +326,8 @@
         // var URLh = window.location.href;
         // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
         $(this).find('.modal-body').text('Please confirm delete car: "' + target.data('message') + '"');
-       // document.getElementById('deleteUrl').href ="/cars/"+ target.data('id') + '/delete';
+        //
+        // document.getElementById('deleteUrl').href ="/cars/"+ target.data('id') + '/delete';
     });
 
     function changeShowAction() {
