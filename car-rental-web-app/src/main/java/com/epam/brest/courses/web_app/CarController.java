@@ -156,15 +156,15 @@ public class CarController {
             carService.delete(id);
             return "redirect:/cars";
         } catch (HttpServerErrorException e) {
-            return "redirect:/failcars";
+            return "redirect:/fail/operation/cars";
         }
 //        return "redirect:/cars";
     }
 
-    @GetMapping(value = "/failcars")
+    @GetMapping(value = "/fail/operation/cars")
     public final String failFreeCars(@RequestParam(name = "filter", required = false)
                                  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
-        LOGGER.debug("fail delete free cars on date: {}", date);
+        LOGGER.debug("failed to perform an operation: {}", date);
 
         LocalDate dateNow = LocalDate.now();
 
