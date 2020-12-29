@@ -36,6 +36,8 @@ public class CarController {
 
     private final CarDtoService carDtoService;
 
+    private LocalDate date;
+
     @Autowired
     public CarController(CarService carService, CarDtoService carDtoService) {
         this.carService = carService;
@@ -50,15 +52,17 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
-        LOGGER.debug("free cars on date: {}", date);
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, Model model) {
+        LOGGER.debug("free cars on date: {}", localDate);
 
       //  LocalDate date = LocalDate.parse(filter);
         LocalDate dateNow = LocalDate.now();
 
-        if (date == null || date.isBefore(dateNow)) {
-            date = LocalDate.now();
+        if (localDate == null || localDate.isBefore(dateNow)) {
+            localDate = LocalDate.now();
         }
+
+        date = localDate;
 
         List<Car> cars = carService.findAllByDate(date);
         model.addAttribute("filter", date);
@@ -162,8 +166,7 @@ public class CarController {
     }
 
     @GetMapping(value = "/fail/operation/cars")
-    public final String failFreeCars(@RequestParam(name = "filter", required = false)
-                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
+    public final String failDeleteCar(Model model) {
         LOGGER.debug("failed to perform an operation: {}", date);
 
         LocalDate dateNow = LocalDate.now();
@@ -173,7 +176,7 @@ public class CarController {
         }
 
         List<Car> cars = carService.findAllByDate(date);
-        model.addAttribute("error", "Can not delete car");
+        model.addAttribute("error", "There is order for this car");
         model.addAttribute("filter", date);
         model.addAttribute("cars",cars);
         return "cars";

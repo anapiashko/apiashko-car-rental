@@ -1,5 +1,7 @@
 package com.epam.brest.courses.rest_app.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +18,8 @@ import java.util.List;
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+
     /**
      * Message car nor found.
      */
@@ -27,7 +31,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String VALIDATION_ERROR = "validation_error";
 
     @ExceptionHandler(CarNotFoundException.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(final CarNotFoundException ex, final WebRequest request) {
+    public final ResponseEntity<ErrorResponse> handleCarNotFoundException(final CarNotFoundException ex, final WebRequest request) {
+        LOGGER.error(String.valueOf(ex), ex);
+
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(CAR_NOT_FOUND, details);
@@ -36,6 +42,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public final ResponseEntity<ErrorResponse> handleIllegalArgumentException(final Exception ex, final WebRequest request) {
+        LOGGER.error(String.valueOf(ex), ex);
 
         return new ResponseEntity<>(
                 new ErrorResponse(VALIDATION_ERROR, ex),
