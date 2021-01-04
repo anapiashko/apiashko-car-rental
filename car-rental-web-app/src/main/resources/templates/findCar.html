@@ -14,8 +14,11 @@
           th:href="@{/css/style.css}">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<<<<<<< HEAD
     <script src="../static/js/jquery-3.4.1.slim.min.js"
             th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
+=======
+>>>>>>> master
     <title>Start page</title>
 </head>
 <body>
@@ -100,7 +103,17 @@
             format: 'YYYY-MM-DD'
         }
     });
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    $(function(){
+        $('#filter-input').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+    });
     // $('#filter-input').inputmask();
     // $(document).ready(function fins() {
     //     $('#filter-input').inputmask();
