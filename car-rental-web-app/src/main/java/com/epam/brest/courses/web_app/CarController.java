@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -35,6 +36,8 @@ public class CarController {
 
     private final CarDtoService carDtoService;
 
+    private static LocalDate date  = LocalDate.now();
+
     @Autowired
     public CarController(CarService carService, CarDtoService carDtoService) {
         this.carService = carService;
@@ -49,14 +52,11 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
-        LOGGER.debug("free cars on date: {}", date);
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, Model model) {
+        LOGGER.debug("free cars on date: {}", localDate);
 
-      //  LocalDate date = LocalDate.parse(filter);
-        LocalDate dateNow = LocalDate.now();
-
-        if (date == null || date.isBefore(dateNow)) {
-            date = LocalDate.now();
+        if(localDate != null) {
+            date = localDate;
         }
 
         List<Car> cars = carService.findAllByDate(date);
@@ -151,11 +151,31 @@ public class CarController {
     @GetMapping(value = "cars/{id}/delete")
     public final String deleteCar(@PathVariable Integer id) {
         LOGGER.debug("deleteCar({})", id);
-
-        carService.delete(id);
-        return "redirect:/cars";
+        try {
+            carService.delete(id);
+            return "redirect:/cars";
+        } catch (HttpServerErrorException e) {
+            return "redirect:/fail/operation/cars";
+        }
+//        return "redirect:/cars";
     }
 
+    @GetMapping(value = "/fail/operation/cars")
+    public final String failDeleteCar(Model model) {
+        LOGGER.debug("failed to perform an operation: {}", date);
+
+        LocalDate dateNow = LocalDate.now();
+
+        if (date == null || date.isBefore(dateNow)) {
+            date = LocalDate.now();
+        }
+
+        List<Car> cars = carService.findAllByDate(date);
+        model.addAttribute("error", "There is order for this car");
+        model.addAttribute("filter", date);
+        model.addAttribute("cars",cars);
+        return "cars";
+    }
     /**
      * Show cars with number of orders.
      *
