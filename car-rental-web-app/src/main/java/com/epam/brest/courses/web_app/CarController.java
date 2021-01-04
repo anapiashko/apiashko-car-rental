@@ -149,33 +149,17 @@ public class CarController {
      * @return redirect to view name
      */
     @GetMapping(value = "cars/{id}/delete")
-    public final String deleteCar(@PathVariable Integer id) {
+    public final String deleteCar(@PathVariable Integer id, Model model) {
         LOGGER.debug("deleteCar({})", id);
         try {
             carService.delete(id);
             return "redirect:/cars";
         } catch (HttpServerErrorException e) {
-            return "redirect:/fail/operation/cars";
+            model.addAttribute("error", "There is order for this car");
+            return freeCars(date, model);
         }
-//        return "redirect:/cars";
     }
 
-    @GetMapping(value = "/fail/operation/cars")
-    public final String failDeleteCar(Model model) {
-        LOGGER.debug("failed to perform an operation: {}", date);
-
-        LocalDate dateNow = LocalDate.now();
-
-        if (date == null || date.isBefore(dateNow)) {
-            date = LocalDate.now();
-        }
-
-        List<Car> cars = carService.findAllByDate(date);
-        model.addAttribute("error", "There is order for this car");
-        model.addAttribute("filter", date);
-        model.addAttribute("cars",cars);
-        return "cars";
-    }
     /**
      * Show cars with number of orders.
      *
