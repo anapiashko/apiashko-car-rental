@@ -35,6 +35,8 @@ public class CarController {
 
     private final CarDtoService carDtoService;
 
+    private static LocalDate date  = LocalDate.now();
+
     @Autowired
     public CarController(CarService carService, CarDtoService carDtoService) {
         this.carService = carService;
@@ -49,14 +51,11 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, Model model) {
         LOGGER.debug("free cars on date: {}", date);
 
-      //  LocalDate date = LocalDate.parse(filter);
-        LocalDate dateNow = LocalDate.now();
-
-        if (date == null || date.isBefore(dateNow)) {
-            date = LocalDate.now();
+        if(localDate != null) {
+            date = localDate;
         }
 
         List<Car> cars = carService.findAllByDate(date);
