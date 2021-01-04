@@ -114,7 +114,7 @@
                              <span data-toggle="modal"
                                    data-target="#hiddenForm"
                                    th:attr="data-id=${car.id}, data-name=${car.brand} + ' '+  ${car.registerNumber} +' on date ' +  ${filter}">
-                            <form th:id="'orderForm__${car.id}__'"  th:action="@{/orders}"
+                            <form th:id="'orderForm__${car.id}__'" th:action="@{/orders}"
                                   th:method="@{post}"
 
                                   class="d-none d-md-inline">
