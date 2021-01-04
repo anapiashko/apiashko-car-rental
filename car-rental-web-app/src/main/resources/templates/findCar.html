@@ -13,7 +13,7 @@
           href="../static/css/style.css"
           th:href="@{/css/style.css}">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <title>Start page</title>
 </head>
 <body>
@@ -78,6 +78,9 @@
         th:src="@{/js/bootstrap.min.js}"></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 <script src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/masking-input.js" data-autoinit="true"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
     function changeShowAction() {
         var currActionValue = document.getElementById('filter-button').href;
@@ -89,10 +92,18 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
-    $('#filter-input').inputmask();
-    $(document).ready(function fins() {
-        $('#filter-input').inputmask();
+    $(function(){
+        $('#filter-input').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
     });
+    // $('#filter-input').inputmask();
+    // $(document).ready(function fins() {
+    //     $('#filter-input').inputmask();
+    // });
 </script>
 </body>
 </html>

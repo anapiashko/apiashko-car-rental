@@ -13,6 +13,7 @@
           href="../static/css/style.css"
           th:href="@{/css/style.css}">
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <title>Statistics</title>
 </head>
 <body>
@@ -104,6 +105,9 @@
         th:src="@{/js/bootstrap.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/masking-input.js" data-autoinit="true"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
@@ -118,14 +122,29 @@
         currentUrl.searchParams.set("dateTo", filterValueTo);
         document.getElementById('filter-button').href = currentUrl.href;
     }
-    // $('#field_dateFrom').inputmask();
-    $(document).ready(function() {
-        $('#field_dateFrom').inputmask();
+    $(function(){
+        $('#field_dateFrom').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+        $('#field_dateTo').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
     });
-    // $('#field_dateTo').inputmask();
-    $(document).ready(function() {
-        $('#field_dateTo').inputmask();
-    });
+
+    // // $('#field_dateFrom').inputmask();
+    // $(document).ready(function() {
+    //     $('#field_dateFrom').inputmask();
+    // });
+    // // $('#field_dateTo').inputmask();
+    // $(document).ready(function() {
+    //     $('#field_dateTo').inputmask();
+    // });
 </script>
 </body>
 </html>
