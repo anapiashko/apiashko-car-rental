@@ -17,16 +17,19 @@
 </head>
 <style>
     #id {
-        width: 10%;
+        width: 5%;
     }
     #brand {
-        width: 30%;
+        width: 25%;
     }
     #registNum {
         width: 30%;
     }
     #date {
         width: 30%;
+    }
+    #button-panel {
+        width: 10%
     }
 </style>
 <body>
@@ -68,6 +71,7 @@
                         <th>Brand</th>
                         <th>Registration Number</th>
                         <th>Date</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -76,6 +80,18 @@
                         <td id="brand" th:text="${order.brand}">BMW</td>
                         <td id="registNum" th:text="${order.registerNumber}">3909 AB-1</td>
                         <td id="date" th:text="${order.date}">2001-01-01</td>
+                        <td id="button-panel" class="text-right">
+                            <span data-toggle="modal"
+                                  data-target="#deleteDialog"
+                                  th:attr="data-id=${order.id}, data-name=${order.brand} + ' '+  ${order.registerNumber} + ' on date ' + ${order.date}">
+                               <a href="#"
+                                  class="btn-sm btn-outline-secondary"
+                                  title="delete car"
+                                  data-toggle="tooltip"
+                                  data-placement="top">
+                                    <i class="fa fa-remove"></i> <span class="d-none d-md-inline">Delete</span></a>
+                                </span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -89,6 +105,28 @@
     <p class="text-center">&copy; 2020</p>
 </footer>
 
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="exampleModalLabel">Delete car</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please confirm delete
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../static/js/jquery-3.4.1.slim.min.js"
         th:src="@{/js/jquery-3.4.1.slim.min.js}"></script>
 <script src="../static/js/popper.min.js"
@@ -100,6 +138,13 @@
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
+    });
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget);
+        // var URLh = window.location.href;
+        // alert("href  = " + URLh +"/" + target.data('id') + '/delete' );
+        $(this).find('.modal-body').text('Please confirm delete order: "' + target.data('name') + '"');
+        document.getElementById('deleteUrl').href ="/orders/"+ target.data('id') + '/delete';
     });
 </script>
 </body>

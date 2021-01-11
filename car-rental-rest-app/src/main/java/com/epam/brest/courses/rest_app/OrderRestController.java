@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class OrderRestController {
@@ -34,5 +32,18 @@ public class OrderRestController {
         LOGGER.debug("create order({})",order);
 
         return new ResponseEntity<>(orderService.create(order), HttpStatus.CREATED);
+    }
+
+    /**
+     * Delete order.
+     *
+     * @param id order id
+     */
+    @DeleteMapping(value = "/orders/{id}", produces = {"application/json"})
+    public final ResponseEntity<Void> delete(@PathVariable(name = "id") Integer id) {
+        LOGGER.debug("delete order({})", id);
+
+        orderService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -13,4 +13,11 @@ public interface OrderService {
      * @return persisted order id.
      */
     Order create(Order order);
+
+    /**
+     * Delete order by id.
+     *
+     * @param orderId order id.
+     */
+    void delete(Integer orderId);
 }

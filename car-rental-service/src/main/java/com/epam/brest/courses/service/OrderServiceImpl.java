@@ -31,4 +31,11 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.save(order);
     }
+
+    @Override
+    public void delete(Integer orderId) {
+        LOGGER.debug("delete order by id(orderId:{})", orderId);
+
+        orderRepository.deleteById(orderId);
+    }
 }
