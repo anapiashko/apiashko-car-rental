@@ -17,13 +17,14 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DataJpaTest
@@ -74,6 +75,21 @@ class OrderRestControllerIT {
         assertNotNull(savedOrder);
     }
 
+    @Test
+    void delete() throws Exception {
+        //given
+        Order order = new Order();
+        order.setDate(LocalDate.of(2020,12,9));
+
+        Order savedOrder = orderService.create(order);
+
+        //when
+        orderService.delete(savedOrder.getId());
+
+        //then
+        // assertTrue(1 == result);
+    }
+
     class MockMvcOrderService {
 
         public Order create(Order order) throws Exception {
@@ -88,6 +104,19 @@ class OrderRestControllerIT {
                     ).andExpect(status().isCreated())
                             .andReturn().getResponse();
             return objectMapper.readValue(response.getContentAsString(), Order.class);
+        }
+
+        public void delete(Integer orderId) throws Exception {
+
+            LOGGER.debug("delete({})", orderId);
+
+            MockHttpServletResponse response =
+                    mockMvc.perform(
+                            MockMvcRequestBuilders.delete(ORDERS_ENDPOINT + "/" + orderId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                    ).andExpect(status().isOk())
+                            .andReturn().getResponse();
         }
     }
 }

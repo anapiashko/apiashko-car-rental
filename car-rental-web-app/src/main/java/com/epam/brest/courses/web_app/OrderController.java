@@ -78,7 +78,7 @@ public class OrderController {
      * @return redirect to view name
      */
     @GetMapping(value = "orders/{id}/delete")
-    public final String deleteCar(@PathVariable Integer id, Model model) {
+    public final String deleteOrder(@PathVariable Integer id, Model model) {
         LOGGER.debug("delete order({})", id);
         try {
             orderService.delete(id);

@@ -72,6 +72,25 @@ class OrderServiceRestTest {
         assertNotNull(savedOrder);
     }
 
+    @Test
+    void delete() throws URISyntaxException {
+
+        // given
+        Integer id = 1;
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(ORDERS_URL + "/" + id)))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+//                        .body(mapper.writeValueAsString("1"))
+                );
+        // when
+        orderServiceRest.delete(id);
+
+        // then
+        mockServer.verify();
+        // assertTrue(1 == result);
+    }
+
     private Order create(int index) {
         Order order = new Order();
         order.setId(index);

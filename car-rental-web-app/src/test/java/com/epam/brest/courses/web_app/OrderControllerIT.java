@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {TestConfig.class})
+@Sql({"classpath:data-jpa-init-test.sql"})
 class OrderControllerIT {
 
     private MockMvc mockMvc;
@@ -59,5 +61,15 @@ class OrderControllerIT {
         ).andExpect(status().isFound())
                 .andExpect(view().name("redirect:/cars"))
                 .andExpect(redirectedUrl("/cars"));
+    }
+
+    @Test
+    void shouldDeleteOrder() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/orders/2/delete")
+        ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/orders"))
+                .andExpect(redirectedUrl("/orders"));
     }
 }
