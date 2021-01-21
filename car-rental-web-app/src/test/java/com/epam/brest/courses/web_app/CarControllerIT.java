@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,17 +18,18 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {TestConfig.class})
+@Sql({"classpath:data-jpa-init-test.sql"})
 class CarControllerIT {
 
     private MockMvc mockMvc;
@@ -36,7 +38,7 @@ class CarControllerIT {
     private CarController carController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         mockMvc =  MockMvcBuilders.standaloneSetup(carController)
                 .setViewResolvers(new ThymeleafConfig().viewResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
@@ -45,7 +47,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldReturnListOfFreeCars() throws Exception {
+    void shouldReturnListOfFreeCars() throws Exception {
         LocalDate filter = LocalDate.of(2020,1,2);
 //        String filter = "2020-01-10";
         mockMvc.perform(
@@ -57,23 +59,23 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldOpenEditCarPage() throws Exception {
+    void shouldOpenEditCarPage() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/cars/2"))
                 .andDo(MockMvcResultHandlers.print())
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
-//                .andExpect(view().name("car"))
-//                .andExpect(model().attribute("isNew", false))
-//                .andExpect(model().attribute("car", hasProperty("id", is(2))))
-//                .andExpect(model().attribute("car", hasProperty("brand", is("AUDI"))))
-//                .andExpect(model().attribute("car", hasProperty("registerNumber", is("0056 AB-1"))))
-//                .andExpect(model().attribute("car", hasProperty("price", is(new BigDecimal("140.00")))))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("car"))
+                .andExpect(model().attribute("isNew", false))
+                .andExpect(model().attribute("car", hasProperty("id", is(2))))
+                .andExpect(model().attribute("car", hasProperty("brand", is("AUDI"))))
+                .andExpect(model().attribute("car", hasProperty("registerNumber", is("0056 AB-1"))))
+                .andExpect(model().attribute("car", hasProperty("price", is(new BigDecimal("140.00")))))
         ;
     }
 
     @Test
-    public void shouldReturnToCarsPageIfCarNotFoundById() throws Exception {
+    void shouldReturnToCarsPageIfCarNotFoundById() throws Exception {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/cars/99999")
@@ -83,7 +85,8 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldUpdateCarAfterEdit() throws Exception {
+    @Transactional
+    void shouldUpdateCarAfterEdit() throws Exception {
 
         Car car = new Car();
         car.setId(1);
@@ -91,22 +94,22 @@ class CarControllerIT {
         car.setRegisterNumber("0056 AB-1");
         car.setPrice(BigDecimal.valueOf(240));
 
-//        mockMvc.perform(
-//                MockMvcRequestBuilders.post("/cars/1")
-//                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                        .param("id", "1")
-//                        .param("brand", "BMW")
-//                        .param("registerNumber", "0076 AB-1")
-//                        .param("price", "240")
-//                        .sessionAttr("car", car)
-//        ).andExpect(status().isFound())
-//                .andExpect(view().name("redirect:/cars"))
-//                .andExpect(redirectedUrl("/cars"))
-//        ;
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/cars/1")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", "1")
+                        .param("brand", "BMW")
+                        .param("registerNumber", "0076 AB-1")
+                        .param("price", "240")
+                        .sessionAttr("car", car)
+        ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/cars"))
+                .andExpect(redirectedUrl("/cars"))
+        ;
     }
 
     @Test
-    public void shouldOpenNewCarPage() throws Exception {
+    void shouldOpenNewCarPage() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/car")
         ).andDo(MockMvcResultHandlers.print())
@@ -118,7 +121,7 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldAddNewCar() throws Exception {
+    void shouldAddNewCar() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/car")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -131,17 +134,17 @@ class CarControllerIT {
     }
 
     @Test
-    public void shouldDeleteCar() throws Exception {
+    void shouldDeleteCar() throws Exception {
 
-//        mockMvc.perform(
-//                MockMvcRequestBuilders.get("/cars/1/delete")
-//        ).andExpect(status().isFound())
-//                .andExpect(view().name("redirect:/cars"))
-//                .andExpect(redirectedUrl("/cars"));
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/cars/1/delete")
+        ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/cars"))
+                .andExpect(redirectedUrl("/cars"));
     }
 
     @Test
-    public void shouldReturnListCarsWithNumberOfOrders() throws Exception {
+    void shouldReturnListCarsWithNumberOfOrders() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/car-statistics")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -150,14 +153,14 @@ class CarControllerIT {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("statistics"))
-//                .andExpect(model().attribute("cars", hasItem(
-//                        allOf(
-//                                hasProperty("id", is(2)),
-//                                hasProperty("brand", is("AUDI")),
-//                                hasProperty("registerNumber", is("0056 AB-1")),
-//                                hasProperty("numberOrders", is(2))
-//                        )
-//                )))
+                .andExpect(model().attribute("cars", hasItem(
+                        allOf(
+                                hasProperty("id", is(2)),
+                                hasProperty("brand", is("AUDI")),
+                                hasProperty("registerNumber", is("0056 AB-1")),
+                                hasProperty("numberOrders", is(2))
+                        )
+                )))
         ;
     }
 }

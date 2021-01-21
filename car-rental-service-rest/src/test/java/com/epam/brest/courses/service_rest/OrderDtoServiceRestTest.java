@@ -1,6 +1,6 @@
 package com.epam.brest.courses.service_rest;
 
-import com.epam.brest.courses.model.dto.CarDto;
+import com.epam.brest.courses.model.dto.OrderDto;
 import com.epam.brest.courses.service_rest.config.TestConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,11 +33,11 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-class CarDtoServiceRestTest {
+class OrderDtoServiceRestTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CarDtoServiceRestTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderDtoServiceRestTest.class);
 
-    private static final String CAR_DTOS_URL = "http://localhost:8088/car_dtos";
+    private static final String ORDER_DTOS_URL = "http://localhost:8088/order_dtos";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -46,24 +46,20 @@ class CarDtoServiceRestTest {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private CarDtoServiceRest carDtoServiceRest;
+    private OrderDtoServiceRest orderDtoServiceRest;
 
     @BeforeEach
     void before() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
-        carDtoServiceRest = new CarDtoServiceRest(CAR_DTOS_URL, restTemplate);
+        orderDtoServiceRest = new OrderDtoServiceRest(ORDER_DTOS_URL, restTemplate);
     }
 
-
     @Test
-    void findAllWithNumberOfOrders() throws URISyntaxException, JsonProcessingException {
+    void findAllOrdersWithCar() throws URISyntaxException, JsonProcessingException {
+        LOGGER.debug("findAllOrdersWithCar ()");
 
-        LOGGER.debug("shouldFindAllWithNumberOfOrders()");
         // given
-        LocalDate dateFrom = LocalDate.of(2020,2,2);
-        LocalDate dateTo = LocalDate.of(2020,3,3);
-        mockServer.expect(ExpectedCount.once(), requestTo(new URI(CAR_DTOS_URL+"?dateFrom="+dateFrom
-                +"&dateTo="+dateTo)))
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(ORDER_DTOS_URL)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,20 +67,20 @@ class CarDtoServiceRestTest {
                 );
 
         // when
-        List<CarDto> cars = carDtoServiceRest.findAllWithNumberOfOrders(dateFrom, dateTo);
+        List<OrderDto> orderDtos = orderDtoServiceRest.findAllOrdersWithCar();
 
         // then
         mockServer.verify();
-        assertNotNull(cars);
-        assertTrue(cars.size() > 0);
+        assertNotNull(orderDtos);
+        assertTrue(orderDtos.size() > 0);
     }
 
-    private CarDto create(int index) {
-        CarDto carDto = new CarDto();
-        carDto.setId(index);
-        carDto.setBrand("b" + index);
-        carDto.setRegisterNumber("rn" + index);
-        carDto.setNumberOrders(index + 2);
-        return carDto;
+    private OrderDto create(int index) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(index);
+        orderDto.setBrand("b" + index);
+        orderDto.setRegisterNumber("rn" + index);
+        orderDto.setDate(LocalDate.of(2020, 11, 1 + index));
+        return orderDto;
     }
 }

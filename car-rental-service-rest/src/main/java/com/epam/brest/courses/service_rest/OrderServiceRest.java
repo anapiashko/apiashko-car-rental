@@ -1,11 +1,14 @@
 package com.epam.brest.courses.service_rest;
 
+import com.epam.brest.courses.model.Car;
 import com.epam.brest.courses.model.Order;
 import com.epam.brest.courses.service_api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
 
 import java.util.List;
 
@@ -41,6 +44,21 @@ public class OrderServiceRest implements OrderService {
 
         ResponseEntity responseEntity = restTemplate.postForEntity(url,order,Order.class);
         return (Order) responseEntity.getBody();
+    }
+
+    /**
+     * Delete order from db.
+     *
+     * @param orderId order id.
+     */
+    @Override
+    public void delete(Integer orderId) {
+        LOGGER.debug("delete({})", orderId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<Car> entity = new HttpEntity<>(headers);
+        ResponseEntity<Integer> result = restTemplate.exchange(url+"/"+orderId, HttpMethod.DELETE, entity, Integer.class);
     }
 
     @Override

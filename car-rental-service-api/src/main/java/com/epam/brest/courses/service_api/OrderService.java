@@ -28,4 +28,11 @@ public interface OrderService {
      * Delete all orders in db.
      */
     void deleteAll();
+
+    /**
+     * Delete order by id.
+     *
+     * @param orderId order id.
+     */
+    void delete(Integer orderId);
 }

@@ -30,7 +30,7 @@ class HomeControllerIT {
     private HomeController homeController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         mockMvc =  MockMvcBuilders.standaloneSetup(homeController)
                 .setViewResolvers(new ThymeleafConfig().viewResolver())
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())

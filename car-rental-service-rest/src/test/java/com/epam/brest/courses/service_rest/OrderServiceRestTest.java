@@ -38,7 +38,7 @@ class OrderServiceRestTest {
     private static final String ORDERS_URL = "http://localhost:8088/orders";
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     private MockRestServiceServer mockServer;
 
@@ -47,7 +47,7 @@ class OrderServiceRestTest {
     private OrderServiceRest orderServiceRest;
 
     @BeforeEach
-    public void before() {
+    void before() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
         orderServiceRest = new OrderServiceRest(ORDERS_URL, restTemplate);
     }
@@ -70,6 +70,25 @@ class OrderServiceRestTest {
         // then
         mockServer.verify();
         assertNotNull(savedOrder);
+    }
+
+    @Test
+    void delete() throws URISyntaxException {
+
+        // given
+        Integer id = 1;
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(ORDERS_URL + "/" + id)))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+//                        .body(mapper.writeValueAsString("1"))
+                );
+        // when
+        orderServiceRest.delete(id);
+
+        // then
+        mockServer.verify();
+        // assertTrue(1 == result);
     }
 
     private Order create(int index) {

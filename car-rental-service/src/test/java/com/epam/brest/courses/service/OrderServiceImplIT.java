@@ -39,4 +39,22 @@ class OrderServiceImplIT {
         //then
         assertNotNull(savedOrder);
     }
+
+    @Test
+    void delete() {
+        //given
+        Order order = new Order();
+        order.setDate(LocalDate.of(2020,4,4));
+
+        //Integer id = carDao.save(car);
+        Order savedOrder = orderService.create(order);;
+
+        //when
+        orderService.delete(savedOrder.getId());
+
+        //then
+        //assertTrue(1 == result);
+//        Optional<Order> optionalCar = orderService.findById(savedOrder.getId());
+//        assertFalse(optionalCar.isPresent());
+    }
 }

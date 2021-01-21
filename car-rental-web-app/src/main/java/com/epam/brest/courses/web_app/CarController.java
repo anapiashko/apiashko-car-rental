@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -39,6 +40,8 @@ public class CarController {
 
     private final XmlService<Car> xmlService;
 
+    private static LocalDate date  = LocalDate.now();
+
     @Autowired
     public CarController(CarService carService, CarDtoService carDtoService, XmlService<Car> xmlService) {
         this.carService = carService;
@@ -54,14 +57,11 @@ public class CarController {
      */
     @GetMapping(value = "/cars")
     public final String freeCars(@RequestParam(name = "filter", required = false)
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
-        LOGGER.debug("free cars on date: {}", date);
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, Model model) {
+        LOGGER.debug("free cars on date: {}", localDate);
 
-      //  LocalDate date = LocalDate.parse(filter);
-        LocalDate dateNow = LocalDate.now();
-
-        if (date == null || date.isBefore(dateNow)) {
-            date = LocalDate.now();
+        if(localDate != null) {
+            date = localDate;
         }
 
         List<Car> cars = carService.findAllByDate(date);
@@ -154,11 +154,15 @@ public class CarController {
      * @return redirect to view name
      */
     @GetMapping(value = "cars/{id}/delete")
-    public final String deleteCar(@PathVariable Integer id) {
+    public final String deleteCar(@PathVariable Integer id, Model model) {
         LOGGER.debug("deleteCar({})", id);
-
-        carService.delete(id);
-        return "redirect:/cars";
+        try {
+            carService.delete(id);
+            return "redirect:/cars";
+        } catch (HttpServerErrorException e) {
+            model.addAttribute("error", "There is order for this car");
+            return freeCars(date, model);
+        }
     }
 
     /**

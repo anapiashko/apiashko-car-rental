@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class OrderRestController {
@@ -73,5 +74,18 @@ public class OrderRestController {
         LOGGER.debug("create order({})",order);
 
         return new ResponseEntity<>(orderService.create(order), HttpStatus.CREATED);
+    }
+
+    /**
+     * Delete order.
+     *
+     * @param id order id
+     */
+    @DeleteMapping(value = "/orders/{id}", produces = {"application/json"})
+    public final ResponseEntity<Void> delete(@PathVariable(name = "id") Integer id) {
+        LOGGER.debug("delete order({})", id);
+
+        orderService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
