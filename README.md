@@ -2,6 +2,10 @@
 # apiashko-car-rental
 car rental app
 
+#Spring-boot-xml
+- The method Upload archive from xml will delete the whole database and will fill it with new data.
+
+- Make sure before uploading you do not have important information in database and don't have orders with these cars.
 
 ## How build
 Setup java 8, Maven and Environment variable see [environment_setup.md](environment_setup.md)
