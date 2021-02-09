@@ -9,8 +9,23 @@ Setup java 8, Maven and Environment variable see [environment_setup.md](environm
  ## Build project 
  Go to Project folder and execute  
       
-     mvn clean install
+     mvn clean package
    
+## Running
+There are two main classes : for a frontend and backend.
+
+To test base endpoints enough to start backend part with :
+
+    cd spring-boot-rest-app
+    mvn spring-boot:run
+ 
+Start Frontend with :
+    
+    cd spring-boot-web-app
+    mvn spring-boot:run
+
+If you start both parts, go to http://localhost:8080/ to check.   
+    
    
 ## Rest server
 
